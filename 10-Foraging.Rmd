@@ -10,27 +10,34 @@ The purpose of this submodel is to simulate facultative foraging behavior in mig
 
 The following ecological patterns are represented as explicit rules in the model:
 
--    **Energetic threshold for foraging**:\
-    Fish forage only when energy reserves are low and physiological conditions are stable.\
-    *(Reflects field observations that migratory fish do not interrupt migration to feed unless energetically necessary and stress levels are tolerable.)*
+-   **Conditional foraging triggers**:\
+    Fish forage only when **all** of the following are true:\
+    `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM`.\
+    *(Reflects behavioral ecology studies showing fish avoid feeding during stress and turbidity but will opportunistically forage when paused.)*
 
--    **Habitat-driven patch choice**:\
-    Fish evaluate nearby patches and select the one that best matches their species-specific preferences for salinity, temperature, velocity, depth, and particulate matter.\
-    *(Reflects optimal foraging theory and documented environmental preferences in estuarine migratory species.)*
+<!-- -->
 
--    **Size- and species-based competition**:\
-    Fish will not forage in patches occupied by larger individuals of a different species. They may co-forage with same-species fish or smaller heterospecifics.\
-    *(Reflects asymmetric competition commonly observed in estuarine fish assemblages, where dominance is based on both size and species.)*
+-    **Habitat-based foraging selection**:\
+    Fish score nearby patches based on salinity, temperature, depth, velocity, and turbidity (SPM), and choose the one with the highest score.\
+    *(Represents optimal foraging theory and empirical habitat preference studies in estuarine fish.)*
 
--   **Fallback foraging**:\
-    If the best patch is unavailable due to competition, fish attempt to forage in the next-best nearby patch.\
-    *(Reflects adaptive behavior observed in migratory fish when confronted with contested or unsuitable habitat.)*
+<!-- -->
 
--    **Crowding reduces foraging success**:\
-    Energy gain is divided among all foragers in a patch, simulating diminishing returns in crowded environments.\
-    *(Reflects limited prey availability and foraging interference in dense aggregations.)*
+-    **Intraspecific competition**:\
+    Fish can forage alongside others of the same species, but energy gain is reduced when the patch is crowded.\
+    *(Captures resource sharing and diminishing returns observed in schooling behavior.)*
 
-These patterns and their corresponding rules are grounded in estuarine fish ecology and support spatially explicit assessment of how migratory fish navigate trade-offs between movement, energy, and competition. They guide both the model logic and its interpretation.
+<!-- -->
+
+-    **Interspecific competition**:\
+    Fish will not forage in patches where larger individuals of a different species are already present. They will search again for the next best patch.\
+    *(Reflects asymmetric, size-structured competition documented in estuarine communities.)*
+
+<!-- -->
+
+-    **Size-based exclusion**:\
+    Fish avoid patches where the **combined size** of all different-species foragers is greater than their own.\
+    *(Simulates energetic trade-offs in contested foraging zones.)*
 
 ## Entities, State Variables, and Scales
 
