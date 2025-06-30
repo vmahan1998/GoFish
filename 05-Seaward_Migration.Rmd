@@ -68,7 +68,7 @@ To model how migratory fish respond to along-channel velocity when traveling sea
 | $M_{agent}$ | user-defined and species-specific | Representative body length of a migrating agent. |
 | $M_{max}$ | user-defined and species-specific | Based on the maximum body length in the agent's population. |
 | $V_{agent}$ | $\frac{V_{max}}{2}$ | Fish begin migration with a moderate swimming speed relative to their maximum capacity. |
-| $swim_{max}$ | $1.5 \frac{body lengths}{sec}$ | Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). |
+| $swim_{max}$ | $1.5-3 \frac{body lengths}{sec}$ | Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). |
 | $E_{agent}$ | 100% | Agent starts migration at 100% relative energy capacity. |
 | $swim_{base}$ | $0.02 \cdot \frac{M_{agent}}{M_{max}}^{k}$ | Scales locomotion cost nonlinearly with size; can be calibrated. |
 | $k$ | 0.75 | Energetic scaling component that follows Kleiber’s Law. |
