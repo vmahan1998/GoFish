@@ -196,7 +196,7 @@ $$
 
 This prevents agents from recalculating chloride density every time step and allows for controlled, realistic responses to prolonged stress and salinity changes.
 
-#### Where: {.unnumbered}
+Where:
 
 -   $I_{stress}$ is the ion-regulatory stress, scaled from 1 to 10.
 -   $C_{target}$ is the desired chloride cell density based on stress level.

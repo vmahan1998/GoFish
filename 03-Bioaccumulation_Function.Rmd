@@ -103,11 +103,11 @@ Where:
 Estimate the bioaccumulation risk associated with mercury and methylmercury, where risk increases with contaminant concentration, ion-regulatory stress, and suspended particulate matter (SPM):
 
 $$
-Hg_{risk} = \sum_{t=1}^T Hg_{risk} * (1+S) * (1+SPM_{t})
+Hg_{risk} = \sum_{t=1}^T Hg_{normalized} * (1+S) * (1+SPM_{t})
 $$
 
 $$
-MeHg_{risk} = \sum_{t=1}^T MeHg_{risk} * (1+S) * (1+SPM_{t})
+MeHg_{risk} = \sum_{t=1}^T MeHg_{normalized} * (1+S) * (1+SPM_{t})
 $$
 
 Where:

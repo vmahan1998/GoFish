@@ -13,7 +13,7 @@
 
 -    Grimm & Railsback (2005) *Individual-Based Modeling and Ecology*
 
--    Add others specific to behavior/physiology like Kirschner, Allen, or Little.
+-    Add others specific to modeling.
 ```
 
 ## Best Practices
@@ -22,11 +22,9 @@
 
 -   **Modular Design**: Structure behavioral functions into separate procedures (e.g., swimming, osmoregulation, staging) to support testing, integration, and reuse.
 
--   **Version Control**: Use GitHub or other tools to track changes and link code to associated research outputs.
+-   **Version Control**: Use GitHub or other tools to track changes and link code to research outputs.
 
--   **Naming Conventions**: Use clear, consistent names (e.g., `V_agent`, `E_osmo`, `stage?`) to reduce error and improve interpretability.
-
--   **Documentation in Code**: Annotate key procedures, thresholds, and formulas directly in NetLogo and R scripts.
+-   **Model File structure**:
 
 -   **Journal References**:
 
@@ -36,5 +34,3 @@
 |----|----|----|
 | **Penobscot River** | GitHub link | Simulates agent-based landward & seaward migration using STST. |
 | **Martha's Vineyard** | GitHub link | Chloride cell regulation and stress-energy tradeoffs. |
-| **other** | GitHub link | Implements estuary resting behavior based on stress and energy. |
-| **other** | GitHub link | Code for plotting NetLogo outputs in R. |

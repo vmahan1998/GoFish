@@ -2,11 +2,11 @@
 
 ## Background
 
-Diadromous fish species such as river herring, striped bass, and sturgeon navigate coastal and estuarine systems that are increasingly affected by human activity, climate change, and legacy contaminants. Modeling their movement and behavior at fine spatial and temporal scales requires tools that can integrate physiological stressors, environmental variability, and behavior-based decision-making.
+Anadromous fish species such as river herring, striped bass, and sturgeon navigate coastal and estuarine systems that are increasingly affected by human activity, climate change, and legacy contaminants. Modeling their movement and behavior at fine spatial and temporal scales requires tools that can integrate physiological stressors, environmental variability, and behavior-based decision-making.
 
-Agent-based models are among the most powerful tools available for ecological forecasting and fisheries management, but they are also among the most complex. Their structure and computational demands can make them difficult to apply in practical management settings. Many biologists and ecologists who hold deep, species-specific expertise often have limited training in advanced programming or systems modeling. This is partly due to gaps in secondary and post-secondary education, where exposure to high-level mathematics and coding is often minimal, despite the fact that many ecological processes are governed by nonlinear systems and feedbacks.
+Agent-based models are among the most powerful tools available for ecological forecasting and fisheries management, but they are also among the most complex. Their structure and computational demands can make them difficult to apply in practical management settings. Many biologists and ecologists who hold deep, species-specific expertise often have limited training in advanced programming or systems modeling. This is partly due to gaps in secondary and post-secondary education, where exposure to high-level mathematics and coding is often minimal, despite the fact that many ecological processes are governed by nonlinear systems and feedback.
 
-As a result, traditional approaches to modeling marine and diadromous fish frequently oversimplify or exclude key biological functions such as osmoregulation, thermoregulation, schooling behavior, and contaminant exposure. Many existing models also lack standardized representations of these behaviors, limiting the interpretability of results and reducing their usefulness for applied management. This function library was developed to address these limitations by offering modular, empirically grounded components designed for use in agent-based models. Each function is clearly documented and can be applied independently, allowing for transparent testing, modification, and reuse across a wide range of ecological modeling scenarios.
+As a result, traditional approaches to modeling anadromous fish frequently oversimplify or exclude key biological functions such as osmoregulation, schooling behavior, and contaminant exposure. Many existing models also lack standardized representations of these behaviors, limiting the applicability of results and reducing their usefulness for applied management. This function library was developed to address these limitations by offering modular, empirically grounded components designed for use in modeling anadromous fish. Each function is clearly documented and can be applied independently, allowing for transparent testing, modification, and reuse across a wide range of ecological scenarios and sites.
 
 ## Introduction to Agent-Based Models
 
@@ -19,8 +19,6 @@ Each chapter in this library corresponds to a major behavior or physiological fu
 -   **Osmoregulation**
 
 -   **Bioaccumulation of contaminants**
-
--   **Thermoregulation**
 
 -   **Directional migration (landward and seaward)**
 
@@ -50,12 +48,12 @@ By following the ODD protocol, this library ensures that each function is self-c
 
 ## Application Context
 
-This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to gradients in salinity, temperature, velocity, and pollutants.
+This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to environmental changes (i.e., salinity, velocity, and pollutants).
 
 *Can include addition project or model links here\**
 
 ## How to Use This Library
 
-Each function or behavior in this library can be combined with others to build a complete agent-based model for migratory fish. These functions are designed to be modular, adaptable, and easily configured for different species, life stages, or site-specific conditions.
+Each function or behavior in this library can be combined with others to build a complete agent-based model for anadromous fish. These functions are designed to be adaptable, and easily configured for different species, life stages, or site-specific conditions.
 
-*For questions, feedback, guidance on implementation, or **interest in adding to the library**, please contact **Vanessa Quintana** at **mahan.vanessa98\@gmail.com.***
+*For questions, feedback, guidance on implementation, or **interest in adding to the library**, please contact **Vanessa Quintana** at **mahan.vanessa98@gmail.com.***
