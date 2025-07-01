@@ -119,19 +119,19 @@ staging? = \text{true} \quad \text{and} \quad E_{agent} < 75 \quad \text{and} \q
 
 <!-- -->
 
--    `energy < 75%` (low energy state)
+-   `energy < 75%` (low energy state)
 
 <!-- -->
 
--    `ionregulatory-stress < 3` (low osmoregulatory stress)
+-   `ionregulatory-stress < 3` (low osmoregulatory stress)
 
 <!-- -->
 
--    `thermal-stress < 3` (within thermal tolerance)
+-   `thermal-stress < 3` (within thermal tolerance)
 
 <!-- -->
 
--    `SPM < mean SPM` (low turbidity)
+-   `SPM < mean SPM` (low turbidity)
 
 ### Patch Evaluation
 
@@ -191,8 +191,8 @@ Where:
 
 Each time a fish forages on a patch, the following patch-level variables are updated:
 
--    **`forage-visits`**: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.
+-   `forage-visits`: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.
 
--    **`forager-count`**: Tracks the number of agents currently foraging on the patch, reflecting competition density.
+-   `forager-count`: Tracks the number of agents currently foraging on the patch, reflecting competition density.
 
--    **`forage-species`**: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.
+-   `forage-species`: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.
