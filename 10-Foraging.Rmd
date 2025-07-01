@@ -189,6 +189,10 @@ Where:
 
 ### Foraging Patch Tracking
 
-Each patch visited for foraging increments its `forage-visits` counter:
+Each time a fish forages on a patch, the following patch-level variables are updated:
 
-This enables later spatial analysis of foraging intensity and habitat use.
+-    **`forage-visits`**: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.
+
+-    **`forager-count`**: Tracks the number of agents currently foraging on the patch, reflecting competition density.
+
+-    **`forage-species`**: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.
