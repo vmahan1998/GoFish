@@ -14,28 +14,16 @@ The following ecological patterns are represented as explicit rules in the model
     Fish forage only when **all** of the following are true:\
     `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM`.\
     *(Reflects behavioral ecology studies showing fish avoid feeding during stress and turbidity but will opportunistically forage when paused.)*
-
-<!-- -->
-
--    **Habitat-based foraging selection**:\
+-   **Habitat-based foraging selection**:\
     Fish score nearby patches based on salinity, temperature, depth, velocity, and turbidity (SPM), and choose the one with the highest score.\
     *(Represents optimal foraging theory and empirical habitat preference studies in estuarine fish.)*
-
-<!-- -->
-
--    **Intraspecific competition**:\
+-   **Intraspecific competition**:\
     Fish can forage alongside others of the same species, but energy gain is reduced when the patch is crowded.\
     *(Captures resource sharing and diminishing returns observed in schooling behavior.)*
-
-<!-- -->
-
--    **Interspecific competition**:\
+-   **Interspecific competition**:\
     Fish will not forage in patches where larger individuals of a different species are already present. They will search again for the next best patch.\
     *(Reflects asymmetric, size-structured competition documented in estuarine communities.)*
-
-<!-- -->
-
--    **Size-based exclusion**:\
+-   **Size-based exclusion**:\
     Fish avoid patches where the **combined size** of all different-species foragers is greater than their own.\
     *(Simulates energetic trade-offs in contested foraging zones.)*
 
@@ -72,7 +60,7 @@ The following ecological patterns are represented as explicit rules in the model
 
 ## Process Overview and Scheduling
 
-1.  Fish evaluate local conditions only when `staging? = true`, `energy < 75`, and `ionregulatory-stress < 3` and `thermal-stress < 3`
+1.  Fish evaluate local conditions only when `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM.`
 
 2.  The agent assesses neighboring patches for suitability.
 
@@ -125,8 +113,25 @@ The model records foraging events, patch visitation frequency, species identity,
 Fish initiate foraging if:
 
 $$
-E_{agent} < 75\% \quad \text{and} \quad S_{ion} < 3 \quad \text{and} \quad S_{thermal} < 3 
-$$
+staging? = \text{true} \quad \text{and} \quad E_{agent} < 75 \quad \text{and} \quad S_{ion} < 3 \quad \text{and} \quad S_{thermal} < 3 \quad \text{and} \quad SPM < \overline{SPM}$$
+
+-   `staging? = true` (i.e., the fish is not actively migrating)
+
+<!-- -->
+
+-    `energy < 75%` (low energy state)
+
+<!-- -->
+
+-    `ionregulatory-stress < 3` (low osmoregulatory stress)
+
+<!-- -->
+
+-    `thermal-stress < 3` (within thermal tolerance)
+
+<!-- -->
+
+-    `SPM < mean SPM` (low turbidity)
 
 ### Patch Evaluation
 
@@ -150,7 +155,7 @@ Where:
 
 ### Species and Size-Based Competition Constraints
 
-Agents will only forage in a patch if either (1) the patch is unoccupied, (2) the patch contains only members of the same species, or (3) all other individuals on the patch are smaller if they are of a different species. This behavior simulates asymmetric, size-based competition, where larger individuals of different species outcompete smaller fish for access to high-quality foraging habitat.
+Agents will only forage in a patch if either (1) the patch is unoccupied, (2) the patch contains only members of the same species, or (3) all other individuals on the patch are smaller if they are of a different species. This behavior simulates asymmetric, size-based competition, where larger individuals of different species out-compete smaller fish for access to high-quality foraging habitat.
 
 Then foraging is allowed only if:
 
@@ -165,21 +170,22 @@ Where:
 -   $\mathcal{b}_{\text{others}}$: set of breeds (species) of other foragers on the patch\
 -   $b_{\text{agent}}$: the breed of the focal fish
 
-If a patch is occupied by a larger fish of a different species, the agent is considered outcompeted and will seek the next most suitable patch among its neighbors. This ensures that foraging attempts are adaptive to interspecific competiion.
+If a patch is occupied by a larger fish of a different species, the agent is considered out-competed and will seek the next most suitable patch among its neighbors. This ensures that foraging attempts are adaptive to interspecific competition.
 
 ### Energy Gain
 
 Energy gain is then calculated:
 
 $$
-E_{gain} = \frac{Score}{N_{fish}}
-$$
+E_{\text{gain}} = \left( \frac{\text{Score}_i}{\sum_{j=1}^{N} size_j} \right) \cdot size_i$$
 
 Where:
 
--   $Score$ is bounded between 0 and 3
+-   $Score_{i}$ is the individual fish’s foraging score (bounded between 0 and 3)
 
--   $N_{fish}$ is the number of foraging agents at that patch (≥ 1 to avoid divide-by-zero)
+-   $Size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
+
+-   $\sum_{j=1}^{N} size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
 
 ### Foraging Patch Tracking
 
