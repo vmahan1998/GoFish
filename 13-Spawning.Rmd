@@ -231,7 +231,8 @@ Where:
 #### **Mortality Risk**
 
 $$
-\text{if } \text{random}(0,1) < P_{\text{mortality}}, \quad \text{then die}$$
+\text{if } \text{random}(0,1) < P_{\text{mortality}}, \quad \text{then die}
+$$
 
 $$
 P_{\text{mortality}} = \begin{cases}0.9 + 0.1 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, & \text{if semelparous} \\0.01 + 0.05 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, & \text{if iteroparous}\end{cases}
@@ -252,7 +253,8 @@ Where:
 Agents with low energy enter a temporary staging state until recover:
 
 $$
-\text{if } E_{\text{agent}} < E_{\text{recover}}, \quad \texttt{staging?} = \texttt{true}$$
+\text{if } E_{\text{agent}} < E_{\text{recover}}, \quad \texttt{staging?} = \texttt{true}
+$$
 
 Where:
 
