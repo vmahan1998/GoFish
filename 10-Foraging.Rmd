@@ -32,7 +32,7 @@ The following ecological patterns are represented as explicit rules in the model
 ### Patch Variables
 
 | Variable Name | Definition |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Salinity** $S_{patch}$ | The current salinity at the patch location |
 | **Temperature** $T_{patch}$ | The current temperature at the patch location |
 | **Velocity** $V_{patch}$ | The along-channel velocity at the patch |
@@ -45,7 +45,7 @@ The following ecological patterns are represented as explicit rules in the model
 ### Agent Variables
 
 |  |  |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Variable Name** | **Definition** |
 | **energy** | Current energy level of the agent |
 | **foraging?** | Boolean indicating if the agent is currently foraging |
@@ -96,7 +96,7 @@ The model records foraging events, patch visitation frequency, species identity,
 ## Initialization
 
 |  |  |  |
-|--------------------|--------------------------|--------------------------|
+|----|----|----|
 | **Variable** | **Initialized Value** | **Justification** |
 | **energy** | 100 | Represents full energy at migration onset |
 | **foraging?** | false | Starts false; updated based on conditions |
@@ -138,7 +138,7 @@ staging? = \text{true} \quad \text{and} \quad E_{agent} < 75 \quad \text{and} \q
 Each agent evaluates neighboring patches for optimal foraging conditions:
 
 $$
-Score = \left(0.2 \cdot Sal_{opt} + 0.3 \cdot temp_{opt} + 0.2 \cdot vel_{opt} + 0.2 \cdot depth_{opt} + 0.1 \cdot spm_{penalty} \right) \cdot (0 + \text{random}(0,3.0))
+Score = \left(0.2 \cdot Sal_{opt} + 0.3 \cdot temp_{opt} + 0.2 \cdot vel_{opt} + 0.2 \cdot depth_{opt} + 0.1 \cdot spm_{penalty} \right) \cdot (\text{random}(0,3.0))
 $$
 
 Where:
