@@ -96,8 +96,6 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 
 **Interaction**: Agents interact with their environment by relocating to lower-stress patches and adjusting internal states accordingly.
 
-**Stochasticity**: None explicitly implemented in this version. Can be added to stress, mortality, or acclimation rate for realism.
-
 **Observation:** Thermal stress, adjusted swimming speed, energy cost, cumulative heat/cold exposure, and thermal mortality can be tracked per agent.
 
 ## Initialization

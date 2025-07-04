@@ -39,17 +39,21 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 
 ### Agent Variables
 
-| Variable Name                | Definition                                |
-|------------------------------|-------------------------------------------|
-| size $M_{agent}$             | Individual fish body size                 |
-| age $A_{agent}$              | Individual fish age                       |
-| energy $E_{agent}$           | Current metabolic energy level            |
-| spawning energy $E_{spawn}$  | Minimum energy required to spawn          |
-| spawning encounters          | Count of spawning events this migration   |
-| spawning limit $lim_{spawn}$ | Maximum spawns allowed for individual     |
-| spawning strategy            | Reproductive mode (broadcast or pairwise) |
-| Salinity Stress $S_{stress}$ | Osmotic stress response                   |
-| Thermal Stress $T_{stress}$  | Deviation from thermal optima             |
+| Variable Name | Definition |
+|-------------------------------------|-------------------------------------|
+| size $M_{agent}$ | Individual fish body size |
+| age $A_{agent}$ | Individual fish age |
+| sex $s_{agent}$ | Sex of agent |
+| energy $E_{agent}$ | Current metabolic energy level |
+| spawning energy $E_{spawn}$ | Energy cost to spawn |
+| spawning encounters $spawn_{encounters}$ | Count of fertilization events related to agent's spawn |
+| spawns $spawn_{n}$ | Number of individual spawning encounters |
+| spawning limit $lim_{spawn}$ | Maximum spawns allowed for individual |
+| spawning strategy | Reproductive mode (broadcast or pairwise) |
+| Salinity Stress $S_{stress}$ | Osmotic stress response |
+| Thermal Stress $T_{stress}$ | Deviation from thermal optima |
+| Staging? | Boolean for if fish is staging |
+| STST? | Boolean for if agent is using Selective Tidal Stream Transport |
 
 ## Process Overview and Scheduling
 
@@ -73,27 +77,23 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 
 ## Design Concepts
 
-**Basic Principles:** Spawning is constrained by environment (depth, velocity), stress levels, and individual energy.
+**Basic Principles:** Spawning behavior in anadromous fish is influenced by a combination of environmental conditions (salinity, temperature, depth, and velocity) and physiological readiness. Fish assess these conditions and their internal energy reserves to decide when and where to spawn.
 
-**Emergence:** High-quality patches with overlapping spawning agents emerge as reproductive hotspots.
+**Emergence:** High-quality spawning patches with favorable environmental conditions emerge, and spawning encounters increase in these areas. Overlap of spawning-ready agents in these patches leads to emergent patterns of reproductive success.
 
-**Adaptation:** Iteroparous fish can spawn more than once per season. Fish seek optimal spawning patches when available.
+**Adaptation:** Fish respond to varying environmental conditions by adjusting their spawning behavior. Broadcast spawners will select the highest probability patch based on the presence of males, while pairwise spawners rely on physical proximity for spawning. Iteroparous species may spawn multiple times in a season if conditions remain favorable, whereas semelparous species spawn once and die.
 
-**Objectives:** Maximize reproductive success while maintaining survival energy.
+**Objectives:** The primary objective of spawning behavior is to maximize reproductive success. This is achieved by ensuring optimal environmental conditions for gamete fertilization while minimizing the energetic cost of spawning and migration.
 
-**Learning:** No learning assumed; spawning is rule-based.
+**Prediction:** Broadcast spawners do not predict future conditions but react to local male density and environmental suitability. Pairwise spawners predict spawning success based on habitat conditions and the availability of a mate.
 
-**Prediction:** Broadcast spawners indirectly estimate success based on nearby males.
+**Sensing:** Agents sense local patch temperature, salinity, depth, and velocity. They also assess the presence of other agents (both male and female) to determine readiness for spawning.
 
-**Sensing:** Agents evaluate temperature, salinity, depth, velocity, and conspecifics in patch or neighborhood.
+**Interaction:** Male and female agents interact through proximity in pairwise spawning, while broadcast spawners interact with males via fertilization probability calculations. Both strategies involve the exchange of gametes, with varying degrees of synchronization and spatial organization.
 
-**Interaction:** Spawning involves male–female pair or proximity-based fertilization.
+**Stochasticity:** The model includes probabilistic factors in fertilization success and mortality. For broadcast spawners, fertilization success is probabilistically scaled by the number of males, while mortality is age-dependent.
 
-**Stochasticity:** Spawning success and mortality may include probabilistic outcomes.
-
-**Collectives:** Patch-level broadcast success scales with group density.
-
-**Observation:** Track spawning encounters, spatial events, energy change, mortality, overwintering probability.
+**Observation:** The model tracks spawning encounters, spawning energy expenditures, energy recovery, mortality rates, and overwintering probabilities.
 
 ## Initialization
 
@@ -132,8 +132,12 @@ $$
 
 ##### If `spawning-strategy = broadcast`:
 
--   Female agent initiates spawning if the patch meets habitat criteria.
--   The agent evaluates **neighboring patches** for the **fertilization probability** ($P_{fertilize}$) sexually mature males in the local radius ($n_{males}$)​.
+1.  Female agent initiates spawning if the patch meets habitat criteria.
+    -   $S_{patch} <= 0.5$
+    -   $d_{patch} <= 3$
+    -   $staging? = false$
+    -   $STST? = false$
+2.  The agent evaluates **neighboring patches** for the **fertilization probability** ($P_{fertilize}$) sexually mature males in the local radius ($n_{males}$)​.
 
 The fertilization probability is calculated as:
 
@@ -173,49 +177,32 @@ Where:
 
 ##### If `spawning-strategy = pairwise`:
 
--   Let $N_{\text{males}}$ be the number of spawning-ready males in the patch.
+1.   Once a female is spawning-ready, she locates the best spawning habitat:
 
--   Let $N_{\text{females}}$ be the number of spawning-ready femalesin the patch.
+    -   $S_{patch} <= 0.5$
+    -   $d_{patch} <= 3$
+    -   $staging? = false$
+    -   $STST? = false$
+
+2.  Spawning-ready males actively search for the closest spawning-ready female. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female). Sawning only occurs if all of the following conditions are met:
+
+    -   One male and one female are in the same patch
+
+    -   Both are `spawning-ready`
 
 Then, the total number of spawning events in the patch is:
 
-$$
-Spawn_{encounters} = \min(N_{\text{males}}, N_{\text{females}})
-$$
+$$ Spawn_{encounters} = \min(N_{\text{males}}, N_{\text{females}}) $$
 
-$$
-spawn_{n} = spawn_{encounters}
-$$
+$$ spawn_{n} = spawn_{encounters} $$
 
 -   $spawn_{encounters}$ is the number of spawning encounters
 
 -   $spawn_{n}$ is the number of times an agent has spawned
 
-Spawning only occurs if all of the following conditions are met:
+-   $N_{\text{males}}$ be the number of spawning-ready males in the patch.
 
-1.  One male and one female are in the same patch
-
-2.  Both are `spawning-ready`
-
-3.  Patch-level habitat conditions meet criteria:
-
-$$
-d_{patch} \in [d_{min}, d_{max}]
-$$
-
-$$
-V_{patch} \in [V_{min}, V_{max}]
-$$
-
-Where:
-
--   $d_{patch}$ = patch depth
-
--   $V_{patch}$ = patch velocity
-
--   $[d_{min}, d_{max}]$ = species- or stage-specific depth range
-
--   $[V_{min}, V_{max}]$ = individual- or species-specific velocity preference
+-    $N_{\text{females}}$ be the number of spawning-ready femalesi n the patch.
 
 ### Spawning energy
 
