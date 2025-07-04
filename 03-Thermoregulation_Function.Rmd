@@ -41,25 +41,29 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 
 ### Agent Variables
 
-+------------------------------------------+-------------------------------------------------+
-| Variable Name                            | Definition                                      |
-+==========================================+=================================================+
-| **Optimal Temperature** $T_{opt}$        | Optimal performance temperature                 |
-+------------------------------------------+-------------------------------------------------+
-| **Minimum Viable Temperature** $T_{min}$ | Minimum viable temperature for survival         |
-+------------------------------------------+-------------------------------------------------+
-| **Maximum Viable Temperature** $T_{max}$ | Maximum viable temperature for survival         |
-+------------------------------------------+-------------------------------------------------+
-| **swimming speed** $V_{agent}$           | The speed at which a prey agent is moving       |
-+------------------------------------------+-------------------------------------------------+
-| **corrected speed** $V_{corr}$           | The corrected speed from thermal implications   |
-+------------------------------------------+-------------------------------------------------+
-| **time below minimum** $t_{min}$         | Tracks cumulative cold exposure duration        |
-+------------------------------------------+-------------------------------------------------+
-| **time above maximum** $t_{max}$         | Tracks cumulative heat exposure duration        |
-+------------------------------------------+-------------------------------------------------+
-| **energy** $E_{agent}$                   | Metabolic cost associated with thermoregulation |
-+------------------------------------------+-------------------------------------------------+
++------------------------------------------+--------------------------------------------------------------------------------+
+| Variable Name                            | Definition                                                                     |
++==========================================+================================================================================+
+| **Optimal Temperature** $T_{opt}$        | Optimal performance temperature                                                |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **Minimum Viable Temperature** $T_{min}$ | Minimum viable temperature for survival                                        |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **Maximum Viable Temperature** $T_{max}$ | Maximum viable temperature for survival                                        |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **swimming speed** $V_{agent}$           | The speed at which a prey agent is moving                                      |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **corrected speed** $V_{corr}$           | The corrected speed from thermal implications                                  |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **time below minimum** $t_{min}$         | Tracks cumulative cold exposure duration                                       |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **time above maximum** $t_{max}$         | Tracks cumulative heat exposure duration                                       |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **energy** $E_{agent}$                   | Metabolic cost associated with thermoregulation                                |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **swimming speed** $V_{agent}$           | The current swimming speed of the agent.                                       |
++------------------------------------------+--------------------------------------------------------------------------------+
+| **acclimation rate** $\lambda$           | Rate at which agent acclimates to temperature based on size, age, and species. |
++------------------------------------------+--------------------------------------------------------------------------------+
 
 ## Process Overview and Scheduling
 
@@ -101,13 +105,33 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 
 ## Initialization
 
-| Variable | Initialized Value | Justification |
-|:--------:|:-----------------:|:-------------:|
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| Variable              | Initialized Value                     | Justification                                                         |
++:=====================:+:=====================================:+:=====================================================================:+
+| $T_{opt}$             | Species- or life stage–specific value	 | Reflects thermal preference; varies by developmental stage or habitat |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $T_{min}$             | Species-specific threshold            | Based on empirical lower thermal limit for survival                   |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $T_{max}$             | Species-specific threshold            | Based on empirical upper thermal limit for survival                   |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $T_{patch}$           | Hydrodynamic model input              | External environmental condition updated each tick                    |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $S_{thermal}$         | 1                                     | No stress at initialization if \$T\_{patch} = T\_{opt}\$              |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $t_{min}$             | 0                                     | No prior exposure to lethal cold stress                               |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $t_{max}$             | 0                                     | No prior exposure to lethal heat stress                               |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $V_{agent}$           | Size-scaled base speed                | Initial swimming speed assuming full capacity                         |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $E_{agent}$           | 100                                   | No thermal deviation at model start                                   |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $E_{swim}$            | Size-scaled base swim cost            | Scales with body size; used in movement energy balance                |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $E_{swim}^{corr}$     | Equal to $E_{swim}$                   | No thermal penalty at initialization                                  |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
+| $\lambda$             | 0.01–0.05 (user-defined)	              | Acclimation rate controls speed of physiological adjustment           |
++-----------------------+---------------------------------------+-----------------------------------------------------------------------+
 
 ## Submodels
 
@@ -185,6 +209,21 @@ Where:
 
 ### Energy Consumption (place inside migration function(s))
 
+Acclimation energy cost:
+
+$$
+E_{acclimation} = \phi \cdot |T_{patch} - T_{opt}|$$
+
+Where:
+
+-   $E_{acclimation}$ is the energy cost for physiological acclimation.
+
+-   $T_{patch}$ is the current patch temperature.
+
+-   $\phi$ is a scaling constant for acclimation cost (e.g., 0.01–0.05).
+
+-   $T_{opt}$ is the agent’s current thermal optimum.
+
 This energy consumption corrects the energy used based on the $V_{corr}$:
 
 $$
@@ -192,10 +231,24 @@ E_{swim}^{corr} = E_{swim} \cdot \left( \frac{V_{agent}}{V_{corr}} \right)$$
 
 Where:
 
--   $E_{thermo}$ is energy cost from thermal stress
+-   $E_{swim}^{corr}$ is the corrected energy cost for movement.
 
--   $E_{swim}$ is swimming-related energetic inefficiency from thermal deviation
+-   $E_{swim}$ is swimming-related energetic inefficiency from thermal deviation.
 
 -   $V_{agent}$ is the agent's swimming speed.
 
 -   $V_{corr}$ is the thermal corrected speed.
+
+Total energy balance:
+
+$$
+E_{agent} = E_{agent} - (E_{swim}^{corr} + E_{acclimation})
+$$
+
+Where:
+
+-   $E_{swim}^{corr}$ accounts for temperature-related movement inefficiency.
+
+-   $E_{acclimation}$ accounts for metabolic costs of internal physiological adjustment.
+
+-   $E_{agent}$ is the updated available energy of the agent.
