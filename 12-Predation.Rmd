@@ -6,20 +6,21 @@ This module simulates predator–prey interactions between migratory fish specie
 
 ## Purpose and Patterns
 
--   This submodel captures ecologically grounded predator–prey dynamics by simulating behaviorally realistic rules of pursuit and evasion observed in estuarine fishes.
-    -    Prey initiate fleeing based on predator proximity, visual detection, and turbidity-adjusted reaction time, reflecting sensory limitations in murky estuarine water.
+This submodel captures ecologically grounded predator–prey dynamics by simulating behaviorally realistic rules of pursuit and evasion observed in estuarine fishes.
 
-    -    Predators only pursue prey that are within their gape limit and provide a favorable energy return, consistent with optimal foraging theory and size-selective predation.
+-   Prey initiate fleeing based on predator proximity, visual detection, and turbidity-adjusted reaction time, reflecting sensory limitations in murky estuarine water.
 
-    -    Fleeing speed is scaled by energy and body size, capturing the biologically observed trade-off between fatigue and escape performance.
+-   Predators only pursue prey that are within their gape limit and provide a favorable energy return, consistent with optimal foraging theory and size-selective predation.
 
-    -    Directional fleeing (left, right, up, or down) is based on the predator's relative position, aligning with empirical studies on spatial escape responses.
+-   Fleeing speed is scaled by energy and body size, capturing the biologically observed trade-off between fatigue and escape performance.
 
-    -    Patch-level alarm cues propagate fleeing behavior across prey groups, mimicking the benefits of schooling and collective vigilance in fish.
+-   Directional fleeing (left, right, up, or down) is based on the predator's relative position, aligning with empirical studies on spatial escape responses.
 
-    -    Energetic constraints influence both predator foraging frequency and prey escape success, contributing to variability in encounter outcomes.
+-   Patch-level alarm cues propagate fleeing behavior across prey groups, mimicking the benefits of schooling and collective vigilance in fish.
 
-    -    Spatial tracking of predation events allows identification of high-risk zones, offering insight into how environmental conditions shape survival landscapes.
+-   Energetic constraints influence both predator foraging frequency and prey escape success, contributing to variability in encounter outcomes.
+
+-   Spatial tracking of predation events allows identification of high-risk zones, offering insight into how environmental conditions shape survival landscapes.
 
 ## Entities, State Variables, and Scales
 
@@ -31,18 +32,14 @@ This module simulates predator–prey interactions between migratory fish specie
 
 -   **Temporal Unit**: 5-minute time steps (`tick`)
 
-<!-- -->
-
--   **Agent Scope**: Individual-based behavior for prey and predators of anadromous species
-
 ### Patch Variables
 
 | Variable Name | Definition |
 |------------------------------------|------------------------------------|
 | **Suspended-particulate-matter** $SPM_{t}$ | Level of suspended material in patch (exponential difficulty increase between min and max observed in system) worse vision at max, best vision at min |
 | **Prey-Eaten-in-Patch** | Counts how much prey are consumed in a patch |
-| Prey-in-Patch $prey-in-patch_{t}$ | The amount of prey currently in the patch |
-| prey-alarmed? | Boolean variable set to true if any prey in the patch initiates fleeing behavior, triggering collective escape. |
+| **Prey-in-Patch** $prey-in-patch_{t}$ | The amount of prey currently in the patch |
+| **prey-alarmed?** | Boolean variable set to true if any prey in the patch initiates fleeing behavior, triggering collective escape. |
 
 ### Prey: Agent Variables
 
@@ -85,39 +82,39 @@ This module simulates predator–prey interactions between migratory fish specie
 
 ### Prey Behavior (per agent)
 
-1.   **Fleeing Trigger**\
+1.  **Fleeing Trigger**\
     Each prey evaluates whether a predator is in its visual cone or whether `prey-alarmed? = true` in the patch. If so, the prey calculates reaction time based on its own size, age, flee-ability, local SPM, and the predator’s size and speed.
 
-2.   **Directional Escape**\
+2.  **Directional Escape**\
     If the reaction time threshold is met, the prey executes a directional fleeing behavior (`scare-left`, `scare-right`, `scare-down`, or `scare-up`), and sets the patch to `prey-alarmed? = true`.
 
-3.   **Schooling Response**\
+3.  **Schooling Response**\
     All other prey in the same patch automatically begin fleeing when `prey-alarmed? = true`, simulating social alarm propagation.
 
-4.   **Speed and Energy Update**\
+4.  **Speed and Energy Update**\
     If the agent is fleeing, its speed increases toward `max-flee`, and energy is reduced based on movement cost. If not fleeing, the agent moves normally and may recover energy depending on its resting status.
 
 ### Predator Behavior (per agent)
 
-1.   **Visual Detection**\
+1.  **Visual Detection**\
     The predator identifies prey within its in-cone vision, adjusted based on local SPM concentration, prey size, and predator size.
 
-2.   **Prey Filtering**\
+2.  **Prey Filtering**\
     Prey that exceed the predator’s gape limit or whose handling effort exceeds the predator’s available energy are excluded.
 
-3.   **Prey Selection**\
+3.  **Prey Selection**\
     Among remaining prey, the predator evaluates candidates using an optimal foraging approach that considers size, handling effort, and net energy gain. One prey is selected.
 
-4.   **Pursuit Decision**\
+4.  **Pursuit Decision**\
     If a prey is selected, the predator enters a bursting state, increasing its speed toward max-speed. Reaction time is computed based on predator age, size, SPM, and prey proximity.
 
-5.   **Scare Prey**\
+5.  **Scare Prey**\
     The predator triggers fleeing in visible prey by calling the `scare-prey` procedure. If any prey flees, the patch is flagged as `prey-alarmed? = true`.
 
-6.   **Consume Prey**\
+6.  **Consume Prey**\
     If within striking range, the predator consumes the prey and updates variables: `daytime-prey-eaten`, `prey-species-eaten`, `total-prey-eaten`, and `Prey-Eaten-in-Patch`.
 
-7.   **Digestion**\
+7.  **Digestion**\
     If no prey are eaten, `time-since-eaten` increases. If the predator has reached its daily feeding limit, it enters a digestive phase. Digestion ends when both `time-since-eaten` and `time-since-full` exceed the digestion time
 
 ## Design Concepts
