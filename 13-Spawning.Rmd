@@ -2,72 +2,315 @@
 
 ## Overview
 
-## Purpose
+This submodel simulates the conditions, triggers, and behavioral outcomes associated with spawning in anadromous fish. It integrates physiological thresholds, habitat preferences, reproductive strategies, and energy-based constraints to identify spawning events and their consequences during migration.
+
+## Purpose and Patterns
+
+The purpose of this submodel is to capture species-specific spawning behaviors using empirically grounded thresholds for habitat suitability, individual readiness, energy availability, and reproductive strategy. It allows multiple spawning events for iteroparous individuals and considers energy and mortality consequences.
 
 ## Entities, State Variables, and Scales
+
+### Spatial and Temporal Scales
+
+-   **Spatial Unit**: Patch (3 m x 3 m resolution)
+-   **Temporal Unit**: 5-minute time steps (`tick`)
 
 ### Patch Variables
 
 | Variable Name | Definition |
-|---------------|------------|
-|               |            |
+|----|----|
+| Salinity $S_{patch}$ | anadromous fish are known to typically spawn in freshwater reaches of the estuary |
+| Temperature $T_{patch}$ | Patch-level temperature from hydrodynamic model |
+| Depth $d_{patch}$ | Patch-level water column depth |
+| Velocity $V_{patch}$ | Patch-level water velocity |
+| spawning-in-patch | Boolean flag indicating active spawning event |
 
 ### Agent Variables
 
-| Variable Name | Definition |
-|---------------|------------|
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
+| Variable Name                | Definition                                |
+|------------------------------|-------------------------------------------|
+| size $M_{agent}$             | Individual fish body size                 |
+| age                          | Individual fish age                       |
+| energy $E_{agent}$           | Current metabolic energy level            |
+| spawning energy $E_{spawn}$  | Minimum energy required to spawn          |
+| spawning encounters          | Count of spawning events this migration   |
+| spawning limit $lim_{spawn}$ | Maximum spawns allowed for individual     |
+| spawning strategy            | Reproductive mode (broadcast or pairwise) |
+| Salinity Stress $S_{stress}$ | Osmotic stress response                   |
+| Thermal Stress $T_{stress}$  | Deviation from thermal optima             |
 
 ## Process Overview and Scheduling
 
-1.  
-
-2.  
-
-3.  
-
-4.  
+1.  Evaluate spawning readiness based on stress and energy thresholds.
+2.  For broadcast spawners, choose patch with highest spawning probability.
+3.  Initiate spawning using strategy-specific logic (broadcast or pairwise).
+4.  Deduct spawning energy and increment spawn count.
+5.  Trigger post-spawning behavioral changes: migration switch, mortality, staging, overwintering.
 
 ## Design Concepts
 
-**Basic Principles:**
+**Basic Principles:** Spawning is constrained by environment (depth, velocity), stress levels, and individual energy.
 
-**Emergence:**
+**Emergence:** High-quality patches with overlapping spawning agents emerge as reproductive hotspots.
 
-**Adaptation**:
+**Adaptation:** Iteroparous fish can spawn more than once per season. Fish seek optimal spawning patches when available.
 
-**Objectives:**
+**Objectives:** Maximize reproductive success while maintaining survival energy.
 
-**Learning:**
+**Learning:** No learning assumed; spawning is rule-based.
 
-**Prediction:**
+**Prediction:** Broadcast spawners indirectly estimate success based on nearby males.
 
-**Sensing**:
+**Sensing:** Agents evaluate temperature, salinity, depth, velocity, and conspecifics in patch or neighborhood.
 
-**Interaction**:
+**Interaction:** Spawning involves male–female pair or proximity-based fertilization.
 
-**Stochasticity**:
+**Stochasticity:** Spawning success and mortality may include probabilistic outcomes.
 
-**Collectives:**
+**Collectives:** Patch-level broadcast success scales with group density.
 
-**Observation:**
+**Observation:** Track spawning encounters, spatial events, energy change, mortality, overwintering probability.
 
 ## Initialization
 
 | Variable | Initialized Value | Justification |
-|:--------:|:-----------------:|:-------------:|
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
+|----|----|----|
+| $E_{agent}$ | 100 | Assumes full energy at initialization |
+| $E_{spawn}$ | species-specific | Threshold to permit spawning |
+| $spawned-this-tick?$ | false | Agent has not spawned yet |
+| $A_{agent}$ | population distribution | Age assigned from population parameters |
+| $M_{agent}$ | size-at-age curve | Species-specific size growth |
+| $spawning-strategy$ | broadcast or pairwise | Species-level trait |
+| $lim_{spawn}$ | dependent on sex and species | How many times a fish is capable of spawning in a single migration |
+| $S_{stress}$ | 0 | No stress at initialization |
+| $T_{stress}$ | 0 | No stress at initialization |
+| $S_{overwinter}$ | 0 or 1 | Binary species trait |
+| $t_{spawn}$ | 0 | Time since last spawning |
+| $E_{recover}$ | 75 | Required energy to resume post-spawning migration |
 
 ## Submodels
+
+### Spawning Readiness
+
+Agents are considered spawning-ready if they meet the following conditions:
+
+$$
+\text{SpawningReady} = \begin{cases}\text{true}, & \text{if } S_{stress} < 3 \text{ and } T_{stress} < 3 \text{ and } E_{agent} > E_{spawn} \text{ and } spawn_{n} < lim_{spawn}  \\\text{false}, & \text{otherwise}\end{cases}
+$$
+
+-   $S_{stress}$ = salinity stress
+
+<!-- -->
+
+-   $T_{stress}$ = thermal stress
+
+<!-- -->
+
+-   $E_{agent}$ = current energy level of agent
+
+<!-- -->
+
+-   $E_{spawn}$ = minimum energy required for spawning (species-specific)
+
+-   $spawn_{n}$ how many spawns agent has performed
+
+### **Spawning Strategy**
+
+##### If `spawning-strategy = broadcast`:
+
+-   Female agent initiates spawning if the patch meets habitat criteria.
+
+<!-- -->
+
+-   Male presence is not required in the same patch, but fertilization success probability ($P_{fertilize}$) scales with the number of males in local radius ($n_{males}$):
+
+$$
+P_{fertilize} = 1 - e^{- \alpha \cdot n_{males}}
+$$
+
+Where:
+
+-   $P_{fertilize}$ fertilization success probability
+
+-   $\alpha$ = proximity sensitivity constant
+
+<!-- -->
+
+-   $n_{males}$ = number of sexually mature males within a defined radius
+
+$$
+spawn_{n} = spawn_{n} + 1
+$$
+
+$$
+Spawn_{encounters} = \sum_{i=1}^{N_f} P_{fertilize,i}
+$$
+
+Where:
+
+-   $spawn_{encounters}$ is the number of spawning encounters
+
+-   $P_{fertilize}$ is the probability of fertilization.
+
+-   $N_{f}$ is the number of spawning-ready females in suitable patches.
+
+##### If `spawning-strategy = pairwise`:
+
+-   Let $N_{\text{males}}$ be the number of spawning-ready males in the patch.
+
+-   Let $N_{\text{females}}$ be the number of spawning-ready femalesin the patch.
+
+Then, the total number of pairwise spawning events in the patch is:
+
+$$
+Spawn_{encounters} = \min(N_{\text{males}}, N_{\text{females}})
+$$
+
+$$
+spawn_{n} = spawn_{encounters}
+$$
+
+-   $spawn_{encounters}$ is the number of spawning encounters
+
+-   $spawn_{n}$ is the number of times an agent has spawned
+
+Spawning only occurs if all of the following conditions are met:
+
+1.  One male and one female are in the same patch
+
+2.  Both are `spawning-ready`
+
+3.  Patch-level habitat conditions meet criteria:
+
+$$
+d_{patch} \in [d_{min}, d_{max}]
+$$
+
+$$
+V_{patch} \in [V_{min}, V_{max}]
+$$
+
+Where:
+
+-   $d_{patch}$ = patch depth
+
+-   $V_{patch}$ = patch velocity
+
+-   $[d_{min}, d_{max}]$ = species- or stage-specific depth range
+
+-   $[V_{min}, V_{max}]$ = individual- or species-specific velocity preference
+
+### Spawning energy
+
+$$
+E_{agent} = E_{agent}-E_{spawn}
+$$
+
+Where:
+
+-   $E_{agent}$
+
+-   $E_{spawn}$
+
+### Post-Spawning Behavior
+
+$$
+\text{if } E_{\text{agent}} \geq E_{\text{recover}}, \quad \text{then } \texttt{landward_migration?} = \texttt{false}, \quad \texttt{seaward_migration?} = \texttt{true}, \quad \texttt{spawned-this-tick?} = \texttt{true}
+$$
+
+Where:
+
+-   $E_{agent}$
+
+-   $E_{recover}$
+
+#### **Mortality Risk**
+
+$$
+\text{if } \text{random}(0,1) < P_{\text{mortality}}, \quad \text{then die}$$
+
+$$
+P_{\text{mortality}} = \begin{cases}0.9 + 0.1 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, & \text{if semelparous} \\0.01 + 0.05 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, & \text{if iteroparous}\end{cases}
+$$
+
+Where:
+
+-   $A_{\text{agent}}$ = agent’s current age
+
+-   $A_{\text{max}}$ = maximum lifespan for the species
+
+`semelparous` = species that spawn once and die
+
+`iteroparous` = species that can spawn multiple times
+
+#### **Resting Period**
+
+Agents with low energy enter a temporary staging state until recover:
+
+$$
+\text{if } E_{\text{agent}} < E_{\text{recover}}, \quad \texttt{staging?} = \texttt{true}$$
+
+Where:
+
+-   $E_{recover}$ energy threshold to resume migration (e.g., 75)
+
+-   $E_{agent}$ is the current energy level of the agents
+
+#### Overwintering Probability
+
+$$
+P_{\text{overwinter}} = S_{\text{overwinter}} \cdot \left[  \alpha \cdot \left(1 - \frac{E_{\text{agent}}}{100} \right) +  \beta \cdot \left( \frac{A_{\text{agent}}}{A_{\text{max}}} \right) +  \gamma \cdot \left( \frac{M_{\text{agent}}}{M_{\text{max}}} \right) +  \delta \cdot \left( \frac{t_{\text{spawn}}}{t_{\text{max}}} \right)\right]
+$$
+
+Where:
+
+-   $P_{\text{overwinter}}$ = agent’s probability of overwintering
+
+<!-- -->
+
+-   $S_{\text{overwinter}}$ = species-level binary (1 = overwinter-capable, 0 = not)
+
+<!-- -->
+
+-   $E_{\text{agent}}$ = energy level (0–100%)
+
+<!-- -->
+
+-   $A_{\text{agent}}$ = agent age
+
+<!-- -->
+
+-   $A_{\text{max}}$ = species-specific maximum age
+
+<!-- -->
+
+-   $M_{\text{agent}}$ = agent body size
+
+<!-- -->
+
+-   $M_{\text{max}}$ = maximum body size in population
+
+<!-- -->
+
+-   $t_{\text{spawn}}$ = days since last spawn
+
+<!-- -->
+
+-   $t_{\text{max}}$ = max time allowed for overwinter decision (e.g., 60 days)
+
+<!-- -->
+
+-   $\alpha, \beta, \gamma, \delta$ = tunable weights (e.g., 0.25 each)
+
+**Interpretation**:
+
+-   Lower energy → more likely to overwinter
+
+-   Older or larger fish → more likely to overwinter
+
+-   Fish that spawned recently → higher likelihood (if within seasonal window)
+
+-   Species must be capable of overwintering for this to activate
+
+**\
+**

@@ -25,9 +25,6 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 ### Spatial and Temporal Scales
 
 -   **Spatial Unit**: Patch (3 m x 3 m resolution)
-
-<!-- -->
-
 -   **Temporal Unit**: 5-minute time steps (`tick`)
 
 ### Patch Variables
