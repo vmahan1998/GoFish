@@ -13,20 +13,20 @@ To model how migratory fish respond to varying riverine and tidal velocities by 
 ### Global Variables
 
 | Variable | Initialized Value | Justification |
-|:--:|:--:|:--:|
+|:----------------------:|:----------------------:|:----------------------:|
 | **minimum-velocity** $V_{min}$ | Calculated from $V_{patch}$ over the simulation period. | Minimum river velocity based on hydrodynamic observations. |
 | **maximum-velocity** $V_{max}$ | Calculated from $V_{patch}$ over the simulation period. | Maximum river velocity based on hydrodynamic observations. |
 
 ### Patch Variables
 
 | Variable Name | Definition |
-|:--:|:--:|
+|:----------------------------------:|:----------------------------------:|
 | **Velocity** $V_{patch}$ | The along-channel velocity of a given patch, derived from hydrodynamic model inputs, where positive values are in the landward direction and negative values are in the seaward direction. |
 
 ### Agent Variables
 
 | Variable Name | Definition |
-|:--:|:--:|
+|:----------------------------------:|:----------------------------------:|
 | **size** $M_{agent}$ | The size of an agent. |
 | **M-max** $M_{max}$ | Maximum size found within the agent's population. |
 | **swimming-speed** $V_{agent}$ | The current swimming speed of the agent. |
@@ -38,7 +38,7 @@ To model how migratory fish respond to varying riverine and tidal velocities by 
 | **heading** $\hat{u}$ | The direction agent is facing or "headed towards" |
 | **Y-position** $\vec{Y}_t$ | This is the agent's position in the Y plane |
 
-## ![](images/clipboard-627410584.png)Process Overview and Scheduling
+## Process Overview and Scheduling
 
 1.  Determine effective swimming speed based on flow velocity and agent energy.
 
@@ -63,7 +63,7 @@ To model how migratory fish respond to varying riverine and tidal velocities by 
 ## Initialization
 
 | Variable | Initialized Value | Justification |
-|:--:|:--:|:--:|
+|:----------------------:|:----------------------:|:----------------------:|
 | $V_{patch}$ | user-defined for data input | This input can be user-defined realistic data values or known spatial data. |
 | $M_{agent}$ | user-defined and species-specific | Representative body length of a migrating agent. |
 | $M_{max}$ | user-defined and species-specific | Based on the maximum body length in the agent's population. |
