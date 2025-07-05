@@ -6,19 +6,25 @@ This submodel simulates the conditions, triggers, and behavioral outcomes associ
 
 ## Purpose and Patterns
 
-This submodel captures ecologically grounded reproductive strategies in anadromous fishes by simulating individual-based spawning behavior as a function of habitat, physiological readiness, and reproductive strategy.
+This purpose of this submodel is to capture ecologically grounded reproductive strategies by simulating individual-based spawning behavior in relation to environmental variables (salinity, thermal stress, depth, etc.) and physiological conditions (energy levels, reproductive readiness).
 
--   Spawning is initiated when agents meet combined salinity and thermal stress thresholds and have sufficient energy reserves, reflecting empirically observed constraints on reproductive viability in migratory fishes.
+-    Spawning initiation is triggered by physiological thresholds:
 
--   Broadcast spawners initiate spawning in freshwater patches with suitable depth and flow conditions, consistent with the behavior of species like alewife and rainbow smelt. Fertilization success is probabilistically scaled by the local density of mature males, reflecting external gamete mixing dynamics in flowing water.
+    -    Salinity and thermal stress are used to simulate habitat suitability, consistent with the needs of anadromous fish like alewife and rainbow smelt.
 
--   Pairwise spawners, such as sturgeon and striped bass, require physical co-location of a reproductively ready male and female in suitable habitat. This reflects species that engage in close-contact courtship and synchronize gamete release based on microhabitat cues.
+    -    Agents must have sufficient energy reserves to spawn, ensuring reproductive viability in line with real-world observations of migratory fish constraints.
 
--   Spawning events result in an immediate energy cost and update internal states for both male and female agents. Iteroparous species may spawn more than once if conditions remain favorable, while semelparous species are subject to mortality following reproductive exhaustion.
+-    **Broadcast spawners** (e.g., alewife, rainbow smelt) spawn in freshwater patches with appropriate depth and flow conditions. Fertilization success is influenced by male density within the local area, simulating natural gamete mixing.
 
--   Energetic depletion after spawning triggers resting or staging behavior before resuming seaward migration. Overwintering probability is dynamically calculated based on energy levels, spawning timing, age, and size, reflecting seasonal decisions observed in species like Atlantic salmon and shortnose sturgeon.
+-    **Pairwise spawners** (e.g., sturgeon, striped bass) require the physical co-location of males and females within a suitable patch for spawning to occur. This reflects close-contact courtship and synchronized gamete release in the wild.
 
--   Spatial overlap of spawning-ready agents in high-quality patches allows emergent identification of reproductive hotspots and helps model the intersection of life history traits and estuarine hydrodynamics.
+-    **Energy Cost**: Both male and female agents experience an immediate energy cost after spawning. Iteroparous species can spawn multiple times if conditions remain favorable, while semelparous species die after spawning.
+
+-    **Post-Spawning**: Once spawning energy is depleted, agents enter a resting/staging behavior phase until they recover energy and resume migration, especially seaward migration.
+
+-    **Overwintering**: Overwintering probability is modeled dynamically based on agents' energy reserves, size, age, and spawning timing, closely reflecting the seasonal strategies seen in species like Atlantic salmon and shortnose sturgeon.
+
+-    **Reproductive Hotspots**: Spatial overlap of spawning-ready agents in high-quality patches helps identify reproductive hotspots where high-quality habitat intersects with the life-history traits of species and estuarine hydrodynamics.
 
 ## Entities, State Variables, and Scales
 
@@ -61,7 +67,7 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
     Each agent evaluates whether it is spawning-ready based on salinity stress, thermal stress, energy levels, and whether it has exceeded its spawning limit. If all conditions are met, the agent is considered ready to spawn.
 
 2.  **Spawning Strategy**\
-    For broadcast spawners, the female initiates spawning if the patch meets the suitability criteria. Fertilization probability is calculated based on the number of males within the local radius. For pairwise spawners, spawning occurs only if one male and one female are both in the same patch, both are spawning-ready, and habitat conditions meet the required criteria.
+    For broadcast spawners, the female initiates spawning if the patch meets the criteria. Fertilization is based on the number of males able to fertilize the spawning patch. For pairwise spawners, spawning occurs only if one male and one female are both in the same patch, both are spawning-ready, and habitat conditions meet the required criteria.
 
 3.  **Spawning Energy**\
     After spawning, the agent’s energy is reduced by the spawning energy cost.
@@ -77,21 +83,21 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 
 ## Design Concepts
 
-**Basic Principles:** Spawning behavior in anadromous fish is influenced by a combination of environmental conditions (salinity, temperature, depth, and velocity) and physiological readiness. Fish assess these conditions and their internal energy reserves to decide when and where to spawn.
+**Basic Principles:** Spawning behavior is indeed influenced by environmental conditions and physiological readiness, which agents evaluate before spawning, as described in the Spawning Readiness and Spawning Strategy submodels.
 
-**Emergence:** High-quality spawning patches with favorable environmental conditions emerge, and spawning encounters increase in these areas. Overlap of spawning-ready agents in these patches leads to emergent patterns of reproductive success.
+**Emergence:** High-quality spawning patches emerge when favorable conditions for spawning are present, and the spatial overlap of spawning-ready agents leads to emergent patterns of reproductive success.
 
-**Adaptation:** Fish respond to varying environmental conditions by adjusting their spawning behavior. Broadcast spawners will select the highest probability patch based on the presence of males, while pairwise spawners rely on physical proximity for spawning. Iteroparous species may spawn multiple times in a season if conditions remain favorable, whereas semelparous species spawn once and die.
+**Adaptation:** Fish respond to varying environmental conditions by adjusting their spawning behavior. Iteroparous species may spawn multiple times in a season if conditions remain favorable, whereas semelparous species spawn once and die.
 
-**Objectives:** The primary objective of spawning behavior is to maximize reproductive success. This is achieved by ensuring optimal environmental conditions for gamete fertilization while minimizing the energetic cost of spawning and migration.
+**Objectives:** The primary objective of spawning behavior is to maximize reproductive success by ensuring optimal conditions for fertilization while minimizing the energetic costs.
 
-**Prediction:** Broadcast spawners do not predict future conditions but react to local male density and environmental suitability. Pairwise spawners predict spawning success based on habitat conditions and the availability of a mate.
+**Prediction:** Broadcast spawners react to local conditions and male density rather than predicting future conditions, whereas pairwise spawners predict success based on habitat conditions and mate availability.
 
-**Sensing:** Agents sense local patch temperature, salinity, depth, and velocity. They also assess the presence of other agents (both male and female) to determine readiness for spawning.
+**Sensing:** Agents sense local environmental conditions (temperature, salinity, depth, velocity) and assess the presence of other agents to determine spawning readiness.
 
 **Interaction:** Male and female agents interact through proximity in pairwise spawning, while broadcast spawners interact with males via fertilization probability calculations. Both strategies involve the exchange of gametes, with varying degrees of synchronization and spatial organization.
 
-**Stochasticity:** The model includes probabilistic factors in fertilization success and mortality. For broadcast spawners, fertilization success is probabilistically scaled by the number of males, while mortality is age-dependent.
+**Stochasticity:** The model includes probabilistic factors in mortality.
 
 **Observation:** The model tracks spawning encounters, spawning energy expenditures, energy recovery, mortality rates, and overwintering probabilities.
 
@@ -274,6 +280,3 @@ Where:
 -   Fish that spawned recently → higher likelihood (if within seasonal window)
 
 -   Species must be capable of overwintering for this to activate
-
-**\
-**
