@@ -52,7 +52,7 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 | spawning strategy | Reproductive mode (broadcast or pairwise) |
 | Salinity Stress $S_{stress}$ | Osmotic stress response |
 | Thermal Stress $T_{stress}$ | Deviation from thermal optima |
-| Staging? | Boolean for if fish is staging |
+| spawning depth $d_{spawn}$ | Known depth limit for spawning |
 | STST? | Boolean for if agent is using Selective Tidal Stream Transport |
 
 ## Process Overview and Scheduling
@@ -106,6 +106,7 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 | $M_{agent}$ | size-at-age curve | Species-specific size growth |
 | $spawning-strategy$ | broadcast or pairwise | Species-level trait |
 | $lim_{spawn}$ | dependent on sex and species | How many times a fish is capable of spawning in a single migration |
+| $d_{spawn}$ | dependent on species | Species specific known depth preference to spawn |
 | $S_{stress}$ | 0 | No stress at initialization |
 | $T_{stress}$ | 0 | No stress at initialization |
 | $S_{overwinter}$ | 0 or 1 | Binary species trait |
@@ -116,10 +117,10 @@ This submodel captures ecologically grounded reproductive strategies in anadromo
 
 ### Spawning Readiness
 
-Agents are considered spawning-ready if they meet the following conditions:
+Agents are considered spawning-ready if they meet the following physiological conditions:
 
 $$
-\text{SpawningReady} = \begin{cases}\text{true}, & \text{if } S_{stress} < 3 \text{ and } T_{stress} < 3 \text{ and } E_{agent} > E_{spawn} \text{ and } spawn_{n} < lim_{spawn}  \\\text{false}, & \text{otherwise}\end{cases}
+\text{SpawningReady} = \begin{cases}\text{true}, & \text{if } S_{stress} < 3 \text{ and } T_{stress} < 3 \text{ and } E_{agent} > E_{spawn} \text{ and } spawn_{n} < lim_{spawn} \text{ and } STST? = false \\\text{false}, & \text{otherwise}\end{cases}
 $$
 
 -   $S_{stress}$ = salinity stress
@@ -132,30 +133,15 @@ $$
 
 ##### If `spawning-strategy = broadcast`:
 
-1.  Female agent initiates spawning if the patch meets habitat criteria.
-    -   $S_{patch} <= 0.5$
-    -   $d_{patch} <= 3$
-    -   $staging? = false$
-    -   $STST? = false$
-2.  The agent evaluates **neighboring patches** for the **fertilization probability** ($P_{fertilize}$) sexually mature males in the local radius ($n_{males}$)​.
+1.  When female agent is ready to spawn, they evaluate neighboring patches:
+    -   $S_{\text{patch}} \leq 0.5$
+    -   $d_{\text{patch}} \leq d_{\text{spawn}}$
 
-The fertilization probability is calculated as:
-
-$$
-P_{fertilize} = 1 - e^{- \alpha \cdot n_{males}}
-$$
-
-Where:
-
--   $P_{fertilize}$ fertilization success probability
-
--   $\alpha$ = proximity sensitivity constant
-
--   $n_{males}$ = number of sexually mature males within a defined radius
-
-If no suitable patch with $P_{fertilize} > 0.5$ is found, the female moves to the next patch and repeats the evaluation process until a suitable patch is identified.
+If no suitable patch is found, the female moves to the next patch and repeats the evaluation process until a suitable patch is identified.
 
 Alternatively, if the female encounters a male in the same patch, the fertilization probability is considered high (near 1), and the female spawns immediately without evaluating neighboring patches.
+
+2.  Spawning-ready males actively search for the closest spawning area, where a female has released her eggs. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female). Ferilization only occurs if a male can find and fertilize the spawn within $t_{limit}$.
 
 Spawning encounters are recorded as:
 
@@ -164,14 +150,14 @@ spawn_{n} = spawn_{n} + 1
 $$
 
 $$
-Spawn_{encounters} = \sum_{i=1}^{N_f} P_{fertilize,i}
+Spawn_{encounters} = \sum n_{males}
 $$
 
 Where:
 
 -   $spawn_{encounters}$ is the number of spawning encounters
 
--   $P_{fertilize}$ is the probability of fertilization.
+-   $n_{males}$ is the number of males fertilizing the spawn.
 
 -   $N_{f}$ is the number of spawning-ready females in suitable patches.
 
@@ -179,12 +165,10 @@ Where:
 
 1.   Once a female is spawning-ready, she locates the best spawning habitat:
 
-    -   $S_{patch} <= 0.5$
-    -   $d_{patch} <= 3$
-    -   $staging? = false$
-    -   $STST? = false$
+    -   $S_{\text{patch}} \leq 0.5$
+    -   $d_{\text{patch}} \leq d_{\text{spawn}}$
 
-2.  Spawning-ready males actively search for the closest spawning-ready female. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female). Sawning only occurs if all of the following conditions are met:
+2.  Spawning-ready males actively search for the closest spawning-ready female. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female). Spawning only occurs if all of the following conditions are met:
 
     -   One male and one female are in the same patch
 
@@ -196,13 +180,13 @@ $$ Spawn_{encounters} = \min(N_{\text{males}}, N_{\text{females}}) $$
 
 $$ spawn_{n} = spawn_{encounters} $$
 
--   $spawn_{encounters}$ is the number of spawning encounters
+-   $spawn_{encounters}$ is the number of spawning encounters.
 
--   $spawn_{n}$ is the number of times an agent has spawned
+-   $spawn_{n}$ is the number of times an agent has spawned.
 
 -   $N_{\text{males}}$ be the number of spawning-ready males in the patch.
 
--    $N_{\text{females}}$ be the number of spawning-ready femalesi n the patch.
+-    $N_{\text{females}}$ be the number of spawning-ready females in the patch.
 
 ### Spawning energy
 
@@ -212,9 +196,9 @@ $$
 
 Where:
 
--   $E_{agent}$
+-   $E_{agent}$ is the energy levels of the agent.
 
--   $E_{spawn}$
+-   $E_{spawn}$ is the energy cost to spawn.
 
 ### Post-Spawning Behavior
 
@@ -224,9 +208,9 @@ $$
 
 Where:
 
--   $E_{agent}$
+-   $E_{agent}$ is the energy levels of the agent.
 
--   $E_{recover}$
+-   $E_{recover}$ energy threshold to resume migration.
 
 #### **Mortality Risk**
 
@@ -240,13 +224,13 @@ $$
 
 Where:
 
--   $A_{\text{agent}}$ = agent’s current age
+-   $A_{\text{agent}}$ is the agent’s current age.
 
--   $A_{\text{max}}$ = maximum lifespan for the species
+-   $A_{\text{max}}$ is the maximum lifespan for the species.
 
-`semelparous` = species that spawn once and die
+`semelparous` are species that spawn once and die.
 
-`iteroparous` = species that can spawn multiple times
+`iteroparous` are species that can spawn multiple times.
 
 #### **Resting Period**
 
@@ -258,9 +242,9 @@ $$
 
 Where:
 
--   $E_{recover}$ energy threshold to resume migration (e.g., 75)
+-   $E_{recover}$ energy threshold to resume migration (e.g., 75).
 
--   $E_{agent}$ is the current energy level of the agents
+-   $E_{agent}$ is the current energy level of the agents.
 
 #### Overwintering Probability
 
@@ -270,16 +254,16 @@ $$
 
 Where:
 
--   $P_{\text{overwinter}}$ = agent’s probability of overwintering
--   $S_{\text{overwinter}}$ = species-level binary (1 = overwinter-capable, 0 = not)
--   $E_{\text{agent}}$ = energy level (0–100%)
--   $A_{\text{agent}}$ = agent age
--   $A_{\text{max}}$ = species-specific maximum age
--   $M_{\text{agent}}$ = agent body size
--   $M_{\text{max}}$ = maximum body size in population
--   $t_{\text{spawn}}$ = days since last spawn
--   $t_{\text{max}}$ = max time allowed for overwinter decision (e.g., 60 days)
--   $\alpha, \beta, \gamma, \delta$ = tunable weights (e.g., 0.25 each)
+-   $P_{\text{overwinter}}$ is the agent’s probability of overwintering.
+-   $S_{\text{overwinter}}$ is the species-level binary (1 = overwinter-capable, 0 = not).
+-   $E_{\text{agent}}$ is the agent's energy level (0–100%)..
+-   $A_{\text{agent}}$ is the agent age.
+-   $A_{\text{max}}$ is the species-specific maximum age.
+-   $M_{\text{agent}}$ is the agent body size.
+-   $M_{\text{max}}$ is the maximum body size in population.
+-   $t_{\text{spawn}}$ are the days since last spawn.
+-   $t_{\text{max}}$ is the max time allowed for overwinter decision (e.g., 60 days).
+-   $\alpha, \beta, \gamma, \delta$ is the tune-able weights (e.g., 0.25 each).
 
 **Interpretation**:
 
