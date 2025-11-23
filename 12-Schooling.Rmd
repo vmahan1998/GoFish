@@ -1,73 +1,117 @@
-# Schooling Behavior
+# Schooling
 
 ## Overview
 
+Schooling is an emergent collective behavior in which fish align, cohere, and maintain spacing with nearby con-specifics. In this model, schooling increases hydrodynamic efficiency, predator avoidance, and coordinated migration. The submodel follows the classic behavioral rules from agent based schooling and BOIDS frameworks (separation, alignment, and cohesion).
+
+The schooling behavior in this model is adapted from the publicly available NetLogo model [Fish Schooling For Predator Avoidance](https://modelingcommons.org/browse/one_model/5709#model_tabs_browse_info) created by Sebastian Dobon and shared through the NetLogo Modeling Commons. That model implements classic schooling rules from the original BOIDS framework developed by Craig Reynolds in 1987 in his paper *Flocks, Herds, and Schools: A Distributed Behavioral Model* (Reynolds, 1987). 
+
 ## Purpose
+
+The purpose of this submodel is to simulate collective movement patterns observed in migratory fish where individuals adjust their position and speed based on nearby schoolmates. This mechanism enhances group cohesion during landward or seaward migration and produces emergent school structure, directional alignment, and spacing.
 
 ## Entities, State Variables, and Scales
 
 ### Patch Variables
 
-| Variable Name | Definition |
-|---------------|------------|
-|               |            |
+| Variable Name   | Definition                          |
+|-----------------|-------------------------------------|
+| patch-terrain   | Identifies water or land patches    |
 
 ### Agent Variables
 
-| Variable Name | Definition |
-|---------------|------------|
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
-|               |            |
+| Variable Name        | Definition                                                     |
+|----------------------|----------------------------------------------------------------|
+| breed                | Species identity used to restrict schooling to con-specifics    |
+| speed                | Current swimming speed                                          |
+| min-speed            | Lowest allowable swimming speed                                 |
+| start-migration?     | Indicates whether the agent has begun migration                 |
+| landward-migration?  | Indicates landward migration mode                               |
+| seaward-migration?   | Indicates seaward migration mode                                |
+| schoolmates          | Set of nearby con-specifics that meet schooling criteria         |
+| nearest-neighbor     | Closest schoolmate used for spacing and cohesion                |
+| minimum-separation   | Desired minimum inter-fish spacing                              |
 
 ## Process Overview and Scheduling
 
-1.  
-
-2.  
-
-3.  
-
-4.  
+1. Identify schoolmates based on species identity and shared migration state.
+2. Detect the nearest neighbor among schoolmates.
+3. Apply separation when neighbors are too close.
+4. Apply cohesion and alignment when spacing is adequate.
+5. Adjust speed to match group speed and maintain coordination.
 
 ## Design Concepts
 
-**Basic Principles:**
+**Basic Principles**  
+Schooling arises from separation, cohesion, and alignment. These rules reflect collective behaviors observed in migrating fishes.
 
-**Emergence:**
+**Emergence**  
+Cohesive schools, spacing patterns, and synchronized direction arise without centralized control.
 
-**Adaptation**:
+**Adaptation**  
+Agents adjust heading and speed in response to nearby schoolmates.
 
-**Objectives:**
+**Objectives**  
+Fish do not attempt to form schools explicitly. Schooling emerges from local rules.
 
-**Learning:**
+**Learning**  
+There is no internal learning. Behavior is reactive and rule based.
 
-**Prediction:**
+**Prediction**  
+Agents do not predict future states of neighbors. They respond to current spacing and direction.
 
-**Sensing**:
+**Sensing**  
+Agents sense species identity, distance to schoolmates, spacing, and local movement direction.
 
-**Interaction**:
+**Interaction**  
+Agents change speed and heading based on interactions with neighbors.
 
-**Stochasticity**:
+**Stochasticity**  
+Small random turning angles elsewhere in the model introduce variability in movement.
 
-**Collectives:**
+**Collectives**  
+Schools form as dynamic collectives with shared direction and spacing rules.
 
-**Observation:**
+**Observation**  
+School size, spacing, direction, and cohesion may be tracked to evaluate emergent schooling patterns.
 
 ## Initialization
 
-| Variable | Initialized Value | Justification |
-|:--------:|:-----------------:|:-------------:|
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
-|          |                   |               |
+| Variable            | Initialized Value | Justification                                  |
+|---------------------|-------------------|------------------------------------------------|
+| speed               | species specific  | Starting swimming speed                        |
+| min-speed           | species specific  | Prevents schools from stopping entirely        |
+| schoolmates         | empty set         | No neighbors until movement begins             |
+| nearest-neighbor    | none              | Determined dynamically during the simulation   |
+| minimum-separation  | species specific  | Prevents collisions and maintains spacing      |
 
 ## Submodels
+
+### Identifying Schoolmates
+
+Fish select schoolmates from nearby con-specifics that share the same migration state, including the start of migration and direction (landward or seaward).
+
+### Nearest Neighbor
+
+The closest schoolmate is used to determine whether spacing rules or cohesion rules should be applied.
+
+### Separation
+
+If the nearest neighbor is closer than the minimum desired separation, the agent turns away to maintain spacing.
+
+### Cohesion
+
+When spacing is appropriate, the agent turns toward the group centroid to maintain cohesive structure.
+
+### Alignment
+
+The agent aligns its heading with the mean direction of nearby con-specifics to maintain synchronized movement.
+
+### Speed Adjustment
+
+Speed is regulated to preserve cohesion within the school:
+
+- The agent accelerates if any schoolmate is significantly faster.  
+- Otherwise, it gradually slows toward the minimum speed.
+
+This produces emergent schooling speeds and prevents fragmentation.

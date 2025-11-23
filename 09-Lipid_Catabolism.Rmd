@@ -1,198 +1,143 @@
-# Lipid Catabolism
-
 ## Overview
 
-Foraging is a facultative behavior triggered under specific physiological and environmental conditions. In this model, fish evaluate nearby patches and opportunistically forage only when their energy is low, stress is minimal, and conditions are suitable. This behavior is designed to simulate optimal foraging theory for migratory fish within a spatially explicit, agent-based framework.
+Lipid catabolism provides a secondary energy pathway that fish use when immediate food resources are unavailable or when energy falls below a functional threshold. In this submodel, agents metabolize stored lipid reserves to restore energy, maintain migration, and avoid starvation. Lipid use is influenced by body condition, metabolic efficiency, and the magnitude of energetic deficit. Lipid depletion also reduces body weight over time, creating a biologically meaningful cost to sustained lipid reliance. Contaminant uptake does not occur during lipid catabolism, reflecting the absence of feeding.
 
-## Purpose and Patterns
+## Purpose
 
-The purpose of this submodel is to simulate facultative foraging behavior in migratory fish, where agents opportunistically forage during natural pauses in migration when energy is low but physiological stress is minimal. The behavior is shaped by individual condition, environmental suitability, and competition from other fish. This framework allows the model to assess foraging quality, competition, and the ecological trade-offs fish face during migration.
+The purpose of this submodel is to simulate endogenous energy mobilization through lipid reserves when fish cannot meet energetic needs through feeding. Lipid catabolism allows migratory fish to continue movement and survive temporary periods of low food availability. This mechanism reflects empirical observations of lipid use during spawning migrations, overwintering, and other energetically demanding life history periods.
 
-The following ecological patterns are represented as explicit rules in the model:
-
--   **Conditional foraging triggers**:\
-    Fish forage only when **all** of the following are true:\
-    `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM`.\
-    *(Reflects behavioral ecology studies showing fish avoid feeding during stress and turbidity but will opportunistically forage when paused.)*
--   **Habitat-based foraging selection**:\
-    Fish score nearby patches based on salinity, temperature, depth, velocity, and turbidity (SPM), and choose the one with the highest score.\
-    *(Represents optimal foraging theory and empirical habitat preference studies in estuarine fish.)*
--   **Intraspecific competition**:\
-    Fish can forage alongside others of the same species, but energy gain is reduced when the patch is crowded.\
-    *(Captures resource sharing and diminishing returns observed in schooling behavior.)*
--   **Interspecific competition**:\
-    Fish will not forage in patches where larger individuals of a different species are already present. They will search again for the next best patch.\
-    *(Reflects asymmetric, size-structured competition documented in estuarine communities.)*
--   **Size-based exclusion**:\
-    Fish avoid patches where the **combined size** of all different-species foragers is greater than their own.\
-    *(Simulates energetic trade-offs in contested foraging zones.)*
+This submodel is best used in tandpm with an energy recovery stratedge like filter feelding and digestion, or pref=dation and digesiton
 
 ## Entities, State Variables, and Scales
 
 ### Patch Variables
 
-| Variable Name | Definition |
-|----|----|
-| **Salinity** $S_{patch}$ | The current salinity at the patch location |
-| **Temperature** $T_{patch}$ | The current temperature at the patch location |
-| **Velocity** $V_{patch}$ | The along-channel velocity at the patch |
-| **Depth** $d_{patch}$ | The water depth at the patch |
-| **SPM** $SPM$ | Suspended particulate matter concentration |
-| **Forage Visits** $forage-visits$ | The number of times a patch has been visited for foraging |
-| **Forage Species** $forage-species$ | List of species that have foraged on this patch |
-| **Forager Count** $forager-counts$ | Number of agents currently foraging on patch |
+Lipid catabolism does not directly depend on patch level variables, since no external resources are consumed.
 
 ### Agent Variables
 
-|  |  |
-|----|----|
-| **Variable Name** | **Definition** |
+| Variable Name | Definition |
+|----------------------------------------|--------------------------------|
 | **energy** | Current energy level of the agent |
-| **foraging?** | Boolean indicating if the agent is currently foraging |
-| **acclimated-salinity** | Current internal salt balance acclimated to |
-| **optimal-temperature** | Preferred temperature |
-| **optimal-depth** | Preferred depth |
-| **optimal-velocity** | Preferred current velocity |
-| **ionregulatory-stress** | Stress level based on osmoregulatory load |
-| **thermal-stress** | Stress level based on thermal tolerance |
-| **staging?** | Boolean for staging behavior |
-| **breed** | Species classification (used to exclude non-foragers) |
+| **weight** | Current body mass of the fish |
+| **original-weight** | Initial body mass used to scale maximum lipid availability |
+| **lipid-catabolism-efficiency** | Efficiency with which lipids are converted into usable energy. This value is equal to the current metabolic rate divided by the metabolic rate at optimal temperature, allowing lipid use to scale with physiological performance |
+| **lipid-used** | Amount of lipid converted to energy during the current step |
+| **metabolism-rate** | Current metabolic rate, which influences efficiency scaling |
+| baseline-metabolism-rate | Metabolic rate at optimal temperature |
+| **mehg-foraging** | Methylmercury acquired during feeding (set to zero when lipids are used) |
+| **hg-foraging** | Inorganic mercury acquired during feeding (set to zero when lipids are used) |
+| **mehg-foraging-total** | Total methylmercury obtained from foraging |
+| **hg-foraging-total** | Total inorganic mercury obtained from foraging |
+| **mehg-total** | Total methylmercury accumulated |
+| **hg-total** | Total inorganic mercury accumulated |
 
 ## Process Overview and Scheduling
 
-1.  Fish evaluate local conditions only when `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM.`
-
-2.  The agent assesses neighboring patches for suitability.
-
-3.  The best patch is selected only if no larger individual of a different species is already present. If out-competed, the agent will move to the second best patch and try again.
-
-4.  Energy gain is scaled down by the number of agents present on that patch.
-
-5.  Patch visitation and species are tracked for foraging density and competition analysis.
+1.  Compute energy deficit relative to a target energy level of one hundred.\
+2.  Determine the lipid amount needed to fill the deficit.\
+3.  Limit lipid use by the maximum lipid available for mobilization.\
+4.  Apply lipid catabolism efficiency to determine usable lipid energy.\
+5.  Convert mobilized lipid to energy.\
+6.  Reduce weight by the amount of lipid burned.\
+7.  Set contaminant uptake to zero during this process, since no feeding occurs.
 
 ## Design Concepts
 
-**Basic Principles**:\
-Fish only forage during rest periods along their migration route. They do not interrupt active migration solely to seek food. Foraging occurs facultatively when conditions are favorable and the fish have temporary reprieve from other energetically costly behaviors. This reflects optimal foraging theory, where agents balance energy needs with the opportunity to feed without compromising migration.
+**Basic Principles**\
+Lipid catabolism models endogenous energy mobilization in the absence of food. Fish draw upon lipid stores when energy is low, which is a well documented physiological process during migration, overwintering, and fasting.
 
-**Emergence**:\
-Spatial foraging hotspots emerge from a combination of individual preferences, environmental suitability, and dynamic competition from other foragers.
+**Emergence**\
+Patterns of weight loss, energy cycling, and recovery emerge from repeated lipid use during periods of limited food access.
 
-**Adaptation**:\
-Agents decide whether to forage based on their internal energy level, physiological stress, and the presence of competitors in surrounding patches.
+**Adaptation**\
+Agents adaptively mobilize lipids based on the severity of their energy deficit and on efficiency scaling from the metabolism submodel.
 
-**Sensing**:\
-Agents sense local environmental conditions like salinity, temperature, depth, velocity, and SPM, along with, social cues like the size and species of other foragers. They avoid moving into patches occupied by larger fish or where the total biomass exceeds their own size.
+**Objectives**\
+Agents seek to maintain enough energy to migrate, forage, avoid predation, and prevent starvation.
 
-**Stochasticity**:\
-Foraging success is not deterministic; energy gain includes a random multiplier to account for variability in foraging efficiency and prey availability.
+**Sensing**\
+Agents sense their own internal energy level and lipid reserve availability.
 
-**Interaction**:\
-Competition is modeled through species- and size-based exclusion. Agents will not forage in a patch if a larger individual of a different species is already present. However, they may forage alongside larger individuals of their own species. If out-competed, the agent moves to a random neighboring patch. Energy gain is shared among all foragers on the patch, simulating diminishing returns under crowding.
+**Interaction**\
+Lipid catabolism does not require environmental interaction and therefore represents a purely endogenous process.
 
-**Observation**:\
-The model records foraging events, patch visitation frequency, species identity, and total forager biomass per patch to support analyses of habitat quality and interspecific competition.
+**Stochasticity**\
+This submodel is deterministic. However, variation in weight, metabolism, and previous feeding creates emergent differences among individuals.
+
+**Observation**\
+Outputs include energy restored through lipid catabolism, lipid used, and body mass loss over time.
 
 ## Initialization
 
-|  |  |  |
-|----|----|----|
-| **Variable** | **Initialized Value** | **Justification** |
-| **energy** | 100 | Represents full energy at migration onset |
-| **foraging?** | false | Starts false; updated based on conditions |
-| **ionregulatory-stress** | 1 | Minimal stress at initialization |
-| **thermal-stress** | N/A | Calculated from environmental conditions |
-| **forage-visits** | 0 | No patch has been visited at setup |
-| **forage-species** | empty list | No species recorded at setup |
-| **forager-count** | 0 | No agents foraging initially |
+| Variable | Initialized Value | Justification |
+|------------------|-------------------------------|-----------------------|
+| weight | species specific | Establishes initial body condition |
+| original-weight | equal to initial weight | Defines total lipid availability |
+| energy | 100 | Full energy at initialization |
+| lipid-catabolism-efficiency | from metabolism submodel | Reflects physiological scaling of lipid use |
+| lipid-used | 0 | No lipid used at start |
 
 ## Submodels
 
-### Trigger Conditions for Foraging
+### Lipid Mobilization
 
-Fish initiate foraging if:
-
-$$
-staging? = \text{true} \quad \text{and} \quad E_{agent} < 75 \quad \text{and} \quad S_{ion} < 3 \quad \text{and} \quad S_{thermal} < 3 \quad \text{and} \quad SPM < \overline{SPM}$$
-
--   `staging? = true` (i.e., the fish is not actively migrating)
-
-<!-- -->
-
--   `energy < 75%` (low energy state)
-
-<!-- -->
-
--   `ionregulatory-stress < 3` (low osmoregulatory stress)
-
-<!-- -->
-
--   `thermal-stress < 3` (within thermal tolerance)
-
-<!-- -->
-
--   `SPM < mean SPM` (low turbidity)
-
-### Patch Evaluation
-
-Each agent evaluates neighboring patches for optimal foraging conditions:
+Maximum lipid available for mobilization depends on relative body mass:
 
 $$
-Score = \left(0.2 \cdot Sal_{opt} + 0.3 \cdot temp_{opt} + 0.2 \cdot vel_{opt} + 0.2 \cdot depth_{opt} + 0.1 \cdot spm_{penalty} \right) \cdot (\text{random}(0,3.0))
+Lipid_{refill} = 0.5 \times \left(\frac{weight}{original\_weight}\right)
 $$
 
-Where:
-
--   $sal_{opt} = 1 - \frac{|salinity - acclimated\ salinity|}{10}$
-
--   $temp_{opt} = 1 - \frac{|temperature - optimal\ temperature|}{10}$
-
--   $vel_{opt} = 1 - |velocity - optimal\ velocity|$
-
--   $depth_{opt} = 1 - \frac{|depth - optimal\ depth|}{2.5}$
-
--   $spm_{penalty} = 1 - \frac{SPM - mean\ SPM}{mean\ SPM}$ (bounded to [0,1])
-
-### Species and Size-Based Competition Constraints
-
-Agents will only forage in a patch if either (1) the patch is unoccupied, (2) the patch contains only members of the same species, or (3) all other individuals on the patch are smaller if they are of a different species. This behavior simulates asymmetric, size-based competition, where larger individuals of different species out-compete smaller fish for access to high-quality foraging habitat.
-
-Then foraging is allowed only if:
+Energy deficit relative to full energy:
 
 $$
-b_{\text{agent}} \in \mathcal{B}_{\text{others}} \quad \text{or} \quad \left( S_{\text{sum}} < S_{\text{agent}} \text{ and } b_{\text{agent}} \notin \mathcal{B}_{\text{others}} \right)
+Energy_{deficit} = 100 - Energy
 $$
 
-Where:
-
--   $S_{\text{agent}}$: size of the focal fish\
--   $S_{\text{sum}} = \sum_{i} S_{\text{agent}_{\mathcal{b}_{\text{others}}\, i}}$\
--   $\mathcal{b}_{\text{others}}$: set of breeds (species) of other foragers on the patch\
--   $b_{\text{agent}}$: the breed of the focal fish
-
-If a patch is occupied by a larger fish of a different species, the agent is considered out-competed and will seek the next most suitable patch among its neighbors. This ensures that foraging attempts are adaptive to interspecific competition.
-
-### Energy Gain
-
-Energy gain is then calculated:
+Lipid required to refill the deficit:
 
 $$
-E_{\text{gain}} = \left( \frac{\text{Score}_i}{\sum_{j=1}^{N} size_j} \right) \cdot size_i$$
+Lipid_{needed} = \frac{Energy_{deficit}}{40}
+$$
 
-Where:
+Actual lipid mobilized:
 
--   $Score_{i}$ is the individual fish’s foraging score (bounded between 0 and 3)
+$$
+Lipid_{used} = \min(Lipid_{needed},\ Lipid_{refill}) \times lipid\_{catabolism\_efficiency}
+$$
 
--   $Size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
+### Energy Conversion
 
--   $\sum_{j=1}^{N} size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
+Mobilized lipid is converted into energy:
 
-### Foraging Patch Tracking
+$$
+Energy_{added} = Lipid_{used} \times 40
+$$
 
-Each time a fish forages on a patch, the following patch-level variables are updated:
+Energy is capped at one hundred:
 
--   `forage-visits`: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.
+$$
+Energy = \min(100,\ Energy + Energy_{added})
+$$
 
--   `forager-count`: Tracks the number of agents currently foraging on the patch, reflecting competition density.
+### Weight Loss
 
--   `forage-species`: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.
+Weight decreases proportionally to lipid used:
+
+$$
+Weight = Weight - Lipid_{used}
+$$
+
+### Contaminant Bookkeeping
+
+No mercury or methylmercury is acquired during lipid catabolism:
+
+$$
+MeHg_{digested} = 0
+$$
+
+$$
+Hg_{digested} = 0
+$$
+
+These values are added to cumulative totals to maintain bookkeeping consistency, but do not increase contaminant burden.

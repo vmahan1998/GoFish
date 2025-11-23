@@ -1,156 +1,162 @@
-# Mercury Contamination Bioaccumulation Function
+# Contaminant Exposure
 
 ## Overview
 
-This function simulates exposure and uptake risk of mercury (Hg) and methylmercury (MeHg) for migratory fish navigating contaminated aquatic environments. The model accounts for spatial and temporal variation in contaminant concentrations and includes physiological modulation based on ion-regulatory stress and suspended particulate matter (SPM).
+The contaminant exposure submodel simulates mercury and methylmercury exposure risk across gills for migratory fish moving through spatially and temporally variable contamination fields. Exposure risk depends on contaminant concentration, suspended particulate matter, and metabolic rate. Concentrations of mercury and methylmercury are normalized across the spatial domain, and depth averaged SPM values modulate risk to reflect particle bound contaminant transport. Agents accumulate both instantaneous and cumulative exposure, allowing estimation of bioaccumulation risk over the migration season.
 
 ## Purpose
 
-To evaluate contaminant exposure and bioaccumulation risk in migratory fish due to mercury and methylmercury during migration through estuarine or coastal systems using stress.
+To evaluate mercury and methylmercury exposure and bioaccumulation risk for migratory fishes by integrating patch level contamination, ionregulatory stress, depth averaged suspended particulate matter, and metabolism driven uptake processes in estuarine and coastal systems.
 
 ## Entities, State Variables, and Scales
+
+### Spatial and Temporal Scales
+
+**Spatial Unit:** Patch (3 m x 3 m resolution)\
+**Temporal Unit:** 5 minute time steps (tick)\
+**SPM:** Depth averaged suspended particulate matter per patch\
+**Contaminants:** Spatially varying Hg and MeHg concentrations
 
 ### Global Variables
 
 | Variable | Initialized Value | Justification |
-|:--:|:--:|:--:|
-| **MeHg-Threshold** $MeHg_{threshold}$ | 15 ug/kg | 10% of mercury concentration (Gaudet et al., 1995) |
-| **Hg-Threshold** $Hg_{threshold}$ | 150 ug/kg | (Gaudet et al., 1995) ((NOAA) National Oceanic and Atmospheric Administration, 1990) |
+|------------------|------------------------------|------------------------|
+| **MeHg-threshold** | 15 ug per kg | Screening threshold for methylmercury (Gaudet et al 1995) |
+| **Hg-threshold** | 150 ug per kg | NOAA guideline for mercury contamination |
+| **min-Hg, max-Hg** | Calculated from input layers | Required for Hg normalization across domain |
+| **min-MeHg, max-MeHg** | Calculated from input layers | Required for MeHg normalization across domain |
 
 ### Patch Variables
 
 | Variable Name | Definition |
-|----|----|
-| **Mercury** $Hg_{patch}$ | The mercury concentration of a patch. |
-| **Methylmercury** $MeHg_{patch}$ | The methylmercury concentration of a patch. |
-| **Suspended-particulate-matter** $SPM_{t}$ | The concentration of suspended particulate matter (SPM) for a given patch, derived from hydrodynamic model inputs, which change temporally. |
+|-----------------------------------------|-------------------------------|
+| **mercury** | Mercury concentration at this patch. |
+| **methylmercury** | Methylmercury concentration at this patch. |
+| **SPM** | Depth averaged suspended particulate matter at this patch. |
+| **Hg-exp-risk-alewife** | Patch level mercury exposure risk from alewives. |
+| **Hg-exp-risk-stripedbass** | Patch level mercury exposure risk from striped bass. |
+| **MeHg-exp-risk-alewife** | Patch level methylmercury risk from alewives. |
+| **MeHg-exp-risk-stripedbass** | Patch level methylmercury risk from striped bass. |
 
 ### Agent Variables
 
 | Variable Name | Definition |
-|----|----|
-| **stress** $S$ | The level of stress an agent experiences when moving. |
-| **Hg-exposure-duration** $Hg_{exp_t}$ | The amount of time an agent is exposed to mercury above healthy levels. |
-| **MeHg-exposure-duration** $MeHg_{exp_t}$ | The amount of time an agent is exposed to methylmercury above healthy levels. |
-| **Hg-uptake-risk** $Hg_{risk}$ | The risk associated for uptake of mercury. |
-| **MeHg-uptake-risk** $MeHg_{risk}$ | The risk associated for uptake of methylmercury. |
-| **Hg-exposure** $Hg_{t}$ | The amount of mercury exposed during current time step. |
-| **MeHg-exposure** $MeHg_{t}$ | The amount of methlymercury exposed during current time step. |
-| **Hg-exposure-total** $Hg_{net}$ | The net sum of mercury exposed to during migration. |
-| **MeHg-exposure-total** $MeHg_{net}$ | The net sum of methylmercury exposed to during migration. |
+|-----------------------------------------|-------------------------------|
+| **metabolism-rate** | Current metabolic rate used to scale uptake risk. |
+| **hg-exposure-duration** | Number of ticks spent above the mercury threshold. |
+| **mehg-exposure-duration** | Number of ticks spent above the MeHg threshold. |
+| **hg-uptake-risk** | Instantaneous mercury uptake risk per tick. |
+| **mehg-uptake-risk** | Instantaneous methylmercury uptake risk per tick. |
+| **hg-total** | Cumulative mercury uptake. |
+| **mehg-total** | Cumulative methylmercury uptake. |
+| **hg-exposure-total** | Total non normalized Hg exposure. |
+| **mehg-exposure-total** | Total non normalized MeHg exposure. |
+| **hg-exposure-total-normalized** | Sum of normalized Hg exposure values. |
+| **mehg-exposure-total-normalized** | Sum of normalized MeHg exposure values. |
 
 ## Process Overview and Scheduling
 
-1.  Evaluate current patch concentrations of mercury and methylmercury.
-
-2.  Determine whether these exceed defined toxicity thresholds.
-
-3.  Calculate exposure duration (if thresholds exceeded).
-
-4.  Compute bioaccumulation risk based on contaminant levels, stress, and SPM.
-
-5.  Update cumulative exposure totals.
+1.  Retrieve mercury, methylmercury, and depth averaged SPM values from the current patch.\
+2.  Normalize patch contaminants between 0 and 1.\
+3.  Compare patch levels to stress thresholds.\
+4.  Update exposure durations.\
+5.  Compute uptake risk using metabolism, ionregulatory stress, and SPM.\
+6.  Add uptake risk to cumulative body burden.\
+7.  Update patch level species specific risk metrics.
 
 ## Design Concepts
 
-**Basic Principles:** this model is grounded in toxicokinetics and ecological exposure theory. It draws on empirical literature (e.g., Gaudet et al. 1995, NOAA 1990) and integrates physiological stress responses with contaminant risk, reflecting a mechanistic understanding of exposure and bioaccumulation dynamics.
+**Basic Principles:**\
+Contaminant uptake follows toxicokinetic principles where absorption increases with concentration, metabolic rate, and suspended particulate matter (SPM). Depth averaged SPM reflects hydrodynamic transport and particle bound contaminant processes for fish typically found near the middle of the water column.
 
-**Emergence:** While exposure durations and patch-level concentrations are direct inputs, the exposure patterns ($Hg_{t}$, $MeHg_{t}$), cumulative exposure totals ($Hg_{net}$, $MeHg_{net}$), and risk profiles ($Hg_{risk}$, $MeHg_{risk}$) emerge from agent movement across spatially and temporally variable environments and their physiological state, which arise from behavioral-environmental interactions over time.
+**Emergence:**\
+Exposure and risk patterns emerge from individual movement across heterogeneous contamination fields coupled with metabolic and stress driven physiology.
 
-**Adaptation**: Agents adaptively accumulate risk based on their movement decisions, stress state, and encountered contaminant levels, simulating a physiological feedback process.
+**Adaptation:**\
+Agents do not actively avoid contamination, but their internal physiology modulates uptake in response to metabolic changes.
 
-**Objectives:** Agents do not explicitly seek to minimize risk, but their cumulative exposure and risk profiles can be used to evaluate environmental quality and cumulative toxicity risk for migratory fish.
+**Objectives:**\
+This model does not give agents risk minimization behavior. Instead, risk is assessed to evaluate means of exposure pathways and cumulative toxic exposure.
 
-**Sensing**: Agents sense the local contaminant levels ($Hg_{patch}$, $MeHg_{patch}$), suspended particulate matter ($SPM_{t}$), and their own stress state ($S$).
+**Sensing:**\
+Agents sense patch level mercury, methylmercury, SPM, and internal metabolic state.
 
-**Stochasticity**: Randomized initial conditions (e.g., Hg and MeHg levels) may introduce variability in exposure patterns.
+**Stochasticity:**\
+Variation in spatial contaminant fields or individual characteristics and state creates stochastic variation in exposure.
 
-**Observation:** Exposure variables ($Hg_t$, $MeHg_{t}$), cumulative exposure ($Hg_{net}$, $MeHg_{net}$), and risk scores ($Hg_{risk}$, $MeHg_{risk}$) are collected per agent and can be exported for analysis.
+**Observation:**\
+Outputs include instantaneous exposure risk, cumulative exposure risk, normalized exposure totals, and patch level species specific contributions.
 
 ## Initialization
 
 | Variable | Initialized Value | Justification |
-|:--:|:--:|:--:|
-| $S$ | user-defined stress function | Changes in an agent's environment can induce a stress response, and can be induced by the user or environmental response. |
-| $Hg_{patch}$ | user-defined or data input | This input can be user-defined realistic data values or known spatial data. |
-| $MeHg_{patch}$ | user-defined for data input | This input can be user-defined realistic data values or known spatial data. |
+|------------------|------------------------------|------------------------|
+| mercury | Input layer | Hydrodynamic or field derived contaminant layer. |
+| methylmercury | Input layer | Same as above. |
+| SPM | Depth averaged input | Reflects hydrodynamic particle transport. |
 
-## Submodels
+## Submodels: Mercury Exposure and Uptake
+
+### Normalization
+
+$$
+Hg_{normalized} = \frac{Hg_{current} - minHg}{maxHg - minHg}
+$$
+
+Bounded in the range 0 to 1.
 
 ### Exposure Duration
 
-The cumulative number of time steps an agent is exposed to mercury and methylmercury above specified environmental thresholds:
-
 $$
-Hg_{exp_t} = Hg_{exp_t} + 1 \quad \text{if } Hg_{patch} > Hg_{threshold}
+Hg_{exp} = Hg_{exp} + 1 \quad \text{if } Hg_{current} > Hg_{threshold}
 $$
 
-$$
-MeHg_{exp_t} = MeHg_{exp_t} + 1 \quad \text{if } MeHg_{patch} > MeHg_{threshold}
-$$
-
-Where:
-
--   $Hg_{exp_t}$ is the total number of time steps exposed to mercury above threshold.\
--   $Hg_{patch}$ is the mercury concentration at the current patch location.\
--   $Hg_{threshold}$ is the defined mercury toxicity threshold.\
--   $MeHg_{exp_t}$ is the total number of time steps exposed to methylmercury above threshold.\
--   $MeHg_{patch}$ is the methylmercury concentration at the current patch location.\
--   $MeHg_{threshold}$ is the defined methylmercury toxicity threshold.
-
-### Bioaccumulation Risk
-
-Estimate the bioaccumulation risk associated with mercury and methylmercury, where risk increases with contaminant concentration, ion-regulatory stress, and suspended particulate matter (SPM):
+### Uptake Risk
 
 $$
-Hg_{risk} = \sum_{t=1}^T Hg_{normalized} * (1+S) * (1+SPM_{t})
+Hg_{risk} = metabolism \cdot Hg_{normalized} \cdot (1 + S) \cdot (1 + SPM)
 $$
 
-$$
-MeHg_{risk} = \sum_{t=1}^T MeHg_{normalized} * (1+S) * (1+SPM_{t})
-$$
-
-Where:
-
--   $Hg_{risk}$ is the instantaneous mercury uptake risk.\
--   $MeHg_{risk}$ is the instantaneous methylmercury uptake risk.\
--   $Hg_{normalized}$ is the normalized Hg concentration (scaled 0–1) at each time step.\
--   $MeHg_{normalized}$ is the normalized MeHg concentration (scaled 0–1).\
--   $S$ is the stress level of the agent.\
--   $SPM_{t}$ is the suspended particulate matter concentration at the patch for that time step.
-
-### Exposure to Contamination
-
-Agents record exposure to mercury and methylmercury only when concentrations exceed threshold values. These values are stored per time step and accumulated over time to assess total contaminant burden.
-
-#### Mercury: {.unnumbered}
+### Cumulative Uptake
 
 $$
-Hg_{t} = \begin{cases}Hg_{patch}, & \text{if } Hg_{patch} > Hg_{threshold} \\0, & \text{otherwise}\end{cases} 
+Hg_{total} = Hg_{total} + Hg_{risk}
 $$
 
-$$
-Hg_{net} = \sum_{t=1}^{T} Hg_{t} 
-$$
+Patch level storage based on species for cumulative duration risk experience in space:
 
-Where:
+-   **Hg-exp-risk**\
+-   **Hg-exp-risk**
 
--   $Hg_{t}$ is the mercury exposure in ng/g for current time step
--   $Hg_{net}$ is the cumulative mercury exposure in ng/g
--   $Hg_{patch}$ is the mercury concentration for the agent's current patch
+## Submodels: Methylmercury Exposure and Uptake
 
-#### Methylmercury: {.unnumbered}
+### Normalization
 
 $$
-MeHg_{t} = \begin{cases}MeHg_{patch}, & \text{if } MeHg_{patch} > MeHg_{threshold} \\0, & \text{otherwise}\end{cases}
+MeHg_{normalized} = \frac{MeHg_{current} - minMeHg}{maxMeHg - minMeHg}
 $$
 
+Clamped to the range 0 to 1.
+
+### Exposure Duration
+
 $$
-MeHg_{net} = \sum_{t=1}^{T} MeHg_{t}
+MeHg_{exp} = MeHg_{exp} + 1 \quad \text{if } MeHg_{current} > MeHg_{threshold}
 $$
 
-Where:
+### Uptake Risk
 
--   $MeHg_{t}$ is the level of methylmercury exposure in ng/g for current time step
--   $MeHg_{net}$ is the cumulative methylmercury exposure in ng/g
--   $MeHg_{patch}$ is the methylmercury concentration for the agent's current patch
+$$
+MeHg_{risk} = metabolism \cdot MeHg_{normalized} \cdot (1 + S) \cdot (1 + SPM)
+$$
+
+### Cumulative Uptake
+
+$$
+MeHg_{total} = MeHg_{total} + MeHg_{risk}
+$$
+
+Patch level storage based on species for cumulative duration risk experience in space:
+
+-   **MeHg-exp-risk**\
+-   **MeHg-exp-risk**

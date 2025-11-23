@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 3 Metabolism | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 3 Metabolism | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 3 Metabolism | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html"/>
+<link rel="next" href="digestion.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,314 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="metabolism" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Metabolism<a href="metabolism.html#metabolism" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-1" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Overview<a href="metabolism.html#overview-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Metabolism determines the energy required for fish to maintain basic
+physiological function, support movement, regulate ions, digest food,
+and sustain long term migration. This submodel computes metabolic rate
+based on size, temperature, age scaling, and allometric relationships.
+Metabolic efficiency, based on divergence from an agent’s optimal
+temperature, is then scaled toward multiple internal processes including
+swimming, osmoregulation, and lipid catabolism.</p>
+</div>
+<div id="purpose" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Purpose<a href="metabolism.html#purpose" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To simulate energetically realistic metabolic costs for migratory fishes
+in coastal and estuarine environments by accounting for size scaling,
+temperature dependence, age effects, and dynamic energy partitioning
+across physiological processes.</p>
+</div>
+<div id="entities-state-variables-and-scales" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Entities, State Variables, and Scales<a href="metabolism.html#entities-state-variables-and-scales" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Spatial and Temporal Scales<a href="metabolism.html#spatial-and-temporal-scales" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li><strong>Spatial Unit</strong>: Patch (3 m x 3 m resolution)</li>
+<li><strong>Temporal Unit</strong>: 5-minute time steps (<code>tick</code>)</li>
 </ul>
 </div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="patch-variables" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Patch Variables<a href="metabolism.html#patch-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="55%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>temperature</strong></td>
+<td>The water temperature of the current patch used to calculate temperature dependent metabolic rate.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Agent Variables<a href="metabolism.html#agent-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="55%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>size</strong></td>
+<td>Body mass or size index used for allometric scaling.</td>
+</tr>
+<tr>
+<td><strong>age-num</strong></td>
+<td>Age used in scaling metabolic rate.</td>
+</tr>
+<tr>
+<td><strong>optimal-temperature</strong></td>
+<td>Preferred temperature at which baseline metabolism is defined.</td>
+</tr>
+<tr>
+<td><strong>max-survival-temp</strong></td>
+<td>Maximum temperature at which the agent can survive and function.</td>
+</tr>
+<tr>
+<td><strong>Met-base</strong></td>
+<td>Baseline metabolic constant calculated during initialization.</td>
+</tr>
+<tr>
+<td><strong>metabolism-rate</strong></td>
+<td>Metabolic rate for the current tick.</td>
+</tr>
+<tr>
+<td><strong>total-metabolism</strong></td>
+<td>Accumulated metabolism over time.</td>
+</tr>
+<tr>
+<td><strong>swim-efficiency</strong></td>
+<td>Efficiency applied to movement when metabolic rate is lower or higher than baseline.</td>
+</tr>
+<tr>
+<td><strong>osmoregulation-efficiency</strong></td>
+<td>Efficiency applied to osmoregultion when metabolic rate is lower or higher than baseline.</td>
+</tr>
+<tr>
+<td><strong>lipid-catabolism-efficiency</strong></td>
+<td>Efficiency applied to lipid catabolism when metabolic rate is lower or higher than baseline.</td>
+</tr>
+<tr>
+<td><strong>swim-base</strong></td>
+<td>Baseline allocation of metabolism toward movement.</td>
+</tr>
+<tr>
+<td><strong>E-base</strong></td>
+<td>Base metabolic maintenance cost.</td>
+</tr>
+<tr>
+<td><strong>E-creation</strong></td>
+<td>Energy cost for creating new chloride cells.</td>
+</tr>
+<tr>
+<td><strong>E-osmo</strong></td>
+<td>Total energy spent on osmoregulation.</td>
+</tr>
+<tr>
+<td><strong>motion-ratio</strong></td>
+<td>Fraction of metabolism allocated to swimming.</td>
+</tr>
+<tr>
+<td><strong>osmo-ratio</strong></td>
+<td>Fraction of metabolism allocated to osmoregulation.</td>
+</tr>
+<tr>
+<td><strong>M-max</strong></td>
+<td>Maximum size for scaling across the population.</td>
+</tr>
+<tr>
+<td><strong>max-age</strong></td>
+<td>Maximum age for scaling across the population.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Process Overview and Scheduling<a href="metabolism.html#process-overview-and-scheduling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Retrieve patch temperature and verify safe environmental inputs.</li>
+<li>Compute allometric, temperature, and age scalars.</li>
+<li>Calculate metabolic rate for the current tick.</li>
+<li>Update metabolic accumulation.</li>
+<li>Compute a reference baseline metabolic rate.</li>
+<li>Apply efficiency multipliers to swimming, digestion, osmoregulation,
+and lipid catabolism.</li>
+</ol>
+</div>
+<div id="design-concepts" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Design Concepts<a href="metabolism.html#design-concepts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong><br />
+Metabolic rate combines allometric scaling, temperature responses, and
+age scaling consistent with metabolic ecology theory. The model uses a
+Q10 temperature function, Kleiber type allometry, and age dependent
+reduction in metabolic intensity.</p>
+<p><strong>Emergence:</strong><br />
+Energetic constraints emerge from interactions among size, temperature,
+and age. These constraints then shape movement, digestion, and
+osmoregulation.</p>
+<p><strong>Adaptation:</strong><br />
+Agents adapt by adjusting internal efficiencies that influence
+downstream behavioral and physiological submodels.</p>
+<p><strong>Objectives:</strong><br />
+Agents maintain adequate energy for survival and migration and balance
+energetic cost across processes.</p>
+<p><strong>Sensing:</strong><br />
+Agents sense the temperature of the patch they occupy.</p>
+<p><strong>Stochasticity:</strong><br />
+The function itself is deterministic but stochastic variation in
+individual size and age creates emergent metabolic variation.</p>
+<p><strong>Collectives:</strong><br />
+Scaling uses the maximum size and age of the entire population to
+normalize differences among individuals.</p>
+<p><strong>Observation:</strong><br />
+Outputs include metabolism-rate, total-metabolism, and efficiency
+multipliers.</p>
+</div>
+<div id="initialization" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Initialization<a href="metabolism.html#initialization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="41%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Initialized Value</th>
+<th align="center">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Met-base</td>
+<td align="center">Computed using size, age, and temperature factors</td>
+<td align="center">Establishes a physiologically realistic baseline.</td>
+</tr>
+<tr>
+<td align="center">swim-base</td>
+<td align="center">Met-base times movement ratio</td>
+<td align="center">Allocates baseline metabolism for locomotion.</td>
+</tr>
+<tr>
+<td align="center">E-base</td>
+<td align="center">Met-base times 0.02</td>
+<td align="center">Maintenance cost of cellular metabolic activity.</td>
+</tr>
+<tr>
+<td align="center">E-creation</td>
+<td align="center">Met-base times 0.05</td>
+<td align="center">Cost of forming new chloride cells.</td>
+</tr>
+<tr>
+<td align="center">motion-ratio</td>
+<td align="center">0.7 normalized</td>
+<td align="center">Movement is energetically dominant.</td>
+</tr>
+<tr>
+<td align="center">osmo-ratio</td>
+<td align="center">0.3 normalized</td>
+<td align="center">Osmoregulation is energetically significant.</td>
+</tr>
+<tr>
+<td align="center">E-osmo</td>
+<td align="center">0</td>
+<td align="center">No osmoregulation cost at initialization.</td>
+</tr>
+<tr>
+<td align="center">metabolism-rate</td>
+<td align="center">Met-base</td>
+<td align="center">Baseline metabolism in the absence of environmental variation.</td>
+</tr>
+<tr>
+<td align="center">total-metabolism</td>
+<td align="center">0</td>
+<td align="center">Starts accumulation at zero.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Submodels<a href="metabolism.html#submodels" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="initialize-metabolism" class="section level3 hasAnchor" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Initialize Metabolism<a href="metabolism.html#initialize-metabolism" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Baseline metabolic constant is computed using:</p>
+<p>$$Met-base = base-constant <em>(size / M-max) ^ 0.75</em> [1 +
+age-sensitivity * (1 - age / max-age)] * (optimal-temperature /
+max-survival-temp)$$</p>
+<p>Where:</p>
 <ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
+<li>base-constant is 0.1</li>
+<li>age-sensitivity is 0.5</li>
 </ul>
+<p>Energy partitions:</p>
+<p><span class="math display">\[
+swim-base = Met-base \* motion-ratio
+\]</span></p>
+<p><span class="math display">\[
+E-base = Met-base \* 0.02
+\]</span></p>
+<p>E-creation = Met-base * 0.05</p>
+<p>$$</p>
 </div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="metabolic-rate-calculation" class="section level3 hasAnchor" number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Metabolic Rate Calculation<a href="metabolism.html#metabolic-rate-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>At every tick, metabolism is recalculated using:</p>
+<p><span class="math display">\[
+size-factor = (size / M-max) \^ 0.75
+\]</span></p>
+<p><span class="math display">\[
+temp-factor = Q10 \^ ((T-env - optimal-temperature) / 10)
+\]</span></p>
+<p><span class="math display">\[
+age-factor = 1 + (1 - age / max-age) \* 0.5
+\]</span></p>
+<p><span class="math display">\[
+Metabolism-rate = Met-base \* size-factor \* temp-factor \* age-factor
+\]</span></p>
+<p>Metabolic accumulation:</p>
+<p><span class="math display">\[
+total-metabolism = total-metabolism + M-total
+\]</span></p>
 </div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="efficiency-multipliers" class="section level3 hasAnchor" number="3.7.3">
+<h3><span class="header-section-number">3.7.3</span> Efficiency Multipliers<a href="metabolism.html#efficiency-multipliers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Efficiency is calculated by comparing the current metabolic rate to a
+reference baseline:</p>
+<p><span class="math display">\[
+efficiency = M-total / baseline-metabolism
+\]</span></p>
+<p>This scaling is applied to:</p>
+<ul>
+<li>swim-efficiency<br />
+</li>
+<li>digestion-penalty<br />
+</li>
+<li>osmoregulation-efficiency<br />
+</li>
+<li>lipid-catabolism-efficiency</li>
+</ul>
+<p>Efficiencies dynamically adjust other submodels in response to
+physiological and environmental conditions.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +843,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="digestion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +875,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-Metabolism.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 7 Contaminant Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 7 Contaminant Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 7 Contaminant Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="temperature-exposure.html"/>
+<link rel="next" href="filter-feeding.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,308 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="contaminant-exposure" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Contaminant Exposure<a href="contaminant-exposure.html#contaminant-exposure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-5" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Overview<a href="contaminant-exposure.html#overview-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The contaminant exposure submodel simulates mercury and methylmercury exposure risk across gills for migratory fish moving through spatially and temporally variable contamination fields. Exposure risk depends on contaminant concentration, suspended particulate matter, and metabolic rate. Concentrations of mercury and methylmercury are normalized across the spatial domain, and depth averaged SPM values modulate risk to reflect particle bound contaminant transport. Agents accumulate both instantaneous and cumulative exposure, allowing estimation of bioaccumulation risk over the migration season.</p>
+</div>
+<div id="purpose-3" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Purpose<a href="contaminant-exposure.html#purpose-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To evaluate mercury and methylmercury exposure and bioaccumulation risk for migratory fishes by integrating patch level contamination, ionregulatory stress, depth averaged suspended particulate matter, and metabolism driven uptake processes in estuarine and coastal systems.</p>
+</div>
+<div id="entities-state-variables-and-scales-4" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Entities, State Variables, and Scales<a href="contaminant-exposure.html#entities-state-variables-and-scales-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-4" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Spatial and Temporal Scales<a href="contaminant-exposure.html#spatial-and-temporal-scales-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Spatial Unit:</strong> Patch (3 m x 3 m resolution)<br />
+<strong>Temporal Unit:</strong> 5 minute time steps (tick)<br />
+<strong>SPM:</strong> Depth averaged suspended particulate matter per patch<br />
+<strong>Contaminants:</strong> Spatially varying Hg and MeHg concentrations</p>
+</div>
+<div id="global-variables" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Global Variables<a href="contaminant-exposure.html#global-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="41%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Initialized Value</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MeHg-threshold</strong></td>
+<td>15 ug per kg</td>
+<td>Screening threshold for methylmercury (Gaudet et al 1995)</td>
+</tr>
+<tr>
+<td><strong>Hg-threshold</strong></td>
+<td>150 ug per kg</td>
+<td>NOAA guideline for mercury contamination</td>
+</tr>
+<tr>
+<td><strong>min-Hg, max-Hg</strong></td>
+<td>Calculated from input layers</td>
+<td>Required for Hg normalization across domain</td>
+</tr>
+<tr>
+<td><strong>min-MeHg, max-MeHg</strong></td>
+<td>Calculated from input layers</td>
+<td>Required for MeHg normalization across domain</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="patch-variables-4" class="section level3 hasAnchor" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Patch Variables<a href="contaminant-exposure.html#patch-variables-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="56%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>mercury</strong></td>
+<td>Mercury concentration at this patch.</td>
+</tr>
+<tr>
+<td><strong>methylmercury</strong></td>
+<td>Methylmercury concentration at this patch.</td>
+</tr>
+<tr>
+<td><strong>SPM</strong></td>
+<td>Depth averaged suspended particulate matter at this patch.</td>
+</tr>
+<tr>
+<td><strong>Hg-exp-risk-alewife</strong></td>
+<td>Patch level mercury exposure risk from alewives.</td>
+</tr>
+<tr>
+<td><strong>Hg-exp-risk-stripedbass</strong></td>
+<td>Patch level mercury exposure risk from striped bass.</td>
+</tr>
+<tr>
+<td><strong>MeHg-exp-risk-alewife</strong></td>
+<td>Patch level methylmercury risk from alewives.</td>
+</tr>
+<tr>
+<td><strong>MeHg-exp-risk-stripedbass</strong></td>
+<td>Patch level methylmercury risk from striped bass.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-4" class="section level3 hasAnchor" number="7.3.4">
+<h3><span class="header-section-number">7.3.4</span> Agent Variables<a href="contaminant-exposure.html#agent-variables-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="56%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>metabolism-rate</strong></td>
+<td>Current metabolic rate used to scale uptake risk.</td>
+</tr>
+<tr>
+<td><strong>hg-exposure-duration</strong></td>
+<td>Number of ticks spent above the mercury threshold.</td>
+</tr>
+<tr>
+<td><strong>mehg-exposure-duration</strong></td>
+<td>Number of ticks spent above the MeHg threshold.</td>
+</tr>
+<tr>
+<td><strong>hg-uptake-risk</strong></td>
+<td>Instantaneous mercury uptake risk per tick.</td>
+</tr>
+<tr>
+<td><strong>mehg-uptake-risk</strong></td>
+<td>Instantaneous methylmercury uptake risk per tick.</td>
+</tr>
+<tr>
+<td><strong>hg-total</strong></td>
+<td>Cumulative mercury uptake.</td>
+</tr>
+<tr>
+<td><strong>mehg-total</strong></td>
+<td>Cumulative methylmercury uptake.</td>
+</tr>
+<tr>
+<td><strong>hg-exposure-total</strong></td>
+<td>Total non normalized Hg exposure.</td>
+</tr>
+<tr>
+<td><strong>mehg-exposure-total</strong></td>
+<td>Total non normalized MeHg exposure.</td>
+</tr>
+<tr>
+<td><strong>hg-exposure-total-normalized</strong></td>
+<td>Sum of normalized Hg exposure values.</td>
+</tr>
+<tr>
+<td><strong>mehg-exposure-total-normalized</strong></td>
+<td>Sum of normalized MeHg exposure values.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-4" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Process Overview and Scheduling<a href="contaminant-exposure.html#process-overview-and-scheduling-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Retrieve mercury, methylmercury, and depth averaged SPM values from the current patch.<br />
+</li>
+<li>Normalize patch contaminants between 0 and 1.<br />
+</li>
+<li>Compare patch levels to stress thresholds.<br />
+</li>
+<li>Update exposure durations.<br />
+</li>
+<li>Compute uptake risk using metabolism, ionregulatory stress, and SPM.<br />
+</li>
+<li>Add uptake risk to cumulative body burden.<br />
+</li>
+<li>Update patch level species specific risk metrics.</li>
+</ol>
+</div>
+<div id="design-concepts-4" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Design Concepts<a href="contaminant-exposure.html#design-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong><br />
+Contaminant uptake follows toxicokinetic principles where absorption increases with concentration, metabolic rate, and suspended particulate matter (SPM). Depth averaged SPM reflects hydrodynamic transport and particle bound contaminant processes for fish typically found near the middle of the water column.</p>
+<p><strong>Emergence:</strong><br />
+Exposure and risk patterns emerge from individual movement across heterogeneous contamination fields coupled with metabolic and stress driven physiology.</p>
+<p><strong>Adaptation:</strong><br />
+Agents do not actively avoid contamination, but their internal physiology modulates uptake in response to metabolic changes.</p>
+<p><strong>Objectives:</strong><br />
+This model does not give agents risk minimization behavior. Instead, risk is assessed to evaluate means of exposure pathways and cumulative toxic exposure.</p>
+<p><strong>Sensing:</strong><br />
+Agents sense patch level mercury, methylmercury, SPM, and internal metabolic state.</p>
+<p><strong>Stochasticity:</strong><br />
+Variation in spatial contaminant fields or individual characteristics and state creates stochastic variation in exposure.</p>
+<p><strong>Observation:</strong><br />
+Outputs include instantaneous exposure risk, cumulative exposure risk, normalized exposure totals, and patch level species specific contributions.</p>
+</div>
+<div id="initialization-4" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Initialization<a href="contaminant-exposure.html#initialization-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="41%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Initialized Value</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mercury</td>
+<td>Input layer</td>
+<td>Hydrodynamic or field derived contaminant layer.</td>
+</tr>
+<tr>
+<td>methylmercury</td>
+<td>Input layer</td>
+<td>Same as above.</td>
+</tr>
+<tr>
+<td>SPM</td>
+<td>Depth averaged input</td>
+<td>Reflects hydrodynamic particle transport.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-mercury-exposure-and-uptake" class="section level2 hasAnchor" number="7.7">
+<h2><span class="header-section-number">7.7</span> Submodels: Mercury Exposure and Uptake<a href="contaminant-exposure.html#submodels-mercury-exposure-and-uptake" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="normalization" class="section level3 hasAnchor" number="7.7.1">
+<h3><span class="header-section-number">7.7.1</span> Normalization<a href="contaminant-exposure.html#normalization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+Hg_{normalized} = \frac{Hg_{current} - minHg}{maxHg - minHg}
+\]</span></p>
+<p>Bounded in the range 0 to 1.</p>
+</div>
+<div id="exposure-duration" class="section level3 hasAnchor" number="7.7.2">
+<h3><span class="header-section-number">7.7.2</span> Exposure Duration<a href="contaminant-exposure.html#exposure-duration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+Hg_{exp} = Hg_{exp} + 1 \quad \text{if } Hg_{current} &gt; Hg_{threshold}
+\]</span></p>
+</div>
+<div id="uptake-risk" class="section level3 hasAnchor" number="7.7.3">
+<h3><span class="header-section-number">7.7.3</span> Uptake Risk<a href="contaminant-exposure.html#uptake-risk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+Hg_{risk} = metabolism \cdot Hg_{normalized} \cdot (1 + S) \cdot (1 + SPM)
+\]</span></p>
+</div>
+<div id="cumulative-uptake" class="section level3 hasAnchor" number="7.7.4">
+<h3><span class="header-section-number">7.7.4</span> Cumulative Uptake<a href="contaminant-exposure.html#cumulative-uptake" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+Hg_{total} = Hg_{total} + Hg_{risk}
+\]</span></p>
+<p>Patch level storage based on species for cumulative duration risk experience in space:</p>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li><strong>Hg-exp-risk</strong><br />
+</li>
+<li><strong>Hg-exp-risk</strong></li>
 </ul>
 </div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="submodels-methylmercury-exposure-and-uptake" class="section level2 hasAnchor" number="7.8">
+<h2><span class="header-section-number">7.8</span> Submodels: Methylmercury Exposure and Uptake<a href="contaminant-exposure.html#submodels-methylmercury-exposure-and-uptake" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="normalization-1" class="section level3 hasAnchor" number="7.8.1">
+<h3><span class="header-section-number">7.8.1</span> Normalization<a href="contaminant-exposure.html#normalization-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+MeHg_{normalized} = \frac{MeHg_{current} - minMeHg}{maxMeHg - minMeHg}
+\]</span></p>
+<p>Clamped to the range 0 to 1.</p>
+</div>
+<div id="exposure-duration-1" class="section level3 hasAnchor" number="7.8.2">
+<h3><span class="header-section-number">7.8.2</span> Exposure Duration<a href="contaminant-exposure.html#exposure-duration-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+MeHg_{exp} = MeHg_{exp} + 1 \quad \text{if } MeHg_{current} &gt; MeHg_{threshold}
+\]</span></p>
+</div>
+<div id="uptake-risk-1" class="section level3 hasAnchor" number="7.8.3">
+<h3><span class="header-section-number">7.8.3</span> Uptake Risk<a href="contaminant-exposure.html#uptake-risk-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+MeHg_{risk} = metabolism \cdot MeHg_{normalized} \cdot (1 + S) \cdot (1 + SPM)
+\]</span></p>
+</div>
+<div id="cumulative-uptake-1" class="section level3 hasAnchor" number="7.8.4">
+<h3><span class="header-section-number">7.8.4</span> Cumulative Uptake<a href="contaminant-exposure.html#cumulative-uptake-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+MeHg_{total} = MeHg_{total} + MeHg_{risk}
+\]</span></p>
+<p>Patch level storage based on species for cumulative duration risk experience in space:</p>
 <ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
+<li><strong>MeHg-exp-risk</strong><br />
+</li>
+<li><strong>MeHg-exp-risk</strong></li>
 </ul>
-</div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
-</div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +837,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="temperature-exposure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="filter-feeding.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +869,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-Contaminant_Exposure.Rmd",
 "text": "Edit"
 },
 "history": {

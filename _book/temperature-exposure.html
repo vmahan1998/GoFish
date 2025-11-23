@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 6 Temperature Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 6 Temperature Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 6 Temperature Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="salinity-exposure.html"/>
+<link rel="next" href="contaminant-exposure.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,315 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="temperature-exposure" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Temperature Exposure<a href="temperature-exposure.html#temperature-exposure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-4" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Overview<a href="temperature-exposure.html#overview-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This model simulates thermoregulation behavior and physiological consequences in migratory fish agents. Each agent experiences temperature-dependent effects on movement, survival, and performance based on its local environment. Agents have defined thermal traits including an optimal temperature, a minimum viable temperature, and a maximum tolerable temperature. These constraints influence swimming speed and determine whether survival is possible in the current patch.</p>
+</div>
+<div id="purpose-and-patterns" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Purpose and Patterns<a href="temperature-exposure.html#purpose-and-patterns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This submodel captures ecologically grounded thermoregulatory behavior in migratory fish by simulating how temperature influences movement, survival, and physiological performance during migration and staging.</p>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li><p>Agents experience thermal stress based on deviations from their optimal temperature, with stress scaling nonlinearly as conditions approach species specific tolerance thresholds.</p></li>
+<li><p>Swimming speed is reduced as environmental temperature diverges from thermal optima, reflecting empirical performance curves and diminished locomotor efficiency at suboptimal temperatures.</p></li>
+<li><p>Agents calculate the energy expenditure associated with thermoregulation, with increased metabolic cost arising from reduced swimming efficiency under thermal stress.</p></li>
+<li><p>When thermal stress exceeds a threshold, agents evaluate neighboring patches and relocate to cooler or warmer areas to minimize physiological strain.</p></li>
+<li><p>Agents track cumulative time spent beyond minimum and maximum viable temperature thresholds, and mortality occurs after sustained exposure to lethal conditions.</p></li>
+<li><p>This model supports the analysis of thermal niche constraints, temperature driven habitat selection, and the vulnerability of fish to extreme temperature events in estuarine systems.</p></li>
+</ul>
+<p><strong>Note:</strong> Using this function in combination with scaled metabolic efficiency will penalize the agent twice for temperature. Users should apply one or the other depending on model objectives, or use the metabolism function without efficiency scaling.</p>
+</div>
+<div id="entities-state-variables-and-scales-3" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Entities, State Variables, and Scales<a href="temperature-exposure.html#entities-state-variables-and-scales-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-3" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Spatial and Temporal Scales<a href="temperature-exposure.html#spatial-and-temporal-scales-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Spatial Unit</strong>: Patch (3 m x 3 m resolution)</li>
+<li><strong>Temporal Unit</strong>: 5-minute time steps (<code>tick</code>)</li>
 </ul>
 </div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="patch-variables-3" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Patch Variables<a href="temperature-exposure.html#patch-variables-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Temperature</strong><br />
+<span class="math inline">\(T_{patch}\)</span></td>
+<td>The temperature of a given patch, derived from hydrodynamic model inputs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-3" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Agent Variables<a href="temperature-exposure.html#agent-variables-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Optimal Temperature</strong> <span class="math inline">\(T_{opt}\)</span></td>
+<td>Optimal performance temperature</td>
+</tr>
+<tr>
+<td><strong>Minimum Viable Temperature</strong> <span class="math inline">\(T_{min}\)</span></td>
+<td>Minimum viable temperature for survival</td>
+</tr>
+<tr>
+<td><strong>Maximum Viable Temperature</strong> <span class="math inline">\(T_{max}\)</span></td>
+<td>Maximum viable temperature for survival</td>
+</tr>
+<tr>
+<td><strong>swimming speed</strong> <span class="math inline">\(V_{agent}\)</span></td>
+<td>The speed at which a prey agent is moving</td>
+</tr>
+<tr>
+<td><strong>corrected speed</strong> <span class="math inline">\(V_{corr}\)</span></td>
+<td>The corrected speed from thermal implications</td>
+</tr>
+<tr>
+<td><strong>time below minimum</strong> <span class="math inline">\(t_{min}\)</span></td>
+<td>Tracks cumulative cold exposure duration</td>
+</tr>
+<tr>
+<td><strong>time above maximum</strong> <span class="math inline">\(t_{max}\)</span></td>
+<td>Tracks cumulative heat exposure duration</td>
+</tr>
+<tr>
+<td><strong>energy</strong> <span class="math inline">\(E_{agent}\)</span></td>
+<td>Metabolic cost associated with thermoregulation</td>
+</tr>
+<tr>
+<td><strong>swimming speed</strong> <span class="math inline">\(V_{agent}\)</span></td>
+<td>The current swimming speed of the agent.</td>
+</tr>
+<tr>
+<td><strong>acclimation rate</strong> <span class="math inline">\(\lambda\)</span></td>
+<td>Rate at which agent acclimates to temperature based on size, age, and species.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-3" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Process Overview and Scheduling<a href="temperature-exposure.html#process-overview-and-scheduling-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p><strong>Thermal Stress Calculation</strong><br />
+Each agent calculates thermal stress based on the deviation between the current patch temperature and its individual thermal optimum. Stress is scaled nonlinearly to reflect increasing physiological strain near temperature limits.</p></li>
+<li><p><strong>Acclimation</strong><br />
+Agents gradually adjust their optimal temperature toward the current patch temperature using a fixed acclimation rate, simulating physiological plasticity over time.</p></li>
+<li><p><strong>Thermal Mortality Check</strong><br />
+Agents track cumulative exposure to lethal temperatures. If the patch temperature falls below the agent’s minimum threshold or exceeds its maximum threshold for more than three consecutive time steps, the agent dies.</p></li>
+<li><p><strong>Swimming Speed Correction</strong><br />
+Swimming speed is modified using a thermal correction factor derived from the agent’s deviation from its optimal temperature. This adjustment affects movement performance and downstream behaviors.</p></li>
+<li><p><strong>Thermal Avoidance</strong><br />
+If thermal stress exceeds a threshold value (e.g., $S_{thermal} &gt; 7$), agents evaluate neighboring patches and move to the patch with the lowest thermal stress.</p></li>
+<li><p><strong>Energy Cost Adjustment</strong><br />
+Swimming energy cost is scaled based on the ratio of thermally corrected speed to the agent’s base swimming speed. This reflects increased metabolic effort under suboptimal thermal conditions.</p></li>
+</ol>
+</div>
+<div id="design-concepts-3" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Design Concepts<a href="temperature-exposure.html#design-concepts-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong> Agents are ectothermic and thermally constrained. Movement and survival depend on physiological performance at environmental temperatures.</p>
+<p><strong>Emergence:</strong> Spatial thermal gradients produce differential survival, movement, and performance outcomes across the landscape.</p>
+<p><strong>Adaptation</strong>: Agents modify their optimal temperature slowly to match local conditions, simulating physiological acclimation.</p>
+<p><strong>Objectives:</strong> Agents attempt to avoid lethal temperatures and maintain performance within their thermal niche while minimizing energy loss.</p>
+<p><strong>Sensing</strong>: Agents sense local patch temperature and compare it to their thermal limits and optimal range.</p>
+<p><strong>Interaction</strong>: Agents interact with their environment by relocating to lower-stress patches and adjusting internal states accordingly.</p>
+<p><strong>Observation:</strong> Thermal stress, adjusted swimming speed, energy cost, cumulative heat/cold exposure, and thermal mortality can be tracked per agent.</p>
+</div>
+<div id="initialization-3" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Initialization<a href="temperature-exposure.html#initialization-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table style="width:99%;">
+<colgroup>
+<col width="10%" />
+<col width="49%" />
+<col width="39%" />
+</colgroup>
+<tbody>
+<tr>
+<td align="center"><strong>Variable</strong></td>
+<td align="center"><strong>Initialized Value</strong></td>
+<td align="center"><strong>Justification</strong></td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(T_{opt}\)</span></td>
+<td align="center">Species- or life stage–specific value</td>
+<td align="center">Reflects thermal preference; varies by developmental stage or habitat</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(T_{min}\)</span></td>
+<td align="center">Species-specific threshold</td>
+<td align="center">Based on empirical lower thermal limit for survival</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(T_{max}\)</span></td>
+<td align="center">Species-specific threshold</td>
+<td align="center">Based on empirical upper thermal limit for survival</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(T_{patch}\)</span></td>
+<td align="center">Hydrodynamic model input</td>
+<td align="center">External environmental condition updated each tick</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(S_{thermal}\)</span></td>
+<td align="center">1</td>
+<td align="center">No stress at initialization if $T_{patch} = T_{opt}$</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(t_{min}\)</span></td>
+<td align="center">0</td>
+<td align="center">No prior exposure to lethal cold stress</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(t_{max}\)</span></td>
+<td align="center">0</td>
+<td align="center">No prior exposure to lethal heat stress</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(V_{agent}\)</span></td>
+<td align="center">Size-scaled base speed</td>
+<td align="center">Initial swimming speed assuming full capacity</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(E_{agent}\)</span></td>
+<td align="center">100</td>
+<td align="center">No thermal deviation at model start</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(E_{swim}\)</span></td>
+<td align="center">Size-scaled base swim cost</td>
+<td align="center">Scales with body size; used in movement energy balance</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(E_{swim}^{corr}\)</span></td>
+<td align="center">Equal to <span class="math inline">\(E_{swim}\)</span></td>
+<td align="center">No thermal penalty at initialization</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(\lambda\)</span></td>
+<td align="center">0.01–0.05 (user-defined) | Acclimation rate controls speed of physiological adjustment</td>
+<td align="center">Population variation where older fish are better at thermoregulating</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-3" class="section level2 hasAnchor" number="6.7">
+<h2><span class="header-section-number">6.7</span> Submodels<a href="temperature-exposure.html#submodels-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="thermal-stress" class="section level3 hasAnchor" number="6.7.1">
+<h3><span class="header-section-number">6.7.1</span> Thermal Stress<a href="temperature-exposure.html#thermal-stress" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Thermal stress is scaled exponentially between 1 (optimal) and 10 (at or beyond minimum or maximum viable temperatures).</p>
+<p><span class="math display">\[
+S_{thermal} = 1 + 9 \cdot \left(\frac{|T_{patch} - T_{opt}|}{\max(|T_{opt} - T_{min}|, |T_{max} - T_{opt}|)}\right)^k
+\]</span></p>
+<p>Where:</p>
 <ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
+<li><p><span class="math inline">\(S_{thermal}\)</span> is the thermal stress score.</p></li>
+<li><p><span class="math inline">\(T_{patch}\)</span> is the current patch temperature.</p></li>
+<li><p><span class="math inline">\(T_{opt}\)</span>, <span class="math inline">\(T_{min}\)</span>, <span class="math inline">\(T_{max}\)</span> are the agent’s thermal preferences.</p></li>
+<li><p><span class="math inline">\(k\)</span> is an exponent controlling the steepness of the stress curve.</p></li>
 </ul>
 </div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="acclimation-and-plasticity" class="section level3 hasAnchor" number="6.7.2">
+<h3><span class="header-section-number">6.7.2</span> Acclimation and Plasticity<a href="temperature-exposure.html#acclimation-and-plasticity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+T_{opt}(t+1) = T_{opt}(t) + \lambda \cdot (T_{patch} - T_{opt}(t))
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(T_{opt}\)</span> gradually shifts toward <span class="math inline">\(T_{patch}\)</span></p></li>
+<li><p><span class="math inline">\(\lambda\)</span> is the acclimation rate (e.g. 0.01-0.05)</p></li>
+</ul>
 </div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="temperature-adjusted-swimming-speed-place-inside-migration-functions" class="section level3 hasAnchor" number="6.7.3">
+<h3><span class="header-section-number">6.7.3</span> Temperature-Adjusted Swimming Speed (place inside migration function(s))<a href="temperature-exposure.html#temperature-adjusted-swimming-speed-place-inside-migration-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[
+V_{corr} = V_{agent} \cdot \left(1 - \left|\frac{T_{patch} - T_{opt}}{T_{opt}}\right|\right)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(V_{agent}\)</span> is the agent’s swimming speed.</p></li>
+<li><p><span class="math inline">\(V_{corr}\)</span> is the thermal corrected speed.</p></li>
+<li><p><span class="math inline">\(T_{patch}\)</span> is the temperature of the current patch.</p></li>
+<li><p><span class="math inline">\(T_{opt}\)</span> is the agent’s optimal temperature.</p></li>
+</ul>
+</div>
+<div id="thermal-avoidance-movement-place-inside-migration-functions" class="section level3 hasAnchor" number="6.7.4">
+<h3><span class="header-section-number">6.7.4</span> Thermal-Avoidance Movement (place inside migration function(s))<a href="temperature-exposure.html#thermal-avoidance-movement-place-inside-migration-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Agents check thermal stress in their current patch. If <span class="math inline">\(S_{thermal} &gt; 7\)</span>, they evaluate neighboring patches. The agent moves to the neighbor with the lowest <span class="math inline">\(S_{thermal}\)</span> value.</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(S_{thermal}\)</span> is the thermal stress score.</li>
+</ul>
+</div>
+<div id="thermal-mortality-thresholds-place-inside-migration-functions" class="section level3 hasAnchor" number="6.7.5">
+<h3><span class="header-section-number">6.7.5</span> Thermal Mortality Thresholds (place inside migration function(s))<a href="temperature-exposure.html#thermal-mortality-thresholds-place-inside-migration-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math inline">\(t_{min}\)</span> and <span class="math inline">\(t_{max}\)</span> are incremented when temperature thresholds are exceeded:</p>
+<p><span class="math display">\[
+\text{if } T_{patch} &lt; T_{min} \text{ for more than 3 consecutive time steps}, \quad \text{agent dies}
+\]</span></p>
+<p><span class="math display">\[
+\text{if } T_{patch} &gt; T_{max} \text{ for more than 3 consecutive time steps}, \quad \text{agent dies}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(T_{min}\)</span> is the minimum viable temperature.</p></li>
+<li><p><span class="math inline">\(T_{max}\)</span> is the maximum tolerable temperature.</p></li>
+</ul>
+</div>
+<div id="energy-consumption-place-inside-migration-functions" class="section level3 hasAnchor" number="6.7.6">
+<h3><span class="header-section-number">6.7.6</span> Energy Consumption (place inside migration function(s))<a href="temperature-exposure.html#energy-consumption-place-inside-migration-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Acclimation energy cost:</p>
+<p><span class="math display">\[
+E_{acclimation} = \phi \cdot |T_{patch} - T_{opt}|\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{acclimation}\)</span> is the energy cost for physiological acclimation.</p></li>
+<li><p><span class="math inline">\(T_{patch}\)</span> is the current patch temperature.</p></li>
+<li><p><span class="math inline">\(\phi\)</span> is a scaling constant for acclimation cost (e.g., 0.01–0.05).</p></li>
+<li><p><span class="math inline">\(T_{opt}\)</span> is the agent’s current thermal optimum.</p></li>
+</ul>
+<p>This energy consumption corrects the energy used based on the <span class="math inline">\(V_{corr}\)</span>:</p>
+<p><span class="math display">\[
+E_{swim}^{corr} = E_{swim} \cdot \left( \frac{V_{agent}}{V_{corr}} \right)\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{swim}^{corr}\)</span> is the corrected energy cost for movement.</p></li>
+<li><p><span class="math inline">\(E_{swim}\)</span> is swimming-related energetic inefficiency from thermal deviation.</p></li>
+<li><p><span class="math inline">\(V_{agent}\)</span> is the agent’s swimming speed.</p></li>
+<li><p><span class="math inline">\(V_{corr}\)</span> is the thermal corrected speed.</p></li>
+</ul>
+<p>Total energy balance:</p>
+<p><span class="math display">\[
+E_{agent} = E_{agent} - (E_{swim}^{corr} + E_{acclimation})
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{swim}^{corr}\)</span> accounts for temperature-related movement inefficiency.</p></li>
+<li><p><span class="math inline">\(E_{acclimation}\)</span> accounts for metabolic costs of internal physiological adjustment.</p></li>
+<li><p><span class="math inline">\(E_{agent}\)</span> is the updated available energy of the agent.</p></li>
+</ul>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +844,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="salinity-exposure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="contaminant-exposure.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +876,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06-Temperature_Exposure.Rmd",
 "text": "Edit"
 },
 "history": {

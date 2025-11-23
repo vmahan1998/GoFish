@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 11 Schooling | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 11 Schooling | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 11 Schooling | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="seaward-migration-behavior.html"/>
+<link rel="next" href="selective-tidal-stream-transport.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,202 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="schooling" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Schooling<a href="schooling.html#schooling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-10" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Overview<a href="schooling.html#overview-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Schooling is an emergent collective behavior in which fish align, cohere, and maintain spacing with nearby con-specifics. In this model, schooling increases hydrodynamic efficiency, predator avoidance, and coordinated migration. The submodel follows the classic behavioral rules from agent based schooling and BOIDS frameworks (separation, alignment, and cohesion).</p>
+<p>The schooling behavior in this model is adapted from the publicly available NetLogo model <a href="https://modelingcommons.org/browse/one_model/5709#model_tabs_browse_info">Fish Schooling For Predator Avoidance</a> created by Sebastian Dobon and shared through the NetLogo Modeling Commons. That model implements classic schooling rules from the original BOIDS framework developed by Craig Reynolds in 1987 in his paper <em>Flocks, Herds, and Schools: A Distributed Behavioral Model</em> (Reynolds, 1987).</p>
+</div>
+<div id="purpose-7" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Purpose<a href="schooling.html#purpose-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The purpose of this submodel is to simulate collective movement patterns observed in migratory fish where individuals adjust their position and speed based on nearby schoolmates. This mechanism enhances group cohesion during landward or seaward migration and produces emergent school structure, directional alignment, and spacing.</p>
+</div>
+<div id="entities-state-variables-and-scales-9" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Entities, State Variables, and Scales<a href="schooling.html#entities-state-variables-and-scales-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="patch-variables-9" class="section level3 hasAnchor" number="11.3.1">
+<h3><span class="header-section-number">11.3.1</span> Patch Variables<a href="schooling.html#patch-variables-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>patch-terrain</td>
+<td>Identifies water or land patches</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-9" class="section level3 hasAnchor" number="11.3.2">
+<h3><span class="header-section-number">11.3.2</span> Agent Variables<a href="schooling.html#agent-variables-9" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="74%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>breed</td>
+<td>Species identity used to restrict schooling to con-specifics</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>Current swimming speed</td>
+</tr>
+<tr>
+<td>min-speed</td>
+<td>Lowest allowable swimming speed</td>
+</tr>
+<tr>
+<td>start-migration?</td>
+<td>Indicates whether the agent has begun migration</td>
+</tr>
+<tr>
+<td>landward-migration?</td>
+<td>Indicates landward migration mode</td>
+</tr>
+<tr>
+<td>seaward-migration?</td>
+<td>Indicates seaward migration mode</td>
+</tr>
+<tr>
+<td>schoolmates</td>
+<td>Set of nearby con-specifics that meet schooling criteria</td>
+</tr>
+<tr>
+<td>nearest-neighbor</td>
+<td>Closest schoolmate used for spacing and cohesion</td>
+</tr>
+<tr>
+<td>minimum-separation</td>
+<td>Desired minimum inter-fish spacing</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-9" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Process Overview and Scheduling<a href="schooling.html#process-overview-and-scheduling-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Identify schoolmates based on species identity and shared migration state.</li>
+<li>Detect the nearest neighbor among schoolmates.</li>
+<li>Apply separation when neighbors are too close.</li>
+<li>Apply cohesion and alignment when spacing is adequate.</li>
+<li>Adjust speed to match group speed and maintain coordination.</li>
+</ol>
+</div>
+<div id="design-concepts-9" class="section level2 hasAnchor" number="11.5">
+<h2><span class="header-section-number">11.5</span> Design Concepts<a href="schooling.html#design-concepts-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles</strong><br />
+Schooling arises from separation, cohesion, and alignment. These rules reflect collective behaviors observed in migrating fishes.</p>
+<p><strong>Emergence</strong><br />
+Cohesive schools, spacing patterns, and synchronized direction arise without centralized control.</p>
+<p><strong>Adaptation</strong><br />
+Agents adjust heading and speed in response to nearby schoolmates.</p>
+<p><strong>Objectives</strong><br />
+Fish do not attempt to form schools explicitly. Schooling emerges from local rules.</p>
+<p><strong>Learning</strong><br />
+There is no internal learning. Behavior is reactive and rule based.</p>
+<p><strong>Prediction</strong><br />
+Agents do not predict future states of neighbors. They respond to current spacing and direction.</p>
+<p><strong>Sensing</strong><br />
+Agents sense species identity, distance to schoolmates, spacing, and local movement direction.</p>
+<p><strong>Interaction</strong><br />
+Agents change speed and heading based on interactions with neighbors.</p>
+<p><strong>Stochasticity</strong><br />
+Small random turning angles elsewhere in the model introduce variability in movement.</p>
+<p><strong>Collectives</strong><br />
+Schools form as dynamic collectives with shared direction and spacing rules.</p>
+<p><strong>Observation</strong><br />
+School size, spacing, direction, and cohesion may be tracked to evaluate emergent schooling patterns.</p>
+</div>
+<div id="initialization-9" class="section level2 hasAnchor" number="11.6">
+<h2><span class="header-section-number">11.6</span> Initialization<a href="schooling.html#initialization-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="21%" />
+<col width="54%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Initialized Value</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>speed</td>
+<td>species specific</td>
+<td>Starting swimming speed</td>
+</tr>
+<tr>
+<td>min-speed</td>
+<td>species specific</td>
+<td>Prevents schools from stopping entirely</td>
+</tr>
+<tr>
+<td>schoolmates</td>
+<td>empty set</td>
+<td>No neighbors until movement begins</td>
+</tr>
+<tr>
+<td>nearest-neighbor</td>
+<td>none</td>
+<td>Determined dynamically during the simulation</td>
+</tr>
+<tr>
+<td>minimum-separation</td>
+<td>species specific</td>
+<td>Prevents collisions and maintains spacing</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-8" class="section level2 hasAnchor" number="11.7">
+<h2><span class="header-section-number">11.7</span> Submodels<a href="schooling.html#submodels-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="identifying-schoolmates" class="section level3 hasAnchor" number="11.7.1">
+<h3><span class="header-section-number">11.7.1</span> Identifying Schoolmates<a href="schooling.html#identifying-schoolmates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Fish select schoolmates from nearby con-specifics that share the same migration state, including the start of migration and direction (landward or seaward).</p>
+</div>
+<div id="nearest-neighbor" class="section level3 hasAnchor" number="11.7.2">
+<h3><span class="header-section-number">11.7.2</span> Nearest Neighbor<a href="schooling.html#nearest-neighbor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The closest schoolmate is used to determine whether spacing rules or cohesion rules should be applied.</p>
+</div>
+<div id="separation" class="section level3 hasAnchor" number="11.7.3">
+<h3><span class="header-section-number">11.7.3</span> Separation<a href="schooling.html#separation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If the nearest neighbor is closer than the minimum desired separation, the agent turns away to maintain spacing.</p>
+</div>
+<div id="cohesion" class="section level3 hasAnchor" number="11.7.4">
+<h3><span class="header-section-number">11.7.4</span> Cohesion<a href="schooling.html#cohesion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When spacing is appropriate, the agent turns toward the group centroid to maintain cohesive structure.</p>
+</div>
+<div id="alignment" class="section level3 hasAnchor" number="11.7.5">
+<h3><span class="header-section-number">11.7.5</span> Alignment<a href="schooling.html#alignment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The agent aligns its heading with the mean direction of nearby con-specifics to maintain synchronized movement.</p>
+</div>
+<div id="speed-adjustment" class="section level3 hasAnchor" number="11.7.6">
+<h3><span class="header-section-number">11.7.6</span> Speed Adjustment<a href="schooling.html#speed-adjustment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Speed is regulated to preserve cohesion within the school:</p>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li>The agent accelerates if any schoolmate is significantly faster.<br />
+</li>
+<li>Otherwise, it gradually slows toward the minimum speed.</li>
 </ul>
-</div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
-</ul>
-</div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
-</div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<p>This produces emergent schooling speeds and prevents fragmentation.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +731,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="seaward-migration-behavior.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="selective-tidal-stream-transport.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +763,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-Schooling.Rmd",
 "text": "Edit"
 },
 "history": {

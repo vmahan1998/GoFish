@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 5 Salinity Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 5 Salinity Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 5 Salinity Exposure | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="digestion.html"/>
+<link rel="next" href="temperature-exposure.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,336 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="salinity-exposure" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Salinity Exposure<a href="salinity-exposure.html#salinity-exposure" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-3" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Overview<a href="salinity-exposure.html#overview-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Osmoregulation allows migratory fish to maintain homeostasis by regulating internal ion concentrations in response to varying environmental salinities. This function simulates salinity exposure through ion-regulatory stress, chloride cell expression, and the metabolic energy cost of to acclimate to this exposure internally in a spatiotemporal explicit context.</p>
+</div>
+<div id="purpose-2" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Purpose<a href="salinity-exposure.html#purpose-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To simulate stress response to salinity changes for migratory fish in coastal systems by regulating chloride cell density and allocating energy toward ion-regulatory processes.</p>
+</div>
+<div id="entities-state-variables-and-scales-2" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Entities, State Variables, and Scales<a href="salinity-exposure.html#entities-state-variables-and-scales-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-2" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Spatial and Temporal Scales<a href="salinity-exposure.html#spatial-and-temporal-scales-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li><strong>Spatial Unit</strong>: Patch (3 m x 3 m resolution)</li>
+<li><strong>Temporal Unit</strong>: 5-minute time steps (<code>tick</code>)</li>
 </ul>
 </div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="patch-variables-2" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Patch Variables<a href="salinity-exposure.html#patch-variables-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="24%" />
+<col width="75%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Salinity</strong> <span class="math inline">\(S_{patch}\)</span></td>
+<td>The salt concentration of a given patch, derived from hydrodynamic model inputs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-2" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> Agent Variables<a href="salinity-exposure.html#agent-variables-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="64%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>acclimated-salinity</strong> <span class="math inline">\(S_{agent}\)</span></td>
+<td>The salinity level the agent is currently acclimated to.</td>
+</tr>
+<tr>
+<td><strong>ionregulatory-stress</strong> <span class="math inline">\(I_{stress}\)</span></td>
+<td>The level of stress an agent experiences when regulating ion balance due to osmotic difference.</td>
+</tr>
+<tr>
+<td><strong>chloride-density-min</strong> <span class="math inline">\(C_{min}\)</span></td>
+<td>Minimum level of chloride cells, present even in low-stress conditions.</td>
+</tr>
+<tr>
+<td><strong>chloride-density-max</strong> <span class="math inline">\(C_{max}\)</span></td>
+<td>Maximum level of chloride cells at high stress.</td>
+</tr>
+<tr>
+<td><strong>chloride-cell-density</strong> <span class="math inline">\(C\)</span></td>
+<td>The current number of chloride cells expressed by the agent.</td>
+</tr>
+<tr>
+<td><strong>chloride-max-proliferation</strong> <span class="math inline">\(R_{proliferation}\)</span></td>
+<td>The max number of chloride cells that can be expressed per time step.</td>
+</tr>
+<tr>
+<td><strong>chloride-cells-this-tick</strong> <span class="math inline">\(C_{tick}\)</span></td>
+<td>The number of chloride cells created (or destroyed) in the current time step.</td>
+</tr>
+<tr>
+<td><strong>acclimation-rate</strong> <span class="math inline">\(\alpha\)</span></td>
+<td>The rate at which chloride cell density increases over time.</td>
+</tr>
+<tr>
+<td><strong>C-mid</strong> <span class="math inline">\(C_{mid}\)</span></td>
+<td>The chloride cell density at which stress buffering is 50% effective.</td>
+</tr>
+<tr>
+<td><strong>time-since-last-osmoregulation</strong> <span class="math inline">\(t_{osmo}\)</span></td>
+<td>The time elapsed since the last chloride cell regulation event.</td>
+</tr>
+<tr>
+<td><strong>Energy</strong> <span class="math inline">\(E_{agent}\)</span></td>
+<td>The agent’s total available energy for physiological functions.</td>
+</tr>
+<tr>
+<td><strong>E-osmo</strong> <span class="math inline">\(E_{osmo}\)</span></td>
+<td>Total energy used for ion regulation (osmoregulation).</td>
+</tr>
+<tr>
+<td><strong>E-base</strong> <span class="math inline">\(E_{base}\)</span></td>
+<td>The base energy cost per chloride cell.</td>
+</tr>
+<tr>
+<td><strong>E-creation</strong> <span class="math inline">\(E_{creation}\)</span></td>
+<td>The energy cost for producing new chloride cells.</td>
+</tr>
+<tr>
+<td><strong>metabolic-max</strong> <span class="math inline">\(Met_{max}\)</span></td>
+<td>Maximum metabolic cost for chloride cell creation.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-2" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Process Overview and Scheduling<a href="salinity-exposure.html#process-overview-and-scheduling-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Compute osmotic stress based on difference between <span class="math inline">\(S_{patch}\)</span> and <span class="math inline">\(S_{agent}\)</span>.</p></li>
+<li><p>Adjust chloride cell density depending on time since last osmoregulation.</p></li>
+<li><p>Compute energy cost of osmoregulation.</p></li>
+<li><p>Deduct energy expenditure from agent’s energy pool.</p></li>
+</ol>
+</div>
+<div id="design-concepts-2" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Design Concepts<a href="salinity-exposure.html#design-concepts-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong> The model is based on principles of physiological ecology and osmoregulatory energetics in teleost and apterygian species. It draws from empirical findings (e.g., Allen et al., 2009; Little et al., 2023) and includes size scaling, stress buffering, and energy constraints. These principles are implemented at the submodel level (e.g., chloride proliferation, stress calculation) to simulate realistic physiological feedbacks to changes in environmental salinity.</p>
+<p><strong>Emergence:</strong> Ion-regulatory stress, chloride cell expression, and energy expenditure emerge from an agent’s interaction with temporally and spatially variable salinity environments. These patterns are not pre-specified but arise dynamically through adaptive physiological responses.</p>
+<p><strong>Adaptation</strong>: Agents respond to osmotic stress by adjusting chloride cell density, a trait that buffers stress. This process allows individuals to reduce internal-external salinity gradients and maintain ion homeostasis.</p>
+<p><strong>Objectives:</strong> Agents seek to support survival by reducing stress and avoiding excessive energy loss through regulating chloride cell expression.</p>
+<p><strong>Sensing</strong>: Agents sense local salinity (<span class="math inline">\(S_{patch}\)</span>) and compare it with their acclimated salinity (<span class="math inline">\(S_{agent}\)</span>). They also track their own energy state and time since last osmoregulation.</p>
+<p><strong>Stochasticity</strong>: Acclimation may vary with <span class="math inline">\(\alpha\)</span>, which can be drawn from a defined range per individual to reflect physiological variation across the population.</p>
+<p><strong>Observation:</strong> Outputs include <span class="math inline">\(I_{stress}\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(E_{osmo}\)</span>, and <span class="math inline">\(E_{agent}\)</span>, all tracked per individual and exportable for analysis or visualization.</p>
+</div>
+<div id="initialization-2" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Initialization<a href="salinity-exposure.html#initialization-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table style="width:99%;">
+<colgroup>
+<col width="10%" />
+<col width="20%" />
+<col width="68%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Initialized Value</th>
+<th align="center">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><span class="math inline">\(S_{patch}\)</span></td>
+<td align="center">user-defined for data input</td>
+<td align="center">This input can be user-defined realistic data values or known spatial data.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(S_{agent}\)</span></td>
+<td align="center">35 (psu)</td>
+<td align="center">Assumes agents start acclimated to marine environment.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(I_{stress}\)</span></td>
+<td align="center">1</td>
+<td align="center">Acclimated agents have minimal stress levels.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(C\)</span></td>
+<td align="center">50%</td>
+<td align="center">Starts with partial cell density, allowing for regulation depending on environmental conditions.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(C_{min}\)</span></td>
+<td align="center">10%</td>
+<td align="center">A baseline level of chloride cells is necessary for basic osmoregulatory functions.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(C_{max}\)</span></td>
+<td align="center">100%</td>
+<td align="center">Agents can’t express more than 100% of cells.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(\alpha\)</span></td>
+<td align="center">0.0017 - 0.002</td>
+<td align="center">Osmolarity stabilization from Figure 3. in (Allen et al., 2009).</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(C_{mid}\)</span></td>
+<td align="center">50%</td>
+<td align="center">When cells are 50% density, stress buffering is 50% effective (Allen et al., 2009).</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(E_{agent}\)</span></td>
+<td align="center">100%</td>
+<td align="center">Agent starts with limited energy before migration.</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(E_{base}\)</span></td>
+<td align="center"><p>Teleost (4%)</p>
+<p>Aptoerygian ()</p></td>
+<td align="center">Based on the <strong>branchial cost</strong> (Little et al., 2023; Kirschner, 1993).</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(Met_{max}\)</span></td>
+<td align="center">Teleost (3.5%)</td>
+<td align="center">Based on the intestinal and renal cost &amp; size of agent (Little et al., 2023; Kirschner, 1993).</td>
+</tr>
+<tr>
+<td align="center"><span class="math inline">\(k\)</span></td>
+<td align="center">-0.75</td>
+<td align="center">Scaling component for body mass is negative (Kirschner, 1993) and follows Kleiber’s Law.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-2" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Submodels<a href="salinity-exposure.html#submodels-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="osmotic-stress" class="section level3 hasAnchor" number="5.7.1">
+<h3><span class="header-section-number">5.7.1</span> Osmotic Stress<a href="salinity-exposure.html#osmotic-stress" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ion-regulatory stress (<span class="math inline">\(I_{stress}\)</span>) is calculated based on the difference between an agent’s acclimated salinity and the ambient patch salinity, adjusted by the chloride cell buffering effect:</p>
+<p><span class="math display">\[
+I_{stress} = \frac{\log_{10}(1 + |S_{agent} - S_{patch}|) \cdot 10}{1 + e^{-2 \cdot (C / C_{mid})}}
+\]</span></p>
+<p>Stress is capped within the range [1, 10], and may be reduced slightly over time if salinity remains stable and chloride density is sufficient:</p>
+<p><span class="math display">\[
+I_{stress} = I_{stress} \cdot 0.98 \quad \text{if conditions are stable and } C &gt; C_{min}
+\]</span></p>
+<p>Agents also slowly shift their acclimated salinity toward ambient salinity when conditions have been stable for several time steps:</p>
+<p><span class="math display">\[
+S_{agent} = S_{agent} + (S_{patch} - S_{agent}) \cdot 0.02
+\]</span></p>
+<p>Where:</p>
 <ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
+<li><span class="math inline">\(I_{stress}\)</span> is ion-regulatory (osmotic) stress, scaled between 1 and 10.</li>
+<li><span class="math inline">\(S_{agent}\)</span> is the agent’s acclimated salinity.</li>
+<li><span class="math inline">\(S_{patch}\)</span> is the environmental salinity at the current patch.</li>
+<li><span class="math inline">\(C\)</span> is the chloride cell density (percent of maximum).</li>
+<li><span class="math inline">\(C_{mid}\)</span> is the density at which buffering is 50% effective.</li>
 </ul>
 </div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="chloride-cell-density" class="section level3 hasAnchor" number="5.7.2">
+<h3><span class="header-section-number">5.7.2</span> Chloride Cell Density<a href="salinity-exposure.html#chloride-cell-density" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Chloride cell proliferation is driven by the level of ion-regulatory stress the agent experiences when encountering a difference in salinity. The greater the stress, the higher the target chloride density the agent attempts to reach, up to a maximum threshold. Agents adjust their chloride cell density based on their current ion-regulatory stress and acclimation status. Chloride cells are not adjusted unless the agent’s energy exceeds 25%.</p>
+<p>The chloride cell density is based on stress:</p>
+<p><span class="math display">\[
+C_{target} = C_{min} + (C_{max} - C_{min}) \cdot \left(\frac{I_{stress}}{10}\right)
+\]</span></p>
+<p>If salinity conditions have remained stable for an extended period (e.g., 288 ticks), \(C_{target}\) is slightly reduced to reflect partial downregulation of chloride cells due to long-term acclimation:</p>
+<p><span class="math display">\[
+C_{target} = C_{target} \cdot 0.99 \quad \text{if stable}
+\]</span></p>
+<p>Chloride cell density then approaches the target using a double-rate adjustment and capped maximum rate of change:</p>
+<p><span class="math display">\[
+\Delta C = \left(C_{target} - C_{current}\right) \cdot \left(2 \cdot R_{proliferation}\right)
+\]</span></p>
+<p><span class="math display">\[
+\Delta C = \max\left(-R_{max}, \min(R_{max}, \Delta C)\right)
+\]</span></p>
+<p>If the agent has low energy (<span class="math inline">\(\leq 50\%\)</span>), the adjustment rate is halved:</p>
+<p><span class="math display">\[
+\Delta C = \Delta C \cdot 0.5 \quad \text{if energy is low}
+\]</span></p>
+<p>Finally, the chloride cell density is updated and constrained between <span class="math inline">\(C_{min}\)</span> and <span class="math inline">\(C_{max}\)</span>:</p>
+<p><span class="math display">\[
+C_{new} = \max(C_{min}, \min(C_{max}, C_{current} + \Delta C))
+\]</span></p>
+<p>This ensures that the agent does not overshoot the physiologically realistic limit of chloride cell density, while still responding to osmotic stress.</p>
+<p>Chloride density is only recalculated after a given acclimation interval:</p>
+<p><span class="math display">\[
+t_{osmo} \geq \alpha^{-1}
+\]</span></p>
+<p>After updating, the acclimation timer is reset:</p>
+<p><span class="math display">\[
+t_{osmo} = 0
+\]</span></p>
+<p>This prevents agents from recalculating chloride density every time step and allows for controlled, realistic responses to prolonged stress and salinity changes.</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(I_{stress}\)</span> is the ion-regulatory stress, scaled from 1 to 10.</li>
+<li><span class="math inline">\(C_{target}\)</span> is the desired chloride cell density based on stress level.</li>
+<li><span class="math inline">\(C_{min}\)</span> and <span class="math inline">\(C_{max}\)</span> are the bounds for chloride cell density.</li>
+<li><span class="math inline">\(R_{proliferation}\)</span> determines the <strong>maximum allowable increase</strong> per time step.</li>
+<li><span class="math inline">\(\Delta C\)</span> is the rate of change in chloride cell expression.</li>
+<li><span class="math inline">\(R_{max} = (C_{max} - C_{min}) \cdot R_{proliferation}\)</span></li>
+<li><span class="math inline">\(C_{new}\)</span> is the percent of new chloride cell expression.</li>
+<li><span class="math inline">\(\alpha\)</span> is the acclimation rate constant.</li>
+<li><span class="math inline">\(t_{osmo}\)</span> represents time since the last osmoregulation event.</li>
+</ul>
 </div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="osmoregulation-energy" class="section level3 unnumbered hasAnchor">
+<h3>Osmoregulation Energy<a href="salinity-exposure.html#osmoregulation-energy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Metabolic cost related to size:</p>
+<p><span class="math display">\[
+E_{creation} = Met_{max} * (\frac{M}{M_{max}})^k
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{creation}\)</span> is the energy cost of chloride cell creation</p></li>
+<li><p><span class="math inline">\(Met_{max}\)</span> is the maximum metabolic cost of the agent</p></li>
+<li><p><span class="math inline">\(M\)</span> is equal to the agent’s size, where smaller fish spend proportionally more energy on osmoregulation (Little et al., 2023)</p></li>
+<li><p><span class="math inline">\(M_{max}\)</span> is the maximum mass of an agent within the population</p></li>
+<li><p><span class="math inline">\(k\)</span> follows size-dependent variation in energy allocation, consistent with a negative scaling exponent.</p></li>
+</ul>
+<p>Energy required for ion regulation:</p>
+<p><span class="math display">\[
+E_{osmo} = (E_{base} \cdot C) + (E_{creation} \cdot C_{tick})
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{base}\)</span> represents the energy cost per chloride cell for maintenance.</p></li>
+<li><p><span class="math inline">\(C\)</span> is the current chloride density.</p></li>
+<li><p><span class="math inline">\(E_{creation}\)</span> represents the cost of producing new chloride cells.</p></li>
+<li><p><span class="math inline">\(C_{tick}\)</span> is the number of newly created chloride cells in the current time step.</p></li>
+</ul>
+</div>
+<div id="energy-balance" class="section level3 hasAnchor" number="5.7.3">
+<h3><span class="header-section-number">5.7.3</span> Energy Balance<a href="salinity-exposure.html#energy-balance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Agents balance energy to osmoregulate with total energy allowance:</p>
+<p><span class="math display">\[
+E_{agent} = E_{agent} - E_{osmo}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{agent}\)</span> is the total energy of the agent.</p></li>
+<li><p><span class="math inline">\(E_{osmo}\)</span> is the energy consumed during osmoregulation.</p></li>
+</ul>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +865,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="digestion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="temperature-exposure.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +897,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-Salinity_Exposure.Rmd",
 "text": "Edit"
 },
 "history": {

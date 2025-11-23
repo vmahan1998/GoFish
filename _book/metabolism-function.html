@@ -692,15 +692,20 @@ temp-factor = Q10 \^ ((T-env - optimal-temperature) / 10)
 age-factor = 1 + (1 - age / max-age) \* 0.5
 \]</span></p>
 <p><span class="math display">\[
-M-total = Met-base \* size-factor \* temp-factor \* age-factor
+Metabolism-rate = Met-base \* size-factor \* temp-factor \* age-factor
 \]</span></p>
 <p>Metabolic accumulation:</p>
+<p><span class="math display">\[
+total-metabolism = total-metabolism + M-total
+\]</span></p>
 </div>
 <div id="efficiency-multipliers" class="section level3 hasAnchor" number="3.7.3">
 <h3><span class="header-section-number">3.7.3</span> Efficiency Multipliers<a href="metabolism-function.html#efficiency-multipliers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Efficiency is calculated by comparing the current metabolic rate to a
 reference baseline:</p>
-<p>efficiency = M-total / baseline-metabolism</p>
+<p><span class="math display">\[
+efficiency = M-total / baseline-metabolism
+\]</span></p>
 <p>This scaling is applied to:</p>
 <ul>
 <li>swim-efficiency<br />

@@ -1,4 +1,4 @@
-# Thermoregulation Function
+# Temperature Exposure
 
 ## Overview
 
@@ -8,17 +8,19 @@ This model simulates thermoregulation behavior and physiological consequences in
 
 This submodel captures ecologically grounded thermoregulatory behavior in migratory fish by simulating how temperature influences movement, survival, and physiological performance during migration and staging.
 
--   Agents experience thermal stress based on deviations from their optimal temperature, with stress scaling nonlinearly as conditions approach species-specific tolerance thresholds.
+-   Agents experience thermal stress based on deviations from their optimal temperature, with stress scaling nonlinearly as conditions approach species specific tolerance thresholds.
 
--   Swimming speed is reduced as environmental temperature deviates from thermal optima, reflecting empirical performance curves and diminished locomotor efficiency at suboptimal temperatures.
+-   Swimming speed is reduced as environmental temperature diverges from thermal optima, reflecting empirical performance curves and diminished locomotor efficiency at suboptimal temperatures.
 
--   Agents calculate energy expenditure associated with thermoregulation, with increased metabolic cost arising from reduced swimming efficiency under thermal stress.
+-   Agents calculate the energy expenditure associated with thermoregulation, with increased metabolic cost arising from reduced swimming efficiency under thermal stress.
 
 -   When thermal stress exceeds a threshold, agents evaluate neighboring patches and relocate to cooler or warmer areas to minimize physiological strain.
 
 -   Agents track cumulative time spent beyond minimum and maximum viable temperature thresholds, and mortality occurs after sustained exposure to lethal conditions.
 
--   This model supports the analysis of thermal niche constraints, temperature-driven habitat selection, and the vulnerability of fish to extreme temperature events in estuarine systems.
+-   This model supports the analysis of thermal niche constraints, temperature driven habitat selection, and the vulnerability of fish to extreme temperature events in estuarine systems.
+
+**Note:** Using this function in combination with scaled metabolic efficiency will penalize the agent twice for temperature. Users should apply one or the other depending on model objectives, or use the metabolism function without efficiency scaling.
 
 ## Entities, State Variables, and Scales
 
@@ -29,12 +31,12 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 
 ### Patch Variables
 
-+---------------------+---------------------------------------------------------------------------+
-| Variable Name       | Definition                                                                |
-+=====================+===========================================================================+
-| **Temperature**\    | The temperature of a given patch, derived from hydrodynamic model inputs. |
-| $T_{patch}$         |                                                                           |
-+---------------------+---------------------------------------------------------------------------+
++------------------+---------------------------------------------------------------------------+
+| Variable Name    | Definition                                                                |
++==================+===========================================================================+
+| **Temperature**\ | The temperature of a given patch, derived from hydrodynamic model inputs. |
+| $T_{patch}$      |                                                                           |
++------------------+---------------------------------------------------------------------------+
 
 ### Agent Variables
 
@@ -100,33 +102,33 @@ This submodel captures ecologically grounded thermoregulatory behavior in migrat
 
 ## Initialization
 
-+:-----------------:+:---------------------------------------------------------------------------------------:+:----------------------------------------------------------------------:+
-| **Variable**      | **Initialized Value**                                                                   | **Justification**                                                      |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $T_{opt}$         | Species- or life stage–specific value                                                   | Reflects thermal preference; varies by developmental stage or habitat  |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $T_{min}$         | Species-specific threshold                                                              | Based on empirical lower thermal limit for survival                    |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $T_{max}$         | Species-specific threshold                                                              | Based on empirical upper thermal limit for survival                    |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $T_{patch}$       | Hydrodynamic model input                                                                | External environmental condition updated each tick                     |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $S_{thermal}$     | 1                                                                                       | No stress at initialization if \$T\_{patch} = T\_{opt}\$               |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $t_{min}$         | 0                                                                                       | No prior exposure to lethal cold stress                                |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $t_{max}$         | 0                                                                                       | No prior exposure to lethal heat stress                                |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $V_{agent}$       | Size-scaled base speed                                                                  | Initial swimming speed assuming full capacity                          |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $E_{agent}$       | 100                                                                                     | No thermal deviation at model start                                    |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $E_{swim}$        | Size-scaled base swim cost                                                              | Scales with body size; used in movement energy balance                 |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $E_{swim}^{corr}$ | Equal to $E_{swim}$                                                                     | No thermal penalty at initialization                                   |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| $\lambda$         | 0.01–0.05 (user-defined) \| Acclimation rate controls speed of physiological adjustment | Population variation where older fish are better at thermoregulating   |
-+-------------------+-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+
++:-----------------:+:---------------------------------------------------------------------------------------:+:---------------------------------------------------------------------:+
+| **Variable**      | **Initialized Value**                                                                   | **Justification**                                                     |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $T_{opt}$         | Species- or life stage–specific value                                                   | Reflects thermal preference; varies by developmental stage or habitat |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $T_{min}$         | Species-specific threshold                                                              | Based on empirical lower thermal limit for survival                   |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $T_{max}$         | Species-specific threshold                                                              | Based on empirical upper thermal limit for survival                   |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $T_{patch}$       | Hydrodynamic model input                                                                | External environmental condition updated each tick                    |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $S_{thermal}$     | 1                                                                                       | No stress at initialization if \$T\_{patch} = T\_{opt}\$              |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $t_{min}$         | 0                                                                                       | No prior exposure to lethal cold stress                               |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $t_{max}$         | 0                                                                                       | No prior exposure to lethal heat stress                               |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $V_{agent}$       | Size-scaled base speed                                                                  | Initial swimming speed assuming full capacity                         |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $E_{agent}$       | 100                                                                                     | No thermal deviation at model start                                   |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $E_{swim}$        | Size-scaled base swim cost                                                              | Scales with body size; used in movement energy balance                |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $E_{swim}^{corr}$ | Equal to $E_{swim}$                                                                     | No thermal penalty at initialization                                  |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
+| $\lambda$         | 0.01–0.05 (user-defined) \| Acclimation rate controls speed of physiological adjustment | Population variation where older fish are better at thermoregulating  |
++-------------------+-----------------------------------------------------------------------------------------+-----------------------------------------------------------------------+
 
 ## Submodels
 

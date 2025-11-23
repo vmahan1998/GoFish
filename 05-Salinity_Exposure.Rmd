@@ -1,14 +1,19 @@
-# Salinity Exposure Function
+# Salinity Exposure
 
 ## Overview
 
-Osmoregulation allows migratory fish to maintain homeostasis by regulating internal ion concentrations in response to varying environmental salinities. This function simulates salinity exposure through ion-regulatory stress, chloride cell expression, and the metabolic energy cost of to acclimate to this exposure internally in a spatiotemporally explicit context.
+Osmoregulation allows migratory fish to maintain homeostasis by regulating internal ion concentrations in response to varying environmental salinities. This function simulates salinity exposure through ion-regulatory stress, chloride cell expression, and the metabolic energy cost of to acclimate to this exposure internally in a spatiotemporal explicit context.
 
 ## Purpose
 
 To simulate stress response to salinity changes for migratory fish in coastal systems by regulating chloride cell density and allocating energy toward ion-regulatory processes.
 
 ## Entities, State Variables, and Scales
+
+### Spatial and Temporal Scales
+
+-   **Spatial Unit**: Patch (3 m x 3 m resolution)
+-   **Temporal Unit**: 5-minute time steps (`tick`)
 
 ### Patch Variables
 

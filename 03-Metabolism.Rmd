@@ -4,7 +4,7 @@ editor_options:
     wrap: 72
 ---
 
-# Metabolism Function
+# Metabolism
 
 ## Overview
 
@@ -12,8 +12,9 @@ Metabolism determines the energy required for fish to maintain basic
 physiological function, support movement, regulate ions, digest food,
 and sustain long term migration. This submodel computes metabolic rate
 based on size, temperature, age scaling, and allometric relationships.
-Metabolic energy is then allocated toward multiple internal processes
-including swimming, digestion, osmoregulation, and lipid catabolism.
+Metabolic efficiency, based on divergence from an agent's optimal
+temperature, is then scaled toward multiple internal processes including
+swimming, osmoregulation, and lipid catabolism.
 
 ## Purpose
 
@@ -23,6 +24,11 @@ temperature dependence, age effects, and dynamic energy partitioning
 across physiological processes.
 
 ## Entities, State Variables, and Scales
+
+### Spatial and Temporal Scales
+
+-   **Spatial Unit**: Patch (3 m x 3 m resolution)
+-   **Temporal Unit**: 5-minute time steps (`tick`)
 
 ### Patch Variables
 
@@ -42,7 +48,6 @@ across physiological processes.
 | **metabolism-rate** | Metabolic rate for the current tick. |
 | **total-metabolism** | Accumulated metabolism over time. |
 | **swim-efficiency** | Efficiency applied to movement when metabolic rate is lower or higher than baseline. |
-| **digestion-penalty** | Penalty applied to digestion when metabolic rate is lower or higher than baseline. |
 | **osmoregulation-efficiency** | Efficiency applied to osmoregultion when metabolic rate is lower or higher than baseline. |
 | **lipid-catabolism-efficiency** | Efficiency applied to lipid catabolism when metabolic rate is lower or higher than baseline. |
 | **swim-base** | Baseline allocation of metabolism toward movement. |
@@ -121,7 +126,7 @@ multipliers.
 Baseline metabolic constant is computed using:
 
 \$\$Met-base = base-constant *(size / M-max) \^ 0.75* [1 +
-age-sensitivity \* (1 - age/max-age)] \* (optimal-temperature /
+age-sensitivity \* (1 - age / max-age)] \* (optimal-temperature /
 max-survival-temp)\$\$
 
 Where:

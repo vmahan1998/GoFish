@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 4 Digestion | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 4 Digestion | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Complex Model Building Tutorial: One-Way Migration | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 4 Digestion | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
-<link rel="next" href="modeling-toolkit.html"/>
+<link rel="prev" href="metabolism.html"/>
+<link rel="next" href="salinity-exposure.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -528,34 +528,264 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="complex-model-building-tutorial-one-way-migration" class="section level1 hasAnchor" number="16">
-<h1><span class="header-section-number">Chapter 16</span> Complex Model Building Tutorial: One-Way Migration<a href="complex-model-building-tutorial-one-way-migration.html#complex-model-building-tutorial-one-way-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="module-integration-2" class="section level3 hasAnchor" number="16.0.1">
-<h3><span class="header-section-number">16.0.1</span> Module Integration<a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="digestion" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Digestion<a href="digestion.html#digestion" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-2" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Overview<a href="digestion.html#overview-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Digestion converts consumed prey mass into usable energy and transfers associated contaminants such as inorganic mercury and methylmercury from stomach contents into internal body burden pools. This submodel simulates the breakdown of ingested prey at a rate proportional to the agent’s current metabolic rate. As stomach contents are digested, a fraction is converted into energy while mercury and methylmercury are incorporated into the agent’s contaminant loads. When stomach contents reach zero, agents transition into foraging mode and begin drawing on lipid reserves.</p>
+</div>
+<div id="purpose-1" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Purpose<a href="digestion.html#purpose-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To simulate how migratory fish process ingested prey into energy and contaminants while linking digestive performance to metabolic rate, foraging behavior, and exposure risk. Digestion provides the energetic foundation required for movement, migration, and physiological processes while directly influencing contaminant accumulation.</p>
+</div>
+<div id="entities-state-variables-and-scales-1" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Entities, State Variables, and Scales<a href="digestion.html#entities-state-variables-and-scales-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-1" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Spatial and Temporal Scales<a href="digestion.html#spatial-and-temporal-scales-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Spatial Unit:</strong> Patch (3 m x 3 m resolution)<br />
+<strong>Temporal Unit:</strong> 5 minute time steps (tick)</p>
+</div>
+<div id="patch-variables-1" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Patch Variables<a href="digestion.html#patch-variables-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="55%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None required</td>
+<td>Digestion is an internal physiological process and does not depend on patch attributes.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-1" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Agent Variables<a href="digestion.html#agent-variables-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="55%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>stomach-contents</strong></td>
+<td>Total mass of prey currently held in the stomach.</td>
+</tr>
+<tr>
+<td><strong>stomach-contents-Hg</strong></td>
+<td>Inorganic mercury contained within the stomach contents.</td>
+</tr>
+<tr>
+<td><strong>stomach-contents-MeHg</strong></td>
+<td>Methylmercury contained within the stomach contents.</td>
+</tr>
+<tr>
+<td><strong>digestion-rate</strong></td>
+<td>Rate of digestion equal to the current metabolic rate.</td>
+</tr>
+<tr>
+<td><strong>digestion-efficiency</strong></td>
+<td>Fraction of digested mass converted into usable energy.</td>
+</tr>
+<tr>
+<td><strong>energy</strong></td>
+<td>Total energetic reserves available to the agent.</td>
+</tr>
+<tr>
+<td><strong>gained-energy</strong></td>
+<td>Energy gained during the current tick from digestion.</td>
+</tr>
+<tr>
+<td><strong>mehg-foraging</strong></td>
+<td>Methylmercury released from stomach contents and absorbed during digestion.</td>
+</tr>
+<tr>
+<td><strong>hg-foraging</strong></td>
+<td>Inorganic mercury released from stomach contents during digestion.</td>
+</tr>
+<tr>
+<td><strong>mehg-foraging-total</strong></td>
+<td>Cumulative methylmercury risk through feeding.</td>
+</tr>
+<tr>
+<td><strong>hg-foraging-total</strong></td>
+<td>Cumulative inorganic mercury risk via digestion.</td>
+</tr>
+<tr>
+<td><strong>mehg-total</strong></td>
+<td>Total body burden of methylmercury risk.</td>
+</tr>
+<tr>
+<td><strong>hg-total</strong></td>
+<td>Total body burden of inorganic mercury risk.</td>
+</tr>
+<tr>
+<td><strong>foraging</strong></td>
+<td>Boolean indicating whether the agent is actively searching for prey.</td>
+</tr>
+<tr>
+<td><strong>lipid-loss</strong></td>
+<td>Boolean indicating when lipid reserves are used due to lack of stomach content.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-1" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Process Overview and Scheduling<a href="digestion.html#process-overview-and-scheduling-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Set digestion rate equal to the current metabolic rate.<br />
+</li>
+<li>Calculate the mass digested during the current tick.<br />
+</li>
+<li>Compute the corresponding amounts of inorganic and methylmercury digested.<br />
+</li>
+<li>Remove digested prey mass and associated contaminants from stomach contents.<br />
+</li>
+<li>Convert a fraction of digested biomass into usable energy.<br />
+</li>
+<li>Add mercury and methylmercury to cumulative body burden pools.<br />
+</li>
+<li>When stomach contents reach zero, set foraging to true and begin lipid use.</li>
+</ol>
+</div>
+<div id="design-concepts-1" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Design Concepts<a href="digestion.html#design-concepts-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong><br />
+Digestion is modeled as a metabolic rate dependent process, where higher metabolic demand results in greater digestive throughput. Contaminants are transferred into the agent’s body burden proportionally to the fraction of mass digested.</p>
+<p><strong>Emergence:</strong><br />
+Patterns of energy gain and contaminant uptake emerge from interactions among foraging success, metabolism, digestion efficiency, and prey availability.</p>
+<p><strong>Adaptation:</strong><br />
+Agents respond to depleted stomach contents by transitioning into foraging mode and initiating lipid catabolism when necessary.</p>
+<p><strong>Objectives:</strong><br />
+Agents maximize energetic intake to support migration, physiological function, and survival while minimizing energetic deficits.</p>
+<p><strong>Sensing:</strong><br />
+Agents sense their own energetic state through stomach contents and energy levels.</p>
+<p><strong>Stochasticity:</strong><br />
+Stochasticity arises indirectly from variation in prey encounters or foraging success, although digestion itself is deterministic.</p>
+<p><strong>Collectives:</strong><br />
+Digestion occurs independently for each agent and does not require group level dynamics.</p>
+<p><strong>Observation:</strong><br />
+Outputs of interest include digested mass per tick, gained energy, contaminant uptake, and cumulative contaminant burdens.</p>
+</div>
+<div id="initialization-1" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Initialization<a href="digestion.html#initialization-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="41%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Initialized Value</th>
+<th align="center">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">stomach-contents</td>
+<td align="center">0</td>
+<td align="center">Agents begin without prey unless defined by scenario.</td>
+</tr>
+<tr>
+<td align="center">stomach-contents-Hg</td>
+<td align="center">0</td>
+<td align="center">No initial inorganic mercury from digestion.</td>
+</tr>
+<tr>
+<td align="center">stomach-contents-MeHg</td>
+<td align="center">0</td>
+<td align="center">No initial methylmercury from digestion.</td>
+</tr>
+<tr>
+<td align="center">digestion-efficiency</td>
+<td align="center">Species specific</td>
+<td align="center">Determines fraction of biomass converted to energy.</td>
+</tr>
+<tr>
+<td align="center">foraging</td>
+<td align="center">true</td>
+<td align="center">Agents begin in search mode when stomach is empty.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-1" class="section level2 hasAnchor" number="4.7">
+<h2><span class="header-section-number">4.7</span> Submodels<a href="digestion.html#submodels-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="digestion-rate-and-breakdown" class="section level3 hasAnchor" number="4.7.1">
+<h3><span class="header-section-number">4.7.1</span> Digestion Rate and Breakdown<a href="digestion.html#digestion-rate-and-breakdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Digestive throughput is driven by metabolic rate:</p>
+<p><span class="math display">\[
+digestion\text{-}rate = metabolism\text{-}rate
+\]</span></p>
+<p>Digested mass per tick:</p>
+<p><span class="math display">\[
+digested = stomach\text{-}contents \cdot digestion\text{-}rate
+\]</span></p>
+<p>Proportional mercury assimilation:</p>
+<p><span class="math display">\[
+digested\text{-}Hg = \left( \frac{digested}{stomach\text{-}contents} \right) \cdot stomach\text{-}contents\text{-}Hg
+\]</span></p>
+<p><span class="math display">\[
+digested\text{-}MeHg = \left( \frac{digested}{stomach\text{-}contents} \right) \cdot stomach\text{-}contents\text{-}MeHg
+\]</span></p>
+<p>Updated stomach contents:</p>
+<p><span class="math display">\[
+stomach\text{-}contents = stomach\text{-}contents - digested
+\]</span></p>
+</div>
+<div id="energy-conversion" class="section level3 hasAnchor" number="4.7.2">
+<h3><span class="header-section-number">4.7.2</span> Energy Conversion<a href="digestion.html#energy-conversion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Energy gained from digestion:</p>
+<p><span class="math display">\[
+gained\text{-}energy = digested \cdot digestion\text{-}efficiency \cdot 40
+\]</span></p>
+<p>Updated energy pool:</p>
+<p><span class="math display">\[
+energy = energy + gained\text{-}energy
+\]</span></p>
+</div>
+<div id="contaminant-assimilation" class="section level3 hasAnchor" number="4.7.3">
+<h3><span class="header-section-number">4.7.3</span> Contaminant Assimilation<a href="digestion.html#contaminant-assimilation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Contaminants absorbed during digestion:</p>
+<p><span class="math display">\[
+mehg\text{-}foraging = digested\text{-}MeHg
+\]</span></p>
+<p><span class="math display">\[
+hg\text{-}foraging = digested\text{-}Hg
+\]</span></p>
+<p>Accumulated body burden:</p>
+<p><span class="math display">\[
+mehg\text{-}total = mehg\text{-}total + digested\text{-}MeHg
+\]</span></p>
+<p><span class="math display">\[
+hg\text{-}total = hg\text{-}total + digested\text{-}Hg
+\]</span></p>
+</div>
+<div id="transition-to-foraging" class="section level3 hasAnchor" number="4.7.4">
+<h3><span class="header-section-number">4.7.4</span> Transition to Foraging<a href="digestion.html#transition-to-foraging" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When stomach contents reach zero:</p>
 <ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
+<li>lipid-loss is activated</li>
 </ul>
-</div>
-<div id="function-dependencies-2" class="section level3 hasAnchor" number="16.0.2">
-<h3><span class="header-section-number">16.0.2</span> Function Dependencies<a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
-</ul>
-</div>
-<div id="implementation-in-netlogo-2" class="section level2 hasAnchor" number="16.1">
-<h2><span class="header-section-number">16.1</span> Implementation in NetLogo:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
-</div>
-<div id="implementation-in-r-2" class="section level2 hasAnchor" number="16.2">
-<h2><span class="header-section-number">16.2</span> Implementation in R:<a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<p>This switches the prey to burn fat energy reserves instead of relying on stomach contents</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -563,8 +793,8 @@
           </div>
         </div>
       </div>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="modeling-toolkit.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="metabolism.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="salinity-exposure.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -595,7 +825,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/17-integrate_functions_example_03.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-Digestion.Rmd",
 "text": "Edit"
 },
 "history": {

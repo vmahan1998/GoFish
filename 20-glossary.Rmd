@@ -1,1 +1,213 @@
-# References {-}
+# Glossary {-}
+
+This glossary defines key terms used throughout this book.  
+Terms are organized alphabetically for clarity.
+
+---
+
+## A {-}
+
+### **Acclimated Salinity**
+The salinity level a fish has gradually adjusted to and can tolerate without stress.
+
+### **Agent**
+A virtual organism (e.g., fish) in the agent-based model that makes decisions and moves through space.
+
+### **Allometric**
+A biological scaling relationship where physiological processes such as metabolism, growth, or filtration capacity scale nonlinearly with body size and/or age rather than proportionally (linearly).
+
+### **Anadromous**
+Fish that hatch in freshwater, migrate to the ocean to grow, and return to freshwater to spawn.
+
+### **Base Energy**
+The minimum energy required for basic physiological maintenance under resting conditions.
+
+---
+
+## B {-}
+
+### **Benthic**
+Related to the bottom of a water body, where some fish feed or rest.
+
+### **Bioaccumulation**
+The gradual buildup of contaminants like mercury in a fish over time.
+
+### **Biomagnification**
+Increase in contaminant concentration as it moves up the food chain from prey to predator.
+
+### **Bottom Feeding**
+A feeding strategy where fish forage along the riverbed or estuary floor.
+
+### **Broadcast Spawning**
+A reproductive strategy where males and females release sperm and eggs freely into the water column.
+
+---
+
+## C {-}
+
+### **Chloride Cells**
+Specialized gill cells that regulate salt balance during transitions between fresh and saltwater.
+
+### **Contamination**
+Presence of toxins or pollutants (e.g., mercury) in water or sediment.
+
+### **Current Velocity**
+Speed and direction of water movement at a location.
+
+---
+
+## D {-}
+
+### **Diadromous**
+Fish that migrate between freshwater and saltwater as part of their life cycle.
+
+### **Digestion**
+The physiological process by which ingested biomass is broken down and converted into usable energy.
+
+### **Depth (Bathymetry)**
+Vertical distance from water surface to the bottom; influences habitat and hydrodynamics.
+
+---
+
+## E {-}
+
+### **Ebb**
+Outgoing tide when water flows toward the sea.
+
+### **Environmental Stress**
+Physiological stress caused by environmental conditions such as salinity or temperature extremes.
+
+---
+
+## F {-}
+
+### **Filter Feeding**
+Feeding method where fish strain tiny particles (plankton, detritus, SPM) from water using gill structures.
+
+### **Flood**
+Incoming tide when water flows inland.
+
+### **Flood Limit**
+The maximum upstream reach of tidal influence.
+
+---
+
+## H {-}
+
+### **Homing**
+The ability of fish to return to their birthplace to spawn.
+
+### **Homeostasis**
+Maintenance of stable internal conditions such as temperature and ion balance.
+
+---
+
+## I {-}
+
+### **Iteroparous**
+Species that can spawn multiple times across their lifespan.
+
+---
+
+## L {-}
+
+### **Landward Migration**
+Movement from the ocean into estuaries or rivers, often for spawning.
+
+### **Lipid Catabolism**
+The mobilization and breakdown of stored lipids to meet energetic demands when food intake is insufficient.
+
+---
+
+## M {-}
+
+### **Mercury**
+A toxic metal that accumulates in aquatic systems and organisms.
+
+### **Metabolism**
+The total energy expenditure required for physiological maintenance, swimming, digestion, osmoregulation, and other biological processes.
+
+### **Methylmercury**
+A highly toxic, bioaccumulative form of mercury.
+
+---
+
+## O {-}
+
+### **Optimal Temperature**
+Temperature range where fish perform best physiologically.
+
+### **Osmoregulation**
+Physiological process of regulating internal salt and water balance.
+
+### **Osmoregulatory Energy**
+Energy required to maintain ion balance under varying salinities.
+
+---
+
+## P {-}
+
+### **Pairwise Spawning**
+A reproductive strategy requiring a male and female to occupy the same location for fertilization.
+
+### **Patch**
+A discrete spatial cell in an agent-based model with its own environmental attributes.
+
+### **Pelagic**
+Relating to open-water habitats away from the bottom.
+
+---
+
+## S {-}
+
+### **Salinity**
+Concentration of dissolved salts in water.
+
+### **Salinity Stress**
+Energy strain caused when salinity deviates from a fish’s preferred range.
+
+### **Salt Wedge**
+A dense layer of seawater intruding beneath freshwater in an estuary.
+
+### **Seaward Migration**
+Movement from rivers or estuaries toward the ocean.
+
+### **Selective Tidal Stream Transport (STST)**
+Behavior where fish exploit tidal currents to assist migration.
+
+### **Semelparous**
+Species that spawn once and then die.
+
+### **Spawning**
+Release of eggs and sperm for reproduction.
+
+### **Staging**
+A temporary resting or holding phase in migration.
+
+### **Suspended Particulate Matter (SPM)**
+Fine particles (sediment, organic matter) suspended in the water column.
+
+### **Swimming Difficulty**
+Effort required to swim based on flow direction and strength.
+
+### **Swimming Energy**
+Energy expenditure required for locomotion.
+
+### **Swimming Speed (Velocity)**
+Rate of movement relative to water.
+
+---
+
+## T {-}
+
+### **Temperature**
+Water temperature; major driver of metabolism and behavior.
+
+### **Temperature Stress**
+Stress caused when water is too warm or too cold for optimal performance.
+
+### **Thermal Tolerance**
+Range of temperatures within which a fish can survive and function.
+
+### **Thermoregulation**
+Behavioral regulation of temperature by moving into warmer or cooler habitats.
