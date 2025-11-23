@@ -4,8 +4,6 @@ agent-based-models
 what-abms-can-help-us-understand
 what-abms-are-not-designed-to-do
 emergent-behaviors
-application-context
-how-to-use-this-library
 co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025
 core-co-development-themes
 workshop-development

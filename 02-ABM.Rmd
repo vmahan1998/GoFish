@@ -86,14 +86,3 @@ By visualizing and simulating emergence, ABMs make it possible to see how these 
 </div>
 ```
 
-## Application Context
-
-This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to environmental changes (i.e., salinity, velocity, and pollutants).
-
-*Can include addition project or model links here\**
-
-## How to Use This Library
-
-Each function or behavior in this library can be combined with others to build a complete agent-based model for anadromous fish. These functions are designed to be adaptable, and easily configured for different species, life stages, or site-specific conditions.
-
-*For questions, feedback, guidance on implementation, or **interest in adding to the library**, please contact **Vanessa Quintana** at [**mahan.vanessa98\@gmail.com**](mailto:mahan.vanessa98@gmail.com){.email}**.**
