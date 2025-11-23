@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 2 Agent-Based Models | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 2 Agent-Based Models | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="vmahan1998/GoFish" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 2 Agent-Based Models | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="introduction.html"/>
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -551,17 +551,80 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</h1>
-<p class="author"><em>Vanessa Quintana</em></p>
-<p class="date"><em>2025-11-23</em></p>
+<div id="agent-based-models" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Agent-Based Models<a href="agent-based-models.html#agent-based-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<img src="images/abm.png"
+     alt="Agent-Based Models"
+     style="float:left; width:300px; margin:0 20px 15px 0;
+            ">
+<p>Agent-based models (ABMs) simulate the behavior of individual organisms—called “agents”—and how their interactions with each other and with their environment create larger-scale patterns. Each agent follows a set of simple rules based on physiology, behavior, or environmental cues. When many agents follow these rules simultaneously, complex system-level outcomes emerge, such as migration pathways, schooling patterns, habitat bottlenecks, or exposure hotspots. ABMs are especially useful for ecological systems because they allow researchers and communities to explore how individual decisions scale up to influence population dynamics, habitat use, and risk in changing environments.</p>
+<p>ABMs are designed to capture processes that depend on <strong>behavior</strong>, <strong>timing</strong>, <strong>environmental variability</strong>, and <strong>individual differences</strong>. They allow modelers to explore how organisms respond to their surroundings, make movement decisions, and interact with other individuals or species. Because agents experience the environment at fine spatial and temporal scales, ABMs can reveal patterns that occur only when many individuals interact across a dynamic landscape.</p>
+<div id="what-abms-can-help-us-understand" class="section level3 hasAnchor" number="2.0.1">
+<h3><span class="header-section-number">2.0.1</span> What ABMs Can Help Us Understand<a href="agent-based-models.html#what-abms-can-help-us-understand" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>ABMs can answer questions related to:</p>
+<ul>
+<li><p>How individual movement decisions accumulate into migration routes or staging locations</p></li>
+<li><p>When and where organisms are most exposed to environmental risks</p></li>
+<li><p>How behaviors such as foraging, schooling, predator avoidance, resting, or spawning influence exposure or survival</p></li>
+<li><p>How variation in traits (size, energy, age, or species) contributes to different outcomes</p></li>
+<li><p>How environmental conditions shape habitat use, movement choices, or interactions between species</p></li>
+<li><p>How system-level patterns emerge from local behaviors and simple rules</p></li>
+<li><p>How alternative conditions or restoration actions might alter movement, habitat use, or exposure</p></li>
+</ul>
+<p>These models are especially useful when management questions depend on <strong>patterns created by individual behavior</strong>, rather than population totals alone.</p>
 </div>
-<div id="preface" class="section level1 unnumbered hasAnchor">
-<h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This library provides a comprehensive, modular framework for developing and documenting agent-based models (ABMs) that simulate the movement, behavior, and environmental interactions of migratory fish in coastal aquatic systems. It is designed to support the standardization and implementation of ABMs in fisheries management, enabling researchers and practitioners to address complex environmental questions and evaluate remediation or restoration scenarios.</p>
-<div id="motivation" class="section level2 unnumbered hasAnchor">
-<h2>Motivation<a href="index.html#motivation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The goal of this resource is to support students, researchers, and decision-makers by making agent-based modeling of migratory fish more accessible, reproducible, and applicable to real-world fisheries and habitat management challenges. By providing a standardized modular framework for key behavioral processes, this library promotes consistency, transparency, and credibility in ecological forecasting and decision support tools. It also establishes a foundation for critical conversations about the behaviors and functions represented in modeling, while supporting the empirical quantification of ecological relationships that influence movement, survival, and habitat use of migratory fish.</p>
+<div id="what-abms-are-not-designed-to-do" class="section level3 hasAnchor" number="2.0.2">
+<h3><span class="header-section-number">2.0.2</span> What ABMs Are Not Designed to Do<a href="agent-based-models.html#what-abms-are-not-designed-to-do" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>ABMs cannot provide or replace:</p>
+<ul>
+<li><p>Exact estimates of population abundance</p></li>
+<li><p>Precise contaminant concentrations inside individual organisms</p></li>
+<li><p>Direct measurements of chemical or physiological processes</p></li>
+<li><p>Predictions of exact numbers of predation or spawning events</p></li>
+<li><p>Large-scale demographic projections without additional modeling components</p></li>
+<li><p>Replacements for field sampling, monitoring programs, or laboratory measurements</p></li>
+</ul>
+<p>Instead, ABMs offer <strong>process-based insight</strong>, showing how behavior and environmental conditions interact to create observable patterns.</p>
+</div>
+<div id="emergent-behaviors" class="section level3 hasAnchor" number="2.0.3">
+<h3><span class="header-section-number">2.0.3</span> Emergent Behaviors<a href="agent-based-models.html#emergent-behaviors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<img src="images/emergent_behaviors.png"
+     alt="Emergent Behaviors in Agent-Based Models"
+     style="float:left; width:300px; margin:0 20px 15px 0;
+            ">
+<p>Emergent behavior refers to patterns that arise when many individual agents follow their own rules, creating outcomes that cannot be predicted from observing a single fish on its own. These outcomes develop only when many individuals interact with each other and respond to their surrounding environment at the same time. Many ecological processes such as migration timing, habitat bottlenecks, exposure hotspots, schooling dynamics, predator and prey encounters, and shifts in group structure are emergent rather than linear. They form through small, individual decisions that accumulate into larger and sometimes unexpected system-level patterns.</p>
+<p>By visualizing and simulating emergence, ABMs make it possible to see how these individual behaviors scale up to influence population level outcomes and habitat use patterns. This helps identify the specific conditions, behaviors, and locations that shape system-wide responses. For management, this is valuable because it shows how small-scale decisions made by individual fish can contribute to broader patterns that influence risk, habitat quality, restoration effectiveness, management actions, and ecological resilience. Understanding emergence allows managers and communities to explore why certain patterns occur, identify potential leverage points, and anticipate how changes in environmental conditions may alter system behavior in the future.</p>
+<div style="display: flex; gap: 20px; justify-content: center;">
+
+  <div style="flex: 1;">
+    <video controls autoplay loop muted style="width: 100%; border-radius: 12px;">
+      <source src="demos/Emergent_Behavior_Two_Agents_speed.mp4" type="video/mp4">
+    </video>
+    <p style="text-align:center; font-size: 0.9em; color: #555;">
+      Emergence at the Individual Scale
+    </p>
+  </div>
+
+  <div style="flex: 1;">
+    <video controls autoplay loop muted style="width: 100%; border-radius: 12px;">
+      <source src="demos/Emergent_Behavior_Multiple_Agents_speed.mp4" type="video/mp4">
+    </video>
+    <p style="text-align:center; font-size: 0.9em; color: #555;">
+      Population-Level Emergence
+    </p>
+  </div>
+
+</div>
+</div>
+<div id="application-context" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Application Context<a href="agent-based-models.html#application-context" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to environmental changes (i.e., salinity, velocity, and pollutants).</p>
+<p><em>Can include addition project or model links here*</em></p>
+</div>
+<div id="how-to-use-this-library" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> How to Use This Library<a href="agent-based-models.html#how-to-use-this-library" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Each function or behavior in this library can be combined with others to build a complete agent-based model for anadromous fish. These functions are designed to be adaptable, and easily configured for different species, life stages, or site-specific conditions.</p>
+<p>*For questions, feedback, guidance on implementation, or <strong>interest in adding to the library</strong>, please contact <strong>Vanessa Quintana</strong> at <a href="mailto:mahan.vanessa98@gmail.com" class="email"><strong>mahan.vanessa98@gmail.com</strong></a><strong>.</strong></p>
 
 </div>
 </div>
@@ -570,8 +633,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-
-<a href="introduction.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -602,7 +665,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-ABM.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -21,8 +21,8 @@ To evaluate mercury and methylmercury exposure and bioaccumulation risk for migr
 
 | Variable | Initialized Value | Justification |
 |------------------|------------------------------|------------------------|
-| **MeHg-threshold** | 15 ug per kg | Screening threshold for methylmercury (Gaudet et al 1995) |
-| **Hg-threshold** | 150 ug per kg | NOAA guideline for mercury contamination |
+| **MeHg-threshold** | 15 ug per kg | Screening threshold for methylmercury [@noaa_national_oceanic_and_atmospheric_administration_sediment_1990; @gaudet_canadian_1995] |
+| **Hg-threshold** | 150 ug per kg | NOAA guideline for mercury contamination [@noaa_national_oceanic_and_atmospheric_administration_sediment_1990; @gaudet_canadian_1995] |
 | **min-Hg, max-Hg** | Calculated from input layers | Required for Hg normalization across domain |
 | **min-MeHg, max-MeHg** | Calculated from input layers | Required for MeHg normalization across domain |
 

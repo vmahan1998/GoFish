@@ -1,5 +1,11 @@
 # Modeling Toolkit
 
+```{=html}
+<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
+This document is under active development.
+</div
+```
+
 ## Learning Resources
 
 -   **NetLogo Library**: Brief note on structure (e.g., model categories), how you used it (e.g., behavior ideas, calibration).

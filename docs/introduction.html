@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 1 Introduction | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 1 Introduction | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="vmahan1998/GoFish" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 1 Introduction | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="introduction.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="agent-based-models.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -551,18 +551,56 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</h1>
-<p class="author"><em>Vanessa Quintana</em></p>
-<p class="date"><em>2025-11-23</em></p>
+<div id="introduction" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div style="text-align:left;">
+  <img src="images/Complex_Problem_Figure.png"
+alt="Migratory Fish Dynamics in a Contaminated Estuary"
+       style="width:600px; border-radius:12px;
+              box-shadow:0 4px 12px rgba(0,0,0,0.15);">
 </div>
-<div id="preface" class="section level1 unnumbered hasAnchor">
-<h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This library provides a comprehensive, modular framework for developing and documenting agent-based models (ABMs) that simulate the movement, behavior, and environmental interactions of migratory fish in coastal aquatic systems. It is designed to support the standardization and implementation of ABMs in fisheries management, enabling researchers and practitioners to address complex environmental questions and evaluate remediation or restoration scenarios.</p>
-<div id="motivation" class="section level2 unnumbered hasAnchor">
-<h2>Motivation<a href="index.html#motivation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The goal of this resource is to support students, researchers, and decision-makers by making agent-based modeling of migratory fish more accessible, reproducible, and applicable to real-world fisheries and habitat management challenges. By providing a standardized modular framework for key behavioral processes, this library promotes consistency, transparency, and credibility in ecological forecasting and decision support tools. It also establishes a foundation for critical conversations about the behaviors and functions represented in modeling, while supporting the empirical quantification of ecological relationships that influence movement, survival, and habitat use of migratory fish.</p>
+<p>Anadromous fish species such as river herring, striped bass, salmon, and sturgeon navigate coastal and estuarine systems that are increasingly affected by human activity, climate change, and legacy contaminants. Modeling their movement and behavior at fine spatial and temporal scales requires tools that can integrate physiological stressors, environmental variability, and behavior-based decision-making.</p>
+<p>Agent-based models are among the most powerful tools available for ecological forecasting and fisheries management, but they are also among the most complex. Their structure and computational demands can make them difficult to apply in practical management settings. Many biologists and ecologists who hold deep, species-specific expertise often have limited training in advanced programming or systems modeling.</p>
+<p>As a result, traditional approaches to simulating anadromous fish frequently oversimplify or exclude key biological functions and environmental interactions such as salinity exposure and contaminant exposure. Existing models also lack standardized representations of these behaviors and interactions, limiting the applicability of results and reducing their usefulness for applied management. This function library was developed to address these limitations by offering modular, empirically grounded components designed for use in modeling migratory fish. Each function is clearly documented and can be applied independently, allowing for transparent testing, modification, and reuse across a wide range of ecological scenarios and sites.</p>
+<div id="structure" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Structure<a href="introduction.html#structure" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Each chapter in this library corresponds to a major behavior, physiological function, or foundational component relevant to migratory fish, beginning with:</p>
+<ul>
+<li><p><strong>Co-Development of Agent-Based Models</strong></p></li>
+<li><p><strong>Calculate Metabolism</strong></p></li>
+<li><p><strong>Salinity Exposure</strong></p></li>
+<li><p><strong>Temperature Exposure</strong></p></li>
+<li><p><strong>Contaminant Exposure</strong></p></li>
+<li><p><strong>Digestion</strong></p></li>
+<li><p><strong>Filter Feeding</strong></p></li>
+<li><p><strong>Lipid Catabolism</strong></p></li>
+<li><p><strong>Landward Migration</strong></p></li>
+<li><p><strong>Seaward Migration</strong></p></li>
+<li><p><strong>Schooling</strong></p></li>
+<li><p><strong>Selective Tidal Stream Transport</strong></p></li>
+<li><p><strong>Predator-prey interactions</strong></p></li>
+</ul>
+<p>The final chapters provide guidance on how to integrate multiple functions into a complete agent-based model, demonstrating how these components work together to simulate fish behavior in dynamic coastal and estuarine systems.</p>
+<p>Within each chapter, each function or behavior is documented using the ODD protocol <span class="citation">(<a href="#ref-grimm_pattern-oriented_2005">Grimm et al. 2005</a>, <a href="#ref-grimm_odd_2010">2010</a>, <a href="#ref-grimm_odd_2020">2020</a>)</span>. The ODD (Overview, Design concepts, Details) protocol is a standardized framework for describing agent-based models. It promotes transparency in model development and ensures consistency across implementations, especially when integrating multiple behavioral or ecological functions.</p>
+<ul>
+<li><p><strong>Overview</strong> provides the purpose of the model component, identifies the entities involved (e.g., fish agents, environmental patches), and outlines the general processes.</p></li>
+<li><p><strong>Design</strong> concepts describe the key theoretical underpinnings such as emergence, adaptation, objectives, sensing, stochasticity, and interaction.</p></li>
+<li><p><strong>Details</strong> specify initialization steps, input data requirements, and the rules or submodels that govern behavior.</p></li>
+</ul>
+<p>By following the ODD protocol, this library ensures that each function is self-contained, interpretable, and ready for adaptation to a wide range of species, sites, or management scenarios.</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-grimm_odd_2010" class="csl-entry">
+Grimm, Volker, Uta Berger, Donald L. DeAngelis, J. Gary Polhill, Jarl Giske, and Steven F. Railsback. 2010. <span>“The <span>ODD</span> Protocol: A Review and First Update.”</span> <em>Ecological Modelling</em> 221 (23): 2760–68. <a href="https://doi.org/10.1016/j.ecolmodel.2010.08.019">https://doi.org/10.1016/j.ecolmodel.2010.08.019</a>.
+</div>
+<div id="ref-grimm_odd_2020" class="csl-entry">
+Grimm, Volker, Steven F. Railsback, Christian E. Vincenot, Uta Berger, Cara Gallagher, Donald L. DeAngelis, Bruce Edmonds, et al. 2020. <span>“The <span>ODD</span> Protocol for Describing Agent-Based and Other Simulation Models: A Second Update to Improve Clarity, Replication, and Structural Realism.”</span> <em>Journal of Artificial Societies and Social Simulation</em> 23 (2): 7. <a href="https://doi.org/10.18564/jasss.4259">https://doi.org/10.18564/jasss.4259</a>.
+</div>
+<div id="ref-grimm_pattern-oriented_2005" class="csl-entry">
+Grimm, Volker, Eloy Revilla, Uta Berger, Florian Jeltsch, Wolf M. Mooij, Steven F. Railsback, Hans-Hermann Thulke, Jacob Weiner, Thorsten Wiegand, and Donald L. DeAngelis. 2005. <span>“Pattern-Oriented Modeling of Agent-Based Complex Systems: Lessons from Ecology.”</span> <em>Science</em> 310 (5750): 987–91. <a href="https://doi.org/10.1126/science.1116681">https://doi.org/10.1126/science.1116681</a>.
 </div>
 </div>
             </section>
@@ -570,8 +608,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-
-<a href="introduction.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="agent-based-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -602,7 +640,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-intro.Rmd",
 "text": "Edit"
 },
 "history": {

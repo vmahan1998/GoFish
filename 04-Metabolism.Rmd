@@ -134,61 +134,81 @@ Where:
 -   base-constant is 0.1
 -   age-sensitivity is 0.5
 
-Energy partitions:
+### Energy Partitions
+
+Baseline energy partitions are computed from the initialized metabolic base:
 
 $$
-swim-base = Met-base \* motion-ratio
+\text{swim-base} = \text{Met-base} \cdot \text{motion-ratio}
 $$
 
 $$
-E-base = Met-base \* 0.02
+E_{\text{base}} = \text{Met-base} \cdot 0.02
 $$
 
-E-creation = Met-base \* 0.05
+$$
+E_{\text{creation}} = \text{Met-base} \cdot 0.05
+$$
 
-\$\$
 
 ### Metabolic Rate Calculation
 
-At every tick, metabolism is recalculated using:
+At each tick, metabolism is recalculated using allometric, temperature, and age scaling:
 
 $$
-size-factor = (size / M-max) \^ 0.75
-$$
-
-$$
-temp-factor = Q10 \^ ((T-env - optimal-temperature) / 10)
+\text{size-factor} = \left(\frac{\text{weight}}{\text{M-max}}\right)^{0.75}
 $$
 
 $$
-age-factor = 1 + (1 - age / max-age) \* 0.5
+\text{temp-factor} = Q_{10}^{\left(\frac{T_{\text{env}} - T_{\text{opt}}}{10}\right)}
 $$
 
 $$
-Metabolism-rate = Met-base \* size-factor \* temp-factor \* age-factor
+\text{age-factor} = 1 + \left(1 - \frac{\text{age}}{\text{max-age}}\right)\cdot 0.5
+$$
+
+Total metabolic rate:
+
+$$
+M_{\text{total}} = \text{Met-base} \cdot 
+\text{size-factor} \cdot 
+\text{temp-factor} \cdot 
+\text{age-factor}
 $$
 
 Metabolic accumulation:
 
 $$
-total-metabolism = total-metabolism + M-total
+\text{total-metabolism} = \text{total-metabolism} + M_{\text{total}}
 $$
+
 
 ### Efficiency Multipliers
 
-Efficiency is calculated by comparing the current metabolic rate to a
-reference baseline:
+A baseline metabolic reference is defined using:
+
+- baseline size-factor = 1  
+- baseline age-factor = 1.5  
+- baseline temp-factor = 1  
+
+Thus:
 
 $$
-efficiency = M-total / baseline-metabolism
+M_{\text{baseline}} =
+\text{Met-base} \cdot 1 \cdot 1 \cdot 1.5
 $$
 
-This scaling is applied to:
+Efficiency is computed as:
 
--   swim-efficiency\
--   digestion-penalty\
--   osmoregulation-efficiency\
--   lipid-catabolism-efficiency
+$$
+\text{efficiency} = 
+\frac{M_{\text{total}}}{M_{\text{baseline}}}
+$$
 
-Efficiencies dynamically adjust other submodels in response to
-physiological and environmental conditions.
+This value is applied to:
+
+- **swim-efficiency**  
+- **osmoregulation-efficiency**  
+- **lipid-catabolism-efficiency**
+
+Efficiency dynamically scales the cost of movement, ion regulation, and lipid catabolism.

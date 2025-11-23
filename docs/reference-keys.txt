@@ -1,10 +1,9 @@
-overview
-background
-introduction-to-agent-based-models
+introduction
+structure
+agent-based-models
 what-abms-can-help-us-understand
 what-abms-are-not-designed-to-do
 emergent-behaviors
-structure
 application-context
 how-to-use-this-library
 co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025
@@ -24,7 +23,7 @@ participants
 volunteers
 organizers
 metabolism
-overview-1
+overview
 purpose
 entities-state-variables-and-scales
 spatial-and-temporal-scales
@@ -35,10 +34,11 @@ design-concepts
 initialization
 submodels
 initialize-metabolism
+energy-partitions
 metabolic-rate-calculation
 efficiency-multipliers
 digestion
-overview-2
+overview-1
 purpose-1
 entities-state-variables-and-scales-1
 spatial-and-temporal-scales-1
@@ -53,7 +53,7 @@ energy-conversion
 contaminant-assimilation
 transition-to-foraging
 salinity-exposure
-overview-3
+overview-2
 purpose-2
 entities-state-variables-and-scales-2
 spatial-and-temporal-scales-2
@@ -67,7 +67,7 @@ osmotic-stress
 chloride-cell-density
 energy-balance
 temperature-exposure
-overview-4
+overview-3
 purpose-and-patterns
 entities-state-variables-and-scales-3
 spatial-and-temporal-scales-3
@@ -84,7 +84,7 @@ thermal-avoidance-movement-place-inside-migration-functions
 thermal-mortality-thresholds-place-inside-migration-functions
 energy-consumption-place-inside-migration-functions
 contaminant-exposure
-overview-5
+overview-4
 purpose-3
 entities-state-variables-and-scales-4
 spatial-and-temporal-scales-4
@@ -105,7 +105,7 @@ exposure-duration-1
 uptake-risk-1
 cumulative-uptake-1
 filter-feeding
-overview-6
+overview-5
 purpose-and-patterns-1
 entities-state-variables-and-scales-5
 patch-variables-5
@@ -120,7 +120,7 @@ benefit-calculation
 movement
 feeding-and-stomach-loading
 contaminant-assimilation-and-biomagnification
-overview-7
+overview-6
 purpose-4
 entities-state-variables-and-scales-6
 patch-variables-6
@@ -134,7 +134,7 @@ energy-conversion-1
 weight-loss
 contaminant-bookkeeping
 landward-migration-behavior
-overview-8
+overview-7
 purpose-5
 entities-state-variables-and-scales-7
 global-variables-1
@@ -150,7 +150,7 @@ swimming-movement
 swimming-energy
 energy-balance-1
 seaward-migration-behavior
-overview-9
+overview-8
 purpose-6
 entities-state-variables-and-scales-8
 global-variables-2
@@ -166,7 +166,7 @@ swimming-movement-1
 swimming-energy-1
 energy-balance-2
 schooling
-overview-10
+overview-9
 purpose-7
 entities-state-variables-and-scales-9
 patch-variables-9
@@ -182,7 +182,7 @@ cohesion
 alignment
 speed-adjustment
 selective-tidal-stream-transport
-overview-11
+overview-10
 purpose-8
 entities-state-variables-and-scales-10
 patch-variables-10
@@ -195,7 +195,7 @@ trigger-conditions-for-stst
 behavior-during-stst
 stop-conditions-for-stst
 predation-and-fleeing-behavior
-overview-12
+overview-11
 purpose-and-patterns-2
 entities-state-variables-and-scales-11
 spatial-and-temporal-scales-5

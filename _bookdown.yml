@@ -9,22 +9,23 @@ language:
 rmd_files:
   - index.Rmd
   - 01-intro.Rmd
-  - 02-CoDevelopment.Rmd
-  - 03-Metabolism.Rmd
-  - 04-Digestion.Rmd
-  - 05-Salinity_Exposure.Rmd
-  - 06-Temperature_Exposure.Rmd
-  - 07-Contaminant_Exposure.Rmd
-  - 08-Filter_Feeding.Rmd
-  - 09-Lipid_Catabolism.Rmd
-  - 10-Landward_Migration.Rmd
-  - 11-Seaward_Migration.Rmd
-  - 12-Schooling.Rmd
-  - 13-Selective_Tidal_Stream_Transport.Rmd
-  - 14-Predation.Rmd
-  - 15-integrate_functions_example_01.Rmd
-  - 16-integrate_functions_example_02.Rmd
-  - 17-integrate_functions_example_03.Rmd
-  - 18-summary.Rmd
-  - 19-references.Rmd
-  - 20-glossary.Rmd
+  - 02-ABM.Rmd
+  - 03-CoDevelopment.Rmd
+  - 04-Metabolism.Rmd
+  - 05-Digestion.Rmd
+  - 06-Salinity_Exposure.Rmd
+  - 07-Temperature_Exposure.Rmd
+  - 08-Contaminant_Exposure.Rmd
+  - 09-Filter_Feeding.Rmd
+  - 10-Lipid_Catabolism.Rmd
+  - 11-Landward_Migration.Rmd
+  - 12-Seaward_Migration.Rmd
+  - 13-Schooling.Rmd
+  - 14-Selective_Tidal_Stream_Transport.Rmd
+  - 15-Predation.Rmd
+  - 16-integrate_functions_example_01.Rmd
+  - 17-integrate_functions_example_02.Rmd
+  - 18-integrate_functions_example_03.Rmd
+  - 19-summary.Rmd
+  - 20-references.Rmd
+  - 21-glossary.Rmd

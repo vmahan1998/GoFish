@@ -156,7 +156,7 @@ $$
 
 ### Contaminant Assimilation and Biomagnification
 
-Biomagnification factors follow Lavoie et al (2013):
+Biomagnification factors follow @lavoie_biomagnification_2013:
 
 $$
 BMF_{MeHg} = 10^{(0.24 \cdot \Delta TP)}

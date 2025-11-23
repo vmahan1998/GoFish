@@ -1,4 +1,10 @@
-# Model Building Tutorial: Landward Migration & Selective Tidal Stream Transport
+# Complex Model Building Tutorial: One-Way Migration
+
+```{=html}
+<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
+This document is under active development.
+</div
+```
 
 ### Module Integration
 
@@ -13,13 +19,6 @@
 -   What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)
 
 -   Dependency table showing variable flow between submodels.
-
-| Function | Required Inputs | Output Variables | Dependent On |
-|----|----|----|----|
-| `osmoregulation` | `S_patch`, `S_agent`, `C` | `I_stress`, `C_new`, `E_osmo` | `environmental-sensing` |
-| `staging` | `E_agent`, `I_stress` | `E_agent`, `patch records` | `osmoregulation` |
-| `migration` | `E_agent`, `V_patch` | `Y_t`, `E_agent` | `staging`, `STST` |
-| `STST` | `V_patch`, `V_agent` | `Y_t+1`, `E_agent` | `migration logic` |
 
 ## Implementation in NetLogo:
 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Overview | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Overview | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="vmahan1998/GoFish" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Overview | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
+
 <link rel="next" href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -59,6 +59,29 @@
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -76,10 +99,6 @@
 <li><a href="./">GoFish</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
-</ul></li>
 <li class="chapter" data-level="1" data-path="overview.html"><a href="overview.html"><i class="fa fa-check"></i><b>1</b> Overview</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="overview.html"><a href="overview.html#background"><i class="fa fa-check"></i><b>1.1</b> Background</a></li>
@@ -130,8 +149,9 @@
 <li class="chapter" data-level="3.7" data-path="metabolism.html"><a href="metabolism.html#submodels"><i class="fa fa-check"></i><b>3.7</b> Submodels</a>
 <ul>
 <li class="chapter" data-level="3.7.1" data-path="metabolism.html"><a href="metabolism.html#initialize-metabolism"><i class="fa fa-check"></i><b>3.7.1</b> Initialize Metabolism</a></li>
-<li class="chapter" data-level="3.7.2" data-path="metabolism.html"><a href="metabolism.html#metabolic-rate-calculation"><i class="fa fa-check"></i><b>3.7.2</b> Metabolic Rate Calculation</a></li>
-<li class="chapter" data-level="3.7.3" data-path="metabolism.html"><a href="metabolism.html#efficiency-multipliers"><i class="fa fa-check"></i><b>3.7.3</b> Efficiency Multipliers</a></li>
+<li class="chapter" data-level="3.7.2" data-path="metabolism.html"><a href="metabolism.html#energy-partitions"><i class="fa fa-check"></i><b>3.7.2</b> Energy Partitions</a></li>
+<li class="chapter" data-level="3.7.3" data-path="metabolism.html"><a href="metabolism.html#metabolic-rate-calculation"><i class="fa fa-check"></i><b>3.7.3</b> Metabolic Rate Calculation</a></li>
+<li class="chapter" data-level="3.7.4" data-path="metabolism.html"><a href="metabolism.html#efficiency-multipliers"><i class="fa fa-check"></i><b>3.7.4</b> Efficiency Multipliers</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="digestion.html"><a href="digestion.html"><i class="fa fa-check"></i><b>4</b> Digestion</a>
@@ -528,6 +548,11 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</h1>
+<p class="author"><em>Vanessa Quintana</em></p>
+<p class="date"><em>2025-11-23</em></p>
+</div>
 <div id="overview" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Overview<a href="overview.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="background" class="section level2 hasAnchor" number="1.1">
@@ -585,6 +610,27 @@ alt="Migratory Fish Dynamics in a Contaminated Estuary"
             ">
 <p>Emergent behavior refers to patterns that arise when many individual agents follow their own rules, creating outcomes that cannot be predicted from observing a single fish on its own. These outcomes develop only when many individuals interact with each other and respond to their surrounding environment at the same time. Many ecological processes such as migration timing, habitat bottlenecks, exposure hotspots, schooling dynamics, predator and prey encounters, and shifts in group structure are emergent rather than linear. They form through small, individual decisions that accumulate into larger and sometimes unexpected system-level patterns.</p>
 <p>By visualizing and simulating emergence, ABMs make it possible to see how these individual behaviors scale up to influence population level outcomes and habitat use patterns. This helps identify the specific conditions, behaviors, and locations that shape system-wide responses. For management, this is valuable because it shows how small-scale decisions made by individual fish can contribute to broader patterns that influence risk, habitat quality, restoration effectiveness, management actions, and ecological resilience. Understanding emergence allows managers and communities to explore why certain patterns occur, identify potential leverage points, and anticipate how changes in environmental conditions may alter system behavior in the future.</p>
+<div style="display: flex; gap: 20px; justify-content: center;">
+
+  <div style="flex: 1;">
+    <video controls autoplay loop muted style="width: 100%; border-radius: 12px;">
+      <source src="demos/Emergent_Behavior_Two_Agents_speed.mp4" type="video/mp4">
+    </video>
+    <p style="text-align:center; font-size: 0.9em; color: #555;">
+      Emergence at the Individual Scale
+    </p>
+  </div>
+
+  <div style="flex: 1;">
+    <video controls autoplay loop muted style="width: 100%; border-radius: 12px;">
+      <source src="demos/Emergent_Behavior_Multiple_Agents_speed.mp4" type="video/mp4">
+    </video>
+    <p style="text-align:center; font-size: 0.9em; color: #555;">
+      Population-Level Emergence
+    </p>
+  </div>
+
+</div>
 </div>
 </div>
 <div id="structure" class="section level2 hasAnchor" number="1.3">
@@ -631,8 +677,8 @@ alt="Migratory Fish Dynamics in a Contaminated Estuary"
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="co-development-of-abms-penobscot-estuary-community-workshop-august-6-2025.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

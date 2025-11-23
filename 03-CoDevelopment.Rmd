@@ -41,11 +41,16 @@ Key steps included:
 
 -   **Aligning model scope with community priorities.** The agenda was constructed so that introductory talks on Penobscot Nation natural resource management and contaminants of interest, an overview of estuary dynamics (connection of fish + physical processes + contamination), and an introduction to agent based modeling were followed by interactive surveys and break-out discussions. This allowed participants to identify anadromous species, behaviors, and processes of interest, which then feed directly into the model design.
 
+-   **Preparing interactive polls and prompts.** A Mentimeter survey was developed to help participants identify priority species, important environmental drivers, and fish behaviors that shape exposure. These questions now map to the list of behaviors and parameters implemented in the model.
+
+[Question Example](materials/Mentimeter%20Survey_10.docx)
+
 -   **Designing materials for many kinds of learners.** Each participant received a notepad and workshop folder, which included a plain-language glossary, a participant agenda, a hypothesis and output worksheet, and a feedback form. These materials supported participants who learn best through reading, writing, discussion, or visual exploration. Break-out discussions were accompanied by visual demonstrations of function demos, allowing participants to directly address draft model functions for each behavior.
 
 Find examples below.\
 Note: these are presentations of functions before participant feedback. Updated functions in this library reflect changes informed by the workshop.
 
+```{=html}
 <style>
 .grid-container {
   display: grid;
@@ -53,24 +58,49 @@ Note: these are presentations of functions before participant feedback. Updated 
   grid-gap: 20px;
   margin-top: 1.5em;
 }
+
 .grid-item {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #fafafa;
+  padding: 18px;
+  border: 1px solid #d7d7d7;
+  border-radius: 12px;
+  background: #fcfcfc;
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+
+.grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.grid-icon {
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
 .grid-item h4 {
   margin-top: 0;
+  margin-bottom: 0.4em;
+  font-size: 1.15em;
 }
+
 .grid-item a {
   display: block;
   margin: 4px 0;
+  font-size: 0.95em;
+  text-decoration: none;
+  color: #2a4e8a;
+}
+
+.grid-item a:hover {
+  text-decoration: underline;
 }
 </style>
 
 <div class="grid-container">
 
   <div class="grid-item">
+    <div class="grid-icon">💧</div>
     <h4>Osmoregulation</h4>
     <a href="materials/Osmoregultation_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Osmoregultation.pdf">Info Sheet</a>
@@ -78,6 +108,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">🌡️</div>
     <h4>Thermoregulation</h4>
     <a href="materials/Thermoregulation_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Thermoregulation.pdf">Info Sheet</a>
@@ -85,6 +116,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">☣️</div>
     <h4>Bioaccumulation</h4>
     <a href="materials/Bioaccumulation_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Bioaccumulation.pdf">Info Sheet</a>
@@ -92,6 +124,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">😴</div>
     <h4>Resting</h4>
     <a href="materials/Resting_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Resting.pdf">Info Sheet</a>
@@ -99,6 +132,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">🐟➡️</div>
     <h4>Migration</h4>
     <a href="materials/Migration_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Migration.pdf">Info Sheet</a>
@@ -106,6 +140,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">🍽️</div>
     <h4>Foraging</h4>
     <a href="materials/Foraging_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Foraging.pdf">Info Sheet</a>
@@ -113,6 +148,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">🐣</div>
     <h4>Spawning</h4>
     <a href="materials/Spawning_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Spawning.pdf">Info Sheet</a>
@@ -120,6 +156,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
   <div class="grid-item">
+    <div class="grid-icon">🦈</div>
     <h4>Predation</h4>
     <a href="materials/Predation_Function.pdf">Demo</a>
     <a href="materials/Anadromous_Fish_Behavior_Fact_Sheet_Predation.pdf">Info Sheet</a>
@@ -127,10 +164,7 @@ Note: these are presentations of functions before participant feedback. Updated 
   </div>
 
 </div>
-
--   **Preparing interactive polls and prompts.** A Mentimeter survey was developed to help participants identify priority species, important environmental drivers, and fish behaviors that shape exposure. These questions now map to the list of behaviors and parameters implemented in the model.
-
-[Question Example](materials/Mentimeter%20Survey_10.docx)
+```
 
 ### Identifying Participants of Interest
 

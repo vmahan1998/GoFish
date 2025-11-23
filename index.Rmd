@@ -4,14 +4,23 @@ author: "Vanessa Quintana"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: "Penobscot.bib"
 # url: your book url like https://bookdown.org/yihui/bookdown
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
   This document contains a library of agent-based model functions for migratory fish.
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: vmahan1998/GoFish
+url: https://vmahan1998.github.io/GoFish/
 ---
+
+```{=html}
+<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
+This document is under active development and is currently undergoing review.
+Content may evolve and some functions may not yet match their most updated implementation.
+</div
+```
+
 
 # Preface {.unnumbered}
 

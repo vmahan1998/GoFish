@@ -4,7 +4,7 @@
 
 Schooling is an emergent collective behavior in which fish align, cohere, and maintain spacing with nearby con-specifics. In this model, schooling increases hydrodynamic efficiency, predator avoidance, and coordinated migration. The submodel follows the classic behavioral rules from agent based schooling and BOIDS frameworks (separation, alignment, and cohesion).
 
-The schooling behavior in this model is adapted from the publicly available NetLogo model [Fish Schooling For Predator Avoidance](https://modelingcommons.org/browse/one_model/5709#model_tabs_browse_info) created by Sebastian Dobon and shared through the NetLogo Modeling Commons. That model implements classic schooling rules from the original BOIDS framework developed by Craig Reynolds in 1987 in his paper *Flocks, Herds, and Schools: A Distributed Behavioral Model* (Reynolds, 1987). 
+The schooling behavior in this model is adapted from the publicly available NetLogo model [Fish Schooling For Predator Avoidance](https://modelingcommons.org/browse/one_model/5709#model_tabs_browse_info) created by Sebastian Dobon and shared through the NetLogo Modeling Commons. That model implements classic schooling rules from the original BOIDS framework developed by Craig Reynolds in 1987 in his paper *Flocks, Herds, and Schools: A Distributed Behavioral Model* [@reynolds_flocks_1987]. 
 
 ## Purpose
 

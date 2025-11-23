@@ -1,4 +1,10 @@
-# Complex Model Building Tutorial: One-Way Migration
+# Model Building Tutorial: Staging & Schooling
+
+```{=html}
+<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
+This document is under active development.
+</div
+```
 
 ### Module Integration
 
@@ -13,6 +19,11 @@
 -   What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)
 
 -   Dependency table showing variable flow between submodels.
+
+| Function  | Required Inputs       | Output Variables           | Dependent On     |
+|-----------|-----------------------|----------------------------|------------------|
+| `staging` | `E_agent`, `I_stress` | `E_agent`, `patch records` | `osmoregulation` |
+| schooling |                       |                            |                  |
 
 ## Implementation in NetLogo:
 
