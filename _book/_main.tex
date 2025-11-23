@@ -78,7 +78,7 @@
 
 \title{Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration}
 \author{Vanessa Quintana}
-\date{2025-04-07}
+\date{2025-04-09}
 
 \begin{document}
 \maketitle
@@ -101,11 +101,11 @@ The goal of this resource is to support students, researchers, and decision-make
 
 \section{Background}\label{background}
 
-Diadromous fish species such as river herring, striped bass, and sturgeon navigate coastal and estuarine systems that are increasingly affected by human activity, climate change, and legacy contaminants. Modeling their movement and behavior at fine spatial and temporal scales requires tools that can integrate physiological stressors, environmental variability, and behavior-based decision-making.
+Anadromous fish species such as river herring, striped bass, and sturgeon navigate coastal and estuarine systems that are increasingly affected by human activity, climate change, and legacy contaminants. Modeling their movement and behavior at fine spatial and temporal scales requires tools that can integrate physiological stressors, environmental variability, and behavior-based decision-making.
 
-Agent-based models are among the most powerful tools available for ecological forecasting and fisheries management, but they are also among the most complex. Their structure and computational demands can make them difficult to apply in practical management settings. Many biologists and ecologists who hold deep, species-specific expertise often have limited training in advanced programming or systems modeling. This is partly due to gaps in secondary and post-secondary education, where exposure to high-level mathematics and coding is often minimal, despite the fact that many ecological processes are governed by nonlinear systems and feedbacks.
+Agent-based models are among the most powerful tools available for ecological forecasting and fisheries management, but they are also among the most complex. Their structure and computational demands can make them difficult to apply in practical management settings. Many biologists and ecologists who hold deep, species-specific expertise often have limited training in advanced programming or systems modeling. This is partly due to gaps in secondary and post-secondary education, where exposure to high-level mathematics and coding is often minimal, despite the fact that many ecological processes are governed by nonlinear systems and feedback.
 
-As a result, traditional approaches to modeling marine and diadromous fish frequently oversimplify or exclude key biological functions such as osmoregulation, thermoregulation, schooling behavior, and contaminant exposure. Many existing models also lack standardized representations of these behaviors, limiting the interpretability of results and reducing their usefulness for applied management. This function library was developed to address these limitations by offering modular, empirically grounded components designed for use in agent-based models. Each function is clearly documented and can be applied independently, allowing for transparent testing, modification, and reuse across a wide range of ecological modeling scenarios.
+As a result, traditional approaches to modeling anadromous fish frequently oversimplify or exclude key biological functions such as osmoregulation, schooling behavior, and contaminant exposure. Many existing models also lack standardized representations of these behaviors, limiting the applicability of results and reducing their usefulness for applied management. This function library was developed to address these limitations by offering modular, empirically grounded components designed for use in modeling anadromous fish. Each function is clearly documented and can be applied independently, allowing for transparent testing, modification, and reuse across a wide range of ecological scenarios and sites.
 
 \section{Introduction to Agent-Based Models}\label{introduction-to-agent-based-models}
 
@@ -120,8 +120,6 @@ Each chapter in this library corresponds to a major behavior or physiological fu
   \textbf{Osmoregulation}
 \item
   \textbf{Bioaccumulation of contaminants}
-\item
-  \textbf{Thermoregulation}
 \item
   \textbf{Directional migration (landward and seaward)}
 \item
@@ -155,15 +153,15 @@ By following the ODD protocol, this library ensures that each function is self-c
 
 \section{Application Context}\label{application-context}
 
-This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to gradients in salinity, temperature, velocity, and pollutants.
+This library was originally developed in support of research on the influence of tidal behavior and contaminant exposure on anadromous fish in the Penobscot River Estuary. However, its modular design allows for application to other estuarine and coastal systems where fish respond to environmental changes (i.e., salinity, velocity, and pollutants).
 
 \emph{Can include addition project or model links here*}
 
 \section{How to Use This Library}\label{how-to-use-this-library}
 
-Each function or behavior in this library can be combined with others to build a complete agent-based model for migratory fish. These functions are designed to be modular, adaptable, and easily configured for different species, life stages, or site-specific conditions.
+Each function or behavior in this library can be combined with others to build a complete agent-based model for anadromous fish. These functions are designed to be adaptable, and easily configured for different species, life stages, or site-specific conditions.
 
-\emph{For questions, feedback, guidance on implementation, or \textbf{interest in adding to the library}, please contact \textbf{Vanessa Quintana} at \textbf{mahan.vanessa98@gmail.com.}}
+\emph{For questions, feedback, guidance on implementation, or \textbf{interest in adding to the library}, please contact \textbf{Vanessa Quintana} at \textbf{\href{mailto:mahan.vanessa98@gmail.com}{\nolinkurl{mahan.vanessa98@gmail.com}}.}}
 
 \chapter{Osmoregulation Function}\label{osmoregulation-function}
 
@@ -842,7 +840,7 @@ Justification
 \(M_{agent}\) & user-defined and species-specific & Representative body length of a migrating agent. \\
 \(M_{max}\) & user-defined and species-specific & Based on the maximum body length in the agent's population. \\
 \(V_{agent}\) & \(\frac{V_{max}}{2}\) & Fish begin migration with a moderate swimming speed relative to their maximum capacity. \\
-\(swim_{max}\) & \(1.5 \frac{body lengths}{sec}\) & Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). \\
+\(swim_{max}\) & \(1.5-3 \frac{body lengths}{sec}\) & Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). \\
 \(E_{agent}\) & 100\% & Agent starts migration at 100\% relative energy capacity. \\
 \(swim_{base}\) & \(0.02 \cdot \frac{M_{agent}}{M_{max}}^{k}\) & Scales locomotion cost nonlinearly with size; can be calibrated. \\
 \(k\) & 0.75 & Energetic scaling component that follows Kleiber's Law. \\
@@ -1089,7 +1087,7 @@ Justification
 \(M_{agent}\) & user-defined and species-specific & Representative body length of a migrating agent. \\
 \(M_{max}\) & user-defined and species-specific & Based on the maximum body length in the agent's population. \\
 \(V_{agent}\) & \(\frac{V_{max}}{2}\) & Fish begin migration with a moderate swimming speed relative to their maximum capacity. \\
-\(swim_{max}\) & \(1.5 \frac{body lengths}{sec}\) & Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). \\
+\(swim_{max}\) & \(1.5-3 \frac{body lengths}{sec}\) & Typical value for sustained swimming speed in small pelagic fish (refer to Videler, 1993). \\
 \(E_{agent}\) & 100\% & Agent starts migration at 100\% relative energy capacity. \\
 \(swim_{base}\) & \(0.02 \cdot \frac{M_{agent}}{M_{max}}^{k}\) & Scales locomotion cost nonlinearly with size; can be calibrated. \\
 \(k\) & 0.75 & Energetic scaling component that follows Kleiber's Law. \\
@@ -2272,7 +2270,7 @@ example code
 
 -    Grimm & Railsback (2005) *Individual-Based Modeling and Ecology*
 
--    Add others specific to behavior/physiology like Kirschner, Allen, or Little.
+-    Add others specific to modeling.
 \end{verbatim}
 
 \section{Best Practices}\label{best-practices}
@@ -2283,11 +2281,9 @@ example code
 \item
   \textbf{Modular Design}: Structure behavioral functions into separate procedures (e.g., swimming, osmoregulation, staging) to support testing, integration, and reuse.
 \item
-  \textbf{Version Control}: Use GitHub or other tools to track changes and link code to associated research outputs.
+  \textbf{Version Control}: Use GitHub or other tools to track changes and link code to research outputs.
 \item
-  \textbf{Naming Conventions}: Use clear, consistent names (e.g., \texttt{V\_agent}, \texttt{E\_osmo}, \texttt{stage?}) to reduce error and improve interpretability.
-\item
-  \textbf{Documentation in Code}: Annotate key procedures, thresholds, and formulas directly in NetLogo and R scripts.
+  \textbf{Model File structure}:
 \item
   \textbf{Journal References}:
 \end{itemize}
@@ -2312,8 +2308,6 @@ Description
 \endlastfoot
 \textbf{Penobscot River} & GitHub link & Simulates agent-based landward \& seaward migration using STST. \\
 \textbf{Martha's Vineyard} & GitHub link & Chloride cell regulation and stress-energy tradeoffs. \\
-\textbf{other} & GitHub link & Implements estuary resting behavior based on stress and energy. \\
-\textbf{other} & GitHub link & Code for plotting NetLogo outputs in R. \\
 \end{longtable}
 
 \chapter*{References}\label{references}

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 Spawning Behavior | Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration</title>
+  <title>Chapter 14 Spawning Behavior | Co-Development of ABMs</title>
   <meta name="description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 Spawning Behavior | Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration" />
+  <meta property="og:title" content="Chapter 14 Spawning Behavior | Co-Development of ABMs" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 Spawning Behavior | Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration" />
+  <meta name="twitter:title" content="Chapter 14 Spawning Behavior | Co-Development of ABMs" />
   
   <meta name="twitter:description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Vanessa Quintana" />
 
 
-<meta name="date" content="2025-04-07" />
+<meta name="date" content="2025-11-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -83,233 +83,13 @@
 <li class="chapter" data-level="1" data-path="overview.html"><a href="overview.html"><i class="fa fa-check"></i><b>1</b> Overview</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="overview.html"><a href="overview.html#background"><i class="fa fa-check"></i><b>1.1</b> Background</a></li>
-<li class="chapter" data-level="1.2" data-path="overview.html"><a href="overview.html#introduction-to-agent-based-models"><i class="fa fa-check"></i><b>1.2</b> Introduction to Agent-Based Models</a></li>
-<li class="chapter" data-level="1.3" data-path="overview.html"><a href="overview.html#structure"><i class="fa fa-check"></i><b>1.3</b> Structure</a></li>
-<li class="chapter" data-level="1.4" data-path="overview.html"><a href="overview.html#application-context"><i class="fa fa-check"></i><b>1.4</b> Application Context</a></li>
-<li class="chapter" data-level="1.5" data-path="overview.html"><a href="overview.html#how-to-use-this-library"><i class="fa fa-check"></i><b>1.5</b> How to Use This Library</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html"><i class="fa fa-check"></i><b>2</b> Osmoregulation Function</a>
+<li class="chapter" data-level="1.2" data-path="overview.html"><a href="overview.html#introduction-to-agent-based-models"><i class="fa fa-check"></i><b>1.2</b> Introduction to Agent-Based Models</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#overview-1"><i class="fa fa-check"></i><b>2.1</b> Overview</a></li>
-<li class="chapter" data-level="2.2" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#purpose"><i class="fa fa-check"></i><b>2.2</b> Purpose</a></li>
-<li class="chapter" data-level="2.3" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#entities-state-variables-and-scales"><i class="fa fa-check"></i><b>2.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="2.3.1" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#patch-variables"><i class="fa fa-check"></i><b>2.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="2.3.2" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#agent-variables"><i class="fa fa-check"></i><b>2.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="2.4" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#process-overview-and-scheduling"><i class="fa fa-check"></i><b>2.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="2.5" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#design-concepts"><i class="fa fa-check"></i><b>2.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="2.6" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#initialization"><i class="fa fa-check"></i><b>2.6</b> Initialization</a></li>
-<li class="chapter" data-level="2.7" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#submodels"><i class="fa fa-check"></i><b>2.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="2.7.1" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#osmotic-stress"><i class="fa fa-check"></i><b>2.7.1</b> Osmotic Stress</a></li>
-<li class="chapter" data-level="2.7.2" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#chloride-cell-density"><i class="fa fa-check"></i><b>2.7.2</b> Chloride Cell Density</a></li>
-<li class="chapter" data-level="" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#osmoregulation-energy"><i class="fa fa-check"></i>Osmoregulation Energy</a></li>
-<li class="chapter" data-level="2.7.3" data-path="osmoregulation-function.html"><a href="osmoregulation-function.html#energy-balance"><i class="fa fa-check"></i><b>2.7.3</b> Energy Balance</a></li>
+<li class="chapter" data-level="1.2.1" data-path="overview.html"><a href="overview.html#what-abms-can-help-us-understand"><i class="fa fa-check"></i><b>1.2.1</b> What ABMs Can Help Us Understand</a></li>
+<li class="chapter" data-level="1.2.2" data-path="overview.html"><a href="overview.html#what-abms-are-not-designed-to-do"><i class="fa fa-check"></i><b>1.2.2</b> What ABMs Are Not Designed to Do</a></li>
+<li class="chapter" data-level="1.2.3" data-path="overview.html"><a href="overview.html#emergent-behaviors"><i class="fa fa-check"></i><b>1.2.3</b> Emergent Behaviors</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html"><i class="fa fa-check"></i><b>3</b> Mercury Contamination Bioaccumulation Function</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#overview-2"><i class="fa fa-check"></i><b>3.1</b> Overview</a></li>
-<li class="chapter" data-level="3.2" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#purpose-1"><i class="fa fa-check"></i><b>3.2</b> Purpose</a></li>
-<li class="chapter" data-level="3.3" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#entities-state-variables-and-scales-1"><i class="fa fa-check"></i><b>3.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#global-variables"><i class="fa fa-check"></i><b>3.3.1</b> Global Variables</a></li>
-<li class="chapter" data-level="3.3.2" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#patch-variables-1"><i class="fa fa-check"></i><b>3.3.2</b> Patch Variables</a></li>
-<li class="chapter" data-level="3.3.3" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#agent-variables-1"><i class="fa fa-check"></i><b>3.3.3</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="3.4" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#process-overview-and-scheduling-1"><i class="fa fa-check"></i><b>3.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="3.5" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#design-concepts-1"><i class="fa fa-check"></i><b>3.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="3.6" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#initialization-1"><i class="fa fa-check"></i><b>3.6</b> Initialization</a></li>
-<li class="chapter" data-level="3.7" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#submodels-1"><i class="fa fa-check"></i><b>3.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="3.7.1" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#exposure-duration"><i class="fa fa-check"></i><b>3.7.1</b> Exposure Duration</a></li>
-<li class="chapter" data-level="3.7.2" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#bioaccumulation-risk"><i class="fa fa-check"></i><b>3.7.2</b> Bioaccumulation Risk</a></li>
-<li class="chapter" data-level="3.7.3" data-path="mercury-contamination-bioaccumulation-function.html"><a href="mercury-contamination-bioaccumulation-function.html#exposure-to-contamination"><i class="fa fa-check"></i><b>3.7.3</b> Exposure to Contamination</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html"><i class="fa fa-check"></i><b>4</b> Landward Migration Behavior</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#overview-3"><i class="fa fa-check"></i><b>4.1</b> Overview</a></li>
-<li class="chapter" data-level="4.2" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#purpose-2"><i class="fa fa-check"></i><b>4.2</b> Purpose</a></li>
-<li class="chapter" data-level="4.3" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#entities-state-variables-and-scales-2"><i class="fa fa-check"></i><b>4.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#global-variables-1"><i class="fa fa-check"></i><b>4.3.1</b> Global Variables</a></li>
-<li class="chapter" data-level="4.3.2" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#patch-variables-2"><i class="fa fa-check"></i><b>4.3.2</b> Patch Variables</a></li>
-<li class="chapter" data-level="4.3.3" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#agent-variables-2"><i class="fa fa-check"></i><b>4.3.3</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#process-overview-and-scheduling-2"><i class="fa fa-check"></i><b>4.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="4.5" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#design-concepts-2"><i class="fa fa-check"></i><b>4.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="4.6" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#initialization-2"><i class="fa fa-check"></i><b>4.6</b> Initialization</a></li>
-<li class="chapter" data-level="4.7" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#submodels-2"><i class="fa fa-check"></i><b>4.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="4.7.1" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#swimming-speed"><i class="fa fa-check"></i><b>4.7.1</b> Swimming Speed</a></li>
-<li class="chapter" data-level="4.7.2" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#swimming-difficulty"><i class="fa fa-check"></i><b>4.7.2</b> <strong>Swimming Difficulty</strong></a></li>
-<li class="chapter" data-level="4.7.3" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#swimming-movement"><i class="fa fa-check"></i><b>4.7.3</b> Swimming Movement</a></li>
-<li class="chapter" data-level="4.7.4" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#swimming-energy"><i class="fa fa-check"></i><b>4.7.4</b> Swimming Energy</a></li>
-<li class="chapter" data-level="4.7.5" data-path="landward-migration-behavior.html"><a href="landward-migration-behavior.html#energy-balance-1"><i class="fa fa-check"></i><b>4.7.5</b> Energy Balance</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html"><i class="fa fa-check"></i><b>5</b> Seaward Migration Behavior</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#overview-4"><i class="fa fa-check"></i><b>5.1</b> Overview</a></li>
-<li class="chapter" data-level="5.2" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#purpose-3"><i class="fa fa-check"></i><b>5.2</b> Purpose</a></li>
-<li class="chapter" data-level="5.3" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#entities-state-variables-and-scales-3"><i class="fa fa-check"></i><b>5.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#global-variables-2"><i class="fa fa-check"></i><b>5.3.1</b> Global Variables</a></li>
-<li class="chapter" data-level="5.3.2" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#patch-variables-3"><i class="fa fa-check"></i><b>5.3.2</b> Patch Variables</a></li>
-<li class="chapter" data-level="5.3.3" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#agent-variables-3"><i class="fa fa-check"></i><b>5.3.3</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="5.4" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#process-overview-and-scheduling-3"><i class="fa fa-check"></i><b>5.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="5.5" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#design-concepts-3"><i class="fa fa-check"></i><b>5.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="5.6" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#initialization-3"><i class="fa fa-check"></i><b>5.6</b> Initialization</a></li>
-<li class="chapter" data-level="5.7" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#submodels-3"><i class="fa fa-check"></i><b>5.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="5.7.1" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#swimming-speed-1"><i class="fa fa-check"></i><b>5.7.1</b> Swimming Speed</a></li>
-<li class="chapter" data-level="5.7.2" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#swimming-difficulty-1"><i class="fa fa-check"></i><b>5.7.2</b> <strong>Swimming Difficulty</strong></a></li>
-<li class="chapter" data-level="5.7.3" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#swimming-movement-1"><i class="fa fa-check"></i><b>5.7.3</b> Swimming Movement</a></li>
-</ul></li>
-<li class="chapter" data-level="5.8" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#swimming-energy-1"><i class="fa fa-check"></i><b>5.8</b> Swimming Energy</a>
-<ul>
-<li class="chapter" data-level="5.8.1" data-path="seaward-migration-behavior.html"><a href="seaward-migration-behavior.html#energy-balance-2"><i class="fa fa-check"></i><b>5.8.1</b> Energy Balance</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="schooling-behavior.html"><a href="schooling-behavior.html"><i class="fa fa-check"></i><b>6</b> Schooling Behavior</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="schooling-behavior.html"><a href="schooling-behavior.html#overview-5"><i class="fa fa-check"></i><b>6.1</b> Overview</a></li>
-<li class="chapter" data-level="6.2" data-path="schooling-behavior.html"><a href="schooling-behavior.html#purpose-4"><i class="fa fa-check"></i><b>6.2</b> Purpose</a></li>
-<li class="chapter" data-level="6.3" data-path="schooling-behavior.html"><a href="schooling-behavior.html#entities-state-variables-and-scales-4"><i class="fa fa-check"></i><b>6.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="schooling-behavior.html"><a href="schooling-behavior.html#patch-variables-4"><i class="fa fa-check"></i><b>6.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="6.3.2" data-path="schooling-behavior.html"><a href="schooling-behavior.html#agent-variables-4"><i class="fa fa-check"></i><b>6.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="schooling-behavior.html"><a href="schooling-behavior.html#process-overview-and-scheduling-4"><i class="fa fa-check"></i><b>6.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="6.5" data-path="schooling-behavior.html"><a href="schooling-behavior.html#design-concepts-4"><i class="fa fa-check"></i><b>6.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="6.6" data-path="schooling-behavior.html"><a href="schooling-behavior.html#initialization-4"><i class="fa fa-check"></i><b>6.6</b> Initialization</a></li>
-<li class="chapter" data-level="6.7" data-path="schooling-behavior.html"><a href="schooling-behavior.html#submodels-4"><i class="fa fa-check"></i><b>6.7</b> Submodels</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html"><i class="fa fa-check"></i><b>7</b> Selective Tidal Stream Transport</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#overview-6"><i class="fa fa-check"></i><b>7.1</b> Overview</a></li>
-<li class="chapter" data-level="7.2" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#purpose-5"><i class="fa fa-check"></i><b>7.2</b> Purpose</a></li>
-<li class="chapter" data-level="7.3" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#entities-state-variables-and-scales-5"><i class="fa fa-check"></i><b>7.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="7.3.1" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#patch-variables-5"><i class="fa fa-check"></i><b>7.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="7.3.2" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#agent-variables-5"><i class="fa fa-check"></i><b>7.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="7.4" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#process-overview-and-scheduling-5"><i class="fa fa-check"></i><b>7.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="7.5" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#design-concepts-5"><i class="fa fa-check"></i><b>7.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="7.6" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#initialization-5"><i class="fa fa-check"></i><b>7.6</b> Initialization</a></li>
-<li class="chapter" data-level="7.7" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#submodels-5"><i class="fa fa-check"></i><b>7.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="7.7.1" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#trigger-conditions-for-stst"><i class="fa fa-check"></i><b>7.7.1</b> Trigger Conditions for STST</a></li>
-<li class="chapter" data-level="7.7.2" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#behavior-during-stst"><i class="fa fa-check"></i><b>7.7.2</b> Behavior During STST</a></li>
-<li class="chapter" data-level="7.7.3" data-path="selective-tidal-stream-transport.html"><a href="selective-tidal-stream-transport.html#stop-conditions-for-stst"><i class="fa fa-check"></i><b>7.7.3</b> Stop Conditions for STST</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="staging-behavior.html"><a href="staging-behavior.html"><i class="fa fa-check"></i><b>8</b> Staging Behavior</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="staging-behavior.html"><a href="staging-behavior.html#overview-7"><i class="fa fa-check"></i><b>8.1</b> Overview</a></li>
-<li class="chapter" data-level="8.2" data-path="staging-behavior.html"><a href="staging-behavior.html#purpose-6"><i class="fa fa-check"></i><b>8.2</b> Purpose</a></li>
-<li class="chapter" data-level="8.3" data-path="staging-behavior.html"><a href="staging-behavior.html#entities-state-variables-and-scales-6"><i class="fa fa-check"></i><b>8.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="8.3.1" data-path="staging-behavior.html"><a href="staging-behavior.html#patch-variables-6"><i class="fa fa-check"></i><b>8.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="8.3.2" data-path="staging-behavior.html"><a href="staging-behavior.html#agent-variables-6"><i class="fa fa-check"></i><b>8.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="8.4" data-path="staging-behavior.html"><a href="staging-behavior.html#process-overview-and-scheduling-6"><i class="fa fa-check"></i><b>8.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="8.5" data-path="staging-behavior.html"><a href="staging-behavior.html#design-concepts-6"><i class="fa fa-check"></i><b>8.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="8.6" data-path="staging-behavior.html"><a href="staging-behavior.html#initialization-6"><i class="fa fa-check"></i><b>8.6</b> Initialization</a></li>
-<li class="chapter" data-level="8.7" data-path="staging-behavior.html"><a href="staging-behavior.html#submodels-6"><i class="fa fa-check"></i><b>8.7</b> Submodels</a>
-<ul>
-<li class="chapter" data-level="8.7.1" data-path="staging-behavior.html"><a href="staging-behavior.html#trigger-conditions-for-staging"><i class="fa fa-check"></i><b>8.7.1</b> Trigger Conditions for Staging</a></li>
-<li class="chapter" data-level="8.7.2" data-path="staging-behavior.html"><a href="staging-behavior.html#behavior-during-staging"><i class="fa fa-check"></i><b>8.7.2</b> Behavior During Staging</a></li>
-<li class="chapter" data-level="8.7.3" data-path="staging-behavior.html"><a href="staging-behavior.html#stop-conditions-for-staging"><i class="fa fa-check"></i><b>8.7.3</b> Stop Conditions for Staging</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="homing-behavior.html"><a href="homing-behavior.html"><i class="fa fa-check"></i><b>9</b> Homing Behavior</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="homing-behavior.html"><a href="homing-behavior.html#overview-8"><i class="fa fa-check"></i><b>9.1</b> Overview</a></li>
-<li class="chapter" data-level="9.2" data-path="homing-behavior.html"><a href="homing-behavior.html#purpose-7"><i class="fa fa-check"></i><b>9.2</b> Purpose</a></li>
-<li class="chapter" data-level="9.3" data-path="homing-behavior.html"><a href="homing-behavior.html#entities-state-variables-and-scales-7"><i class="fa fa-check"></i><b>9.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="9.3.1" data-path="homing-behavior.html"><a href="homing-behavior.html#patch-variables-7"><i class="fa fa-check"></i><b>9.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="9.3.2" data-path="homing-behavior.html"><a href="homing-behavior.html#agent-variables-7"><i class="fa fa-check"></i><b>9.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="9.4" data-path="homing-behavior.html"><a href="homing-behavior.html#process-overview-and-scheduling-7"><i class="fa fa-check"></i><b>9.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="9.5" data-path="homing-behavior.html"><a href="homing-behavior.html#design-concepts-7"><i class="fa fa-check"></i><b>9.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="9.6" data-path="homing-behavior.html"><a href="homing-behavior.html#initialization-7"><i class="fa fa-check"></i><b>9.6</b> Initialization</a></li>
-<li class="chapter" data-level="9.7" data-path="homing-behavior.html"><a href="homing-behavior.html#submodels-7"><i class="fa fa-check"></i><b>9.7</b> Submodels</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="foraging-behavior.html"><a href="foraging-behavior.html"><i class="fa fa-check"></i><b>10</b> Foraging Behavior</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="foraging-behavior.html"><a href="foraging-behavior.html#overview-9"><i class="fa fa-check"></i><b>10.1</b> Overview</a></li>
-<li class="chapter" data-level="10.2" data-path="foraging-behavior.html"><a href="foraging-behavior.html#purpose-8"><i class="fa fa-check"></i><b>10.2</b> Purpose</a></li>
-<li class="chapter" data-level="10.3" data-path="foraging-behavior.html"><a href="foraging-behavior.html#entities-state-variables-and-scales-8"><i class="fa fa-check"></i><b>10.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="10.3.1" data-path="foraging-behavior.html"><a href="foraging-behavior.html#patch-variables-8"><i class="fa fa-check"></i><b>10.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="10.3.2" data-path="foraging-behavior.html"><a href="foraging-behavior.html#agent-variables-8"><i class="fa fa-check"></i><b>10.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="10.4" data-path="foraging-behavior.html"><a href="foraging-behavior.html#process-overview-and-scheduling-8"><i class="fa fa-check"></i><b>10.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="10.5" data-path="foraging-behavior.html"><a href="foraging-behavior.html#design-concepts-8"><i class="fa fa-check"></i><b>10.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="10.6" data-path="foraging-behavior.html"><a href="foraging-behavior.html#initialization-8"><i class="fa fa-check"></i><b>10.6</b> Initialization</a></li>
-<li class="chapter" data-level="10.7" data-path="foraging-behavior.html"><a href="foraging-behavior.html#submodels-8"><i class="fa fa-check"></i><b>10.7</b> Submodels</a></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html"><i class="fa fa-check"></i><b>11</b> Predation and Fleeing Behavior</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#overview-10"><i class="fa fa-check"></i><b>11.1</b> Overview</a></li>
-<li class="chapter" data-level="11.2" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#purpose-9"><i class="fa fa-check"></i><b>11.2</b> Purpose</a></li>
-<li class="chapter" data-level="11.3" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#entities-state-variables-and-scales-9"><i class="fa fa-check"></i><b>11.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="11.3.1" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#patch-variables-9"><i class="fa fa-check"></i><b>11.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="11.3.2" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#agent-variables-9"><i class="fa fa-check"></i><b>11.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="11.4" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#process-overview-and-scheduling-9"><i class="fa fa-check"></i><b>11.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="11.5" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#design-concepts-9"><i class="fa fa-check"></i><b>11.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="11.6" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#initialization-9"><i class="fa fa-check"></i><b>11.6</b> Initialization</a></li>
-<li class="chapter" data-level="11.7" data-path="predation-and-fleeing-behavior.html"><a href="predation-and-fleeing-behavior.html#submodels-9"><i class="fa fa-check"></i><b>11.7</b> Submodels</a></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="spawning-behavior.html"><a href="spawning-behavior.html"><i class="fa fa-check"></i><b>12</b> Spawning Behavior</a>
-<ul>
-<li class="chapter" data-level="12.1" data-path="spawning-behavior.html"><a href="spawning-behavior.html#overview-11"><i class="fa fa-check"></i><b>12.1</b> Overview</a></li>
-<li class="chapter" data-level="12.2" data-path="spawning-behavior.html"><a href="spawning-behavior.html#purpose-10"><i class="fa fa-check"></i><b>12.2</b> Purpose</a></li>
-<li class="chapter" data-level="12.3" data-path="spawning-behavior.html"><a href="spawning-behavior.html#entities-state-variables-and-scales-10"><i class="fa fa-check"></i><b>12.3</b> Entities, State Variables, and Scales</a>
-<ul>
-<li class="chapter" data-level="12.3.1" data-path="spawning-behavior.html"><a href="spawning-behavior.html#patch-variables-10"><i class="fa fa-check"></i><b>12.3.1</b> Patch Variables</a></li>
-<li class="chapter" data-level="12.3.2" data-path="spawning-behavior.html"><a href="spawning-behavior.html#agent-variables-10"><i class="fa fa-check"></i><b>12.3.2</b> Agent Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="12.4" data-path="spawning-behavior.html"><a href="spawning-behavior.html#process-overview-and-scheduling-10"><i class="fa fa-check"></i><b>12.4</b> Process Overview and Scheduling</a></li>
-<li class="chapter" data-level="12.5" data-path="spawning-behavior.html"><a href="spawning-behavior.html#design-concepts-10"><i class="fa fa-check"></i><b>12.5</b> Design Concepts</a></li>
-<li class="chapter" data-level="12.6" data-path="spawning-behavior.html"><a href="spawning-behavior.html#initialization-10"><i class="fa fa-check"></i><b>12.6</b> Initialization</a></li>
-<li class="chapter" data-level="12.7" data-path="spawning-behavior.html"><a href="spawning-behavior.html#submodels-10"><i class="fa fa-check"></i><b>12.7</b> Submodels</a></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="model-building-tutorial-staging-schooling.html"><a href="model-building-tutorial-staging-schooling.html"><i class="fa fa-check"></i><b>13</b> Model Building Tutorial: Staging &amp; Schooling</a>
-<ul>
-<li class="chapter" data-level="13.0.1" data-path="model-building-tutorial-staging-schooling.html"><a href="model-building-tutorial-staging-schooling.html#module-integration"><i class="fa fa-check"></i><b>13.0.1</b> Module Integration</a></li>
-<li class="chapter" data-level="13.0.2" data-path="model-building-tutorial-staging-schooling.html"><a href="model-building-tutorial-staging-schooling.html#function-dependencies"><i class="fa fa-check"></i><b>13.0.2</b> <strong>Function Dependencies</strong></a></li>
-<li class="chapter" data-level="13.1" data-path="model-building-tutorial-staging-schooling.html"><a href="model-building-tutorial-staging-schooling.html#implementation-in-netlogo"><i class="fa fa-check"></i><b>13.1</b> Implementation in NetLogo:</a></li>
-<li class="chapter" data-level="13.2" data-path="model-building-tutorial-staging-schooling.html"><a href="model-building-tutorial-staging-schooling.html#implementation-in-r"><i class="fa fa-check"></i><b>13.2</b> Implementation in R:</a></li>
-</ul></li>
-<li class="chapter" data-level="14" data-path="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><i class="fa fa-check"></i><b>14</b> Model Building Tutorial: Landward Migration &amp; Selective Tidal Stream Transport</a>
-<ul>
-<li class="chapter" data-level="14.0.1" data-path="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html#module-integration-1"><i class="fa fa-check"></i><b>14.0.1</b> Module Integration</a></li>
-<li class="chapter" data-level="14.0.2" data-path="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html#function-dependencies-1"><i class="fa fa-check"></i><b>14.0.2</b> <strong>Function Dependencies</strong></a></li>
-<li class="chapter" data-level="14.1" data-path="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html#implementation-in-netlogo-1"><i class="fa fa-check"></i><b>14.1</b> Implementation in NetLogo:</a></li>
-<li class="chapter" data-level="14.2" data-path="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"><a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html#implementation-in-r-1"><i class="fa fa-check"></i><b>14.2</b> Implementation in R:</a></li>
-</ul></li>
-<li class="chapter" data-level="15" data-path="complex-model-building-tutorial-one-way-migration.html"><a href="complex-model-building-tutorial-one-way-migration.html"><i class="fa fa-check"></i><b>15</b> Complex Model Building Tutorial: One-Way Migration</a>
-<ul>
-<li class="chapter" data-level="15.0.1" data-path="complex-model-building-tutorial-one-way-migration.html"><a href="complex-model-building-tutorial-one-way-migration.html#module-integration-2"><i class="fa fa-check"></i><b>15.0.1</b> Module Integration</a></li>
-<li class="chapter" data-level="15.0.2" data-path="complex-model-building-tutorial-one-way-migration.html"><a href="complex-model-building-tutorial-one-way-migration.html#function-dependencies-2"><i class="fa fa-check"></i><b>15.0.2</b> <strong>Function Dependencies</strong></a></li>
-<li class="chapter" data-level="15.1" data-path="complex-model-building-tutorial-one-way-migration.html"><a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-netlogo-2"><i class="fa fa-check"></i><b>15.1</b> Implementation in NetLogo:</a></li>
-<li class="chapter" data-level="15.2" data-path="complex-model-building-tutorial-one-way-migration.html"><a href="complex-model-building-tutorial-one-way-migration.html#implementation-in-r-2"><i class="fa fa-check"></i><b>15.2</b> Implementation in R:</a></li>
-</ul></li>
-<li class="chapter" data-level="16" data-path="modeling-toolkit.html"><a href="modeling-toolkit.html"><i class="fa fa-check"></i><b>16</b> Modeling Toolkit</a>
-<ul>
-<li class="chapter" data-level="16.1" data-path="modeling-toolkit.html"><a href="modeling-toolkit.html#learning-resources"><i class="fa fa-check"></i><b>16.1</b> Learning Resources</a></li>
-<li class="chapter" data-level="16.2" data-path="modeling-toolkit.html"><a href="modeling-toolkit.html#best-practices"><i class="fa fa-check"></i><b>16.2</b> Best Practices</a></li>
-<li class="chapter" data-level="16.3" data-path="modeling-toolkit.html"><a href="modeling-toolkit.html#code-repositories-examples"><i class="fa fa-check"></i><b>16.3</b> Code Repositories &amp; Examples</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -322,7 +102,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Co-Development of ABMs</a>
           </h1>
         </div>
 
@@ -330,19 +110,45 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="spawning-behavior" class="section level1 hasAnchor" number="12">
-<h1><span class="header-section-number">Chapter 12</span> Spawning Behavior<a href="spawning-behavior.html#spawning-behavior" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="overview-11" class="section level2 hasAnchor" number="12.1">
-<h2><span class="header-section-number">12.1</span> Overview<a href="spawning-behavior.html#overview-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spawning-behavior" class="section level1 hasAnchor" number="14">
+<h1><span class="header-section-number">Chapter 14</span> Spawning Behavior<a href="spawning-behavior.html#spawning-behavior" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-12" class="section level2 hasAnchor" number="14.1">
+<h2><span class="header-section-number">14.1</span> Overview<a href="spawning-behavior.html#overview-12" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This submodel simulates the conditions, triggers, and behavioral outcomes associated with spawning in anadromous fish. Spawning is controlled by each agent’s physiological state, including energy levels, salinity and thermal stress, and reproductive limits. Behavior like homing is used to determine if patches are suitable for spawning. Agents follow broadcast or pairwise strategies depending on species traits.</p>
 </div>
-<div id="purpose-10" class="section level2 hasAnchor" number="12.2">
-<h2><span class="header-section-number">12.2</span> Purpose<a href="spawning-behavior.html#purpose-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="purpose-and-patterns-3" class="section level2 hasAnchor" number="14.2">
+<h2><span class="header-section-number">14.2</span> Purpose and Patterns<a href="spawning-behavior.html#purpose-and-patterns-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The purpose of this submodel is to simulate realistic reproductive behavior based on physiological condition. Agents decide to spawn when their state is favorable and when they make it to their known homing habitat. Spawning success depends on nearby mate presence and reproductive readiness. Spawning patches emerge when multiple fish overlap in space and meet these conditions, creating flexible and adaptive spawning dynamics.</p>
+<p>Spawning initiation is triggered by physiological thresholds:</p>
+<ul>
+<li>Salinity and thermal stress are used to simulate habitat suitability, consistent with the needs of anadromous fish like alewife and rainbow smelt. -Agents must have sufficient energy reserves to spawn, ensuring reproductive viability in line with real-world observations of migratory fish constraints.</li>
+</ul>
+<!-- -->
+<ul>
+<li><p><strong>Broadcast spawners</strong> (e.g., alewife, rainbow smelt) spawn in freshwater patches with appropriate depth and flow conditions. Fertilization success is influenced by male density within the local area, simulating natural gamete mixing.</p></li>
+<li><p><strong>Pairwise spawners</strong> (e.g., sturgeon, striped bass) require the physical co-location of males and females within a suitable patch for spawning to occur. This reflects close-contact courtship and synchronized gamete release in the wild.</p></li>
+<li><p><strong>Energy Cost</strong>: Both male and female agents experience an immediate energy cost after spawning. Iteroparous species can spawn multiple times if conditions remain favorable, while semelparous species die after spawning.</p></li>
+<li><p><strong>Post-Spawning</strong>: Once spawning energy is depleted, agents enter a resting/staging behavior phase until they recover energy and resume migration, especially seaward migration.</p></li>
+<li><p><strong>Overwintering</strong>: Overwintering probability is modeled dynamically based on agents’ energy reserves, size, age, and spawning timing, closely reflecting the seasonal strategies seen in species like Atlantic salmon and shortnose sturgeon.</p></li>
+<li><p><strong>Reproductive Hotspots</strong>: Spatial overlap of spawning-ready agents in high-quality patches helps identify reproductive hotspots where high-quality habitat intersects with the life-history traits of species and estuarine hydrodynamics.</p></li>
+</ul>
 </div>
-<div id="entities-state-variables-and-scales-10" class="section level2 hasAnchor" number="12.3">
-<h2><span class="header-section-number">12.3</span> Entities, State Variables, and Scales<a href="spawning-behavior.html#entities-state-variables-and-scales-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="patch-variables-10" class="section level3 hasAnchor" number="12.3.1">
-<h3><span class="header-section-number">12.3.1</span> Patch Variables<a href="spawning-behavior.html#patch-variables-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="entities-state-variables-and-scales-11" class="section level2 hasAnchor" number="14.3">
+<h2><span class="header-section-number">14.3</span> Entities, State Variables, and Scales<a href="spawning-behavior.html#entities-state-variables-and-scales-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-2" class="section level3 hasAnchor" number="14.3.1">
+<h3><span class="header-section-number">14.3.1</span> Spatial and Temporal Scales<a href="spawning-behavior.html#spatial-and-temporal-scales-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Spatial Unit</strong>: Patch (3 m x 3 m resolution)</li>
+<li><strong>Temporal Unit</strong>: 5-minute time steps (<code>tick</code>)</li>
+</ul>
+</div>
+<div id="patch-variables-11" class="section level3 hasAnchor" number="14.3.2">
+<h3><span class="header-section-number">14.3.2</span> Patch Variables<a href="spawning-behavior.html#patch-variables-11" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
 <thead>
 <tr>
 <th>Variable Name</th>
@@ -351,15 +157,19 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>Homing <span class="math inline">\(homing?\)</span></td>
+<td>identifies known areas where populations spawn. used to direct agents to spawning locations.</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="agent-variables-10" class="section level3 hasAnchor" number="12.3.2">
-<h3><span class="header-section-number">12.3.2</span> Agent Variables<a href="spawning-behavior.html#agent-variables-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="agent-variables-10" class="section level3 hasAnchor" number="14.3.3">
+<h3><span class="header-section-number">14.3.3</span> Agent Variables<a href="spawning-behavior.html#agent-variables-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
 <thead>
 <tr>
 <th>Variable Name</th>
@@ -368,110 +178,305 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td>size <span class="math inline">\(M_{agent}\)</span></td>
+<td>Individual fish body size</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>age <span class="math inline">\(A_{agent}\)</span></td>
+<td>Individual fish age</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>sex <span class="math inline">\(s_{agent}\)</span></td>
+<td>Sex of agent</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>energy <span class="math inline">\(E_{agent}\)</span></td>
+<td>Current metabolic energy level</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>spawning energy <span class="math inline">\(E_{spawn}\)</span></td>
+<td>Energy cost to spawn</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>spawning encounters <span class="math inline">\(spawn_{encounters}\)</span></td>
+<td>Count of fertilization events related to agent’s spawn</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>spawns <span class="math inline">\(spawn_{n}\)</span></td>
+<td>Number of individual spawning encounters</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>spawning limit <span class="math inline">\(lim_{spawn}\)</span></td>
+<td>Maximum spawns allowed for individual</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>spawning strategy</td>
+<td>Reproductive mode (broadcast or pairwise)</td>
+</tr>
+<tr>
+<td>Salinity Stress <span class="math inline">\(S_{stress}\)</span></td>
+<td>Osmotic stress response</td>
+</tr>
+<tr>
+<td>Thermal Stress <span class="math inline">\(T_{stress}\)</span></td>
+<td>Deviation from thermal optima</td>
+</tr>
+<tr>
+<td>spawning depth <span class="math inline">\(d_{spawn}\)</span></td>
+<td>Known depth limit for spawning</td>
+</tr>
+<tr>
+<td>STST?</td>
+<td>Boolean for if agent is using Selective Tidal Stream Transport</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="process-overview-and-scheduling-10" class="section level2 hasAnchor" number="12.4">
-<h2><span class="header-section-number">12.4</span> Process Overview and Scheduling<a href="spawning-behavior.html#process-overview-and-scheduling-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="process-overview-and-scheduling-11" class="section level2 hasAnchor" number="14.4">
+<h2><span class="header-section-number">14.4</span> Process Overview and Scheduling<a href="spawning-behavior.html#process-overview-and-scheduling-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li><p><strong>Spawning Readiness</strong><br />
+Each agent evaluates whether it is spawning-ready based on salinity stress, thermal stress, energy levels, and whether it has exceeded its spawning limit. If all conditions are met, the agent is considered ready to spawn.</p></li>
+<li><p><strong>Spawning Strategy</strong><br />
+For broadcast spawners, the female initiates spawning if the patch meets the criteria. Fertilization is based on the number of males able to fertilize the spawning patch. For pairwise spawners, spawning occurs only if one male and one female are both in the same patch, both are spawning-ready, and habitat conditions meet the required criteria.</p></li>
+<li><p><strong>Spawning Energy</strong><br />
+After spawning, the agent’s energy is reduced by the spawning energy cost.</p></li>
+<li><p><strong>Post-Spawning Behavior</strong><br />
+If the agent’s energy is sufficient, it switches to seaward migration. If energy is below the threshold, the agent enters a resting/staging state until its energy is restored.</p></li>
+<li><p><strong>Mortality Risk</strong><br />
+For semelparous species, the mortality risk increases after spawning, with the probability increasing based on age. For iteroparous species, the mortality risk is lower and also age-dependent.</p></li>
+<li><p><strong>Overwintering Probability</strong><br />
+The overwintering probability is calculated based on the agent’s energy, age, size, and days since the last spawning. Overwintering is more likely for older fish, those with low energy, or those that spawned recently.</p></li>
 </ol>
 </div>
-<div id="design-concepts-10" class="section level2 hasAnchor" number="12.5">
-<h2><span class="header-section-number">12.5</span> Design Concepts<a href="spawning-behavior.html#design-concepts-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Basic Principles:</strong></p>
-<p><strong>Emergence:</strong></p>
-<p><strong>Adaptation</strong>:</p>
-<p><strong>Objectives:</strong></p>
-<p><strong>Learning:</strong></p>
-<p><strong>Prediction:</strong></p>
-<p><strong>Sensing</strong>:</p>
-<p><strong>Interaction</strong>:</p>
-<p><strong>Stochasticity</strong>:</p>
-<p><strong>Collectives:</strong></p>
-<p><strong>Observation:</strong></p>
+<div id="design-concepts-11" class="section level2 hasAnchor" number="14.5">
+<h2><span class="header-section-number">14.5</span> Design Concepts<a href="spawning-behavior.html#design-concepts-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles:</strong> Spawning behavior is indeed influenced by environmental conditions and physiological readiness, which agents evaluate before spawning, as described in the Spawning Readiness and Spawning Strategy submodels.</p>
+<p><strong>Emergence:</strong> Spawning patches emerge when favorable physiological conditions for spawning are met. The spatial overlap of spawning-ready agents leads to emergent patterns of reproductive success.</p>
+<p><strong>Adaptation:</strong> Fish respond to varying environmental conditions by adjusting their spawning behavior. Iteroparous species may spawn multiple times in a season if conditions remain favorable, whereas semelparous species spawn once and die.</p>
+<p><strong>Objectives:</strong> The primary objective of spawning behavior is to maximize reproductive success by ensuring optimal conditions for fertilization while minimizing the energetic costs.</p>
+<p><strong>Prediction:</strong> Broadcast spawners react to local conditions and male density rather than predicting future conditions, whereas pairwise spawners predict success based on habitat conditions and mate availability.</p>
+<p><strong>Sensing:</strong> Agents sense their natal stream habitats and assess the presence of other agents to determine spawning readiness.</p>
+<p><strong>Interaction:</strong> Male and female agents interact through proximity in pairwise spawning, while broadcast spawners interact with males via proximity to spawning location. Both strategies involve the exchange of gametes, with varying degrees of synchronization and spatial organization.</p>
+<p><strong>Stochasticity:</strong> The model includes probabilistic factors in mortality.</p>
+<p><strong>Observation:</strong> The model tracks spawning encounters, spawning energy expenditures, energy recovery, mortality rates, and overwintering probabilities.</p>
 </div>
-<div id="initialization-10" class="section level2 hasAnchor" number="12.6">
-<h2><span class="header-section-number">12.6</span> Initialization<a href="spawning-behavior.html#initialization-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="initialization-11" class="section level2 hasAnchor" number="14.6">
+<h2><span class="header-section-number">14.6</span> Initialization<a href="spawning-behavior.html#initialization-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="48%" />
+</colgroup>
 <thead>
 <tr>
-<th align="center">Variable</th>
-<th align="center">Initialized Value</th>
-<th align="center">Justification</th>
+<th>Variable</th>
+<th>Initialized Value</th>
+<th>Justification</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td><span class="math inline">\(E_{agent}\)</span></td>
+<td>100</td>
+<td>Assumes full energy at initialization</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td><span class="math inline">\(E_{spawn}\)</span></td>
+<td>species-specific</td>
+<td>Threshold to permit spawning</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td><span class="math inline">\(spawned-this-tick?\)</span></td>
+<td>false</td>
+<td>Agent has not spawned yet</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td><span class="math inline">\(A_{agent}\)</span></td>
+<td>population distribution</td>
+<td>Age assigned from population parameters</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td><span class="math inline">\(M_{agent}\)</span></td>
+<td>size-at-age curve</td>
+<td>Species-specific size growth</td>
+</tr>
+<tr>
+<td><span class="math inline">\(spawning-strategy\)</span></td>
+<td>broadcast or pairwise</td>
+<td>Species-level trait</td>
+</tr>
+<tr>
+<td><span class="math inline">\(lim_{spawn}\)</span></td>
+<td>dependent on sex and species</td>
+<td>How many times a fish is capable of spawning in a single migration</td>
+</tr>
+<tr>
+<td><span class="math inline">\(d_{spawn}\)</span></td>
+<td>dependent on species</td>
+<td>Species specific known depth preference to spawn</td>
+</tr>
+<tr>
+<td><span class="math inline">\(S_{stress}\)</span></td>
+<td>0</td>
+<td>No stress at initialization</td>
+</tr>
+<tr>
+<td><span class="math inline">\(T_{stress}\)</span></td>
+<td>0</td>
+<td>No stress at initialization</td>
+</tr>
+<tr>
+<td><span class="math inline">\(S_{overwinter}\)</span></td>
+<td>0 or 1</td>
+<td>Binary species trait</td>
+</tr>
+<tr>
+<td><span class="math inline">\(t_{spawn}\)</span></td>
+<td>0</td>
+<td>Time since last spawning</td>
+</tr>
+<tr>
+<td><span class="math inline">\(E_{recover}\)</span></td>
+<td>75</td>
+<td>Required energy to resume post-spawning migration</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="submodels-10" class="section level2 hasAnchor" number="12.7">
-<h2><span class="header-section-number">12.7</span> Submodels<a href="spawning-behavior.html#submodels-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="submodels-11" class="section level2 hasAnchor" number="14.7">
+<h2><span class="header-section-number">14.7</span> Submodels<a href="spawning-behavior.html#submodels-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spawning-readiness" class="section level3 hasAnchor" number="14.7.1">
+<h3><span class="header-section-number">14.7.1</span> Spawning Readiness<a href="spawning-behavior.html#spawning-readiness" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Agents are considered spawning-ready if they meet the following physiological conditions:</p>
+<p><span class="math display">\[ \text{SpawningReady} = \begin{cases}\text{true}, &amp; \text{if } S_{stress} &lt; 3 \text{ and } T_{stress} &lt; 3 \text{ and } E_{agent} &gt; E_{spawn} \text{ and } spawn_{n} &lt; lim_{spawn} \text{ and } STST? = false \\\text{false}, &amp; \text{otherwise}\end{cases} \]</span></p>
+<ul>
+<li><span class="math inline">\(S_{stress}\)</span> = salinity stress</li>
+<li><span class="math inline">\(T_{stress}\)</span> = thermal stress</li>
+<li><span class="math inline">\(E_{agent}\)</span> = current energy level of agent</li>
+<li><span class="math inline">\(E_{spawn}\)</span> = minimum energy required for spawning (species-specific)</li>
+<li><span class="math inline">\(spawn_{n}\)</span> how many spawns agent has performed</li>
+</ul>
+</div>
+<div id="spawning-strategy" class="section level3 hasAnchor" number="14.7.2">
+<h3><span class="header-section-number">14.7.2</span> <strong>Spawning Strategy</strong><a href="spawning-behavior.html#spawning-strategy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="if-spawning-strategy-broadcast" class="section level5 hasAnchor" number="14.7.2.0.1">
+<h5><span class="header-section-number">14.7.2.0.1</span> If <code>spawning-strategy = broadcast</code>:<a href="spawning-behavior.html#if-spawning-strategy-broadcast" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<ol style="list-style-type: decimal">
+<li>When female agent is ready to spawn, they will lay eggs in current patch if <span class="math inline">\(homing? = true\)</span>.</li>
+</ol>
+<p>If no suitable patch is found, the female moves to the next patch and repeats the evaluation process until a suitable patch is identified.</p>
+<p>Alternatively, if the female encounters a male in the same patch, the fertilization probability is considered high (near 1), and the female spawns immediately without evaluating neighboring patches.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Spawning-ready males actively search for the closest spawning area, where a female has released her eggs. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female).</li>
+</ol>
+<p>Fertilization only occurs if:</p>
+<ul>
+<li>a male can find and fertilize the spawn within <span class="math inline">\(t_{limit}\)</span>.</li>
+</ul>
+<p>Spawning encounters are recorded as:</p>
+<p><span class="math display">\[ spawn_{n} = spawn_{n} + 1 \]</span></p>
+<p><span class="math display">\[ Spawn_{encounters} = \sum n_{males} \]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(spawn_{encounters}\)</span> is the number of spawning encounters</p></li>
+<li><p><span class="math inline">\(n_{males}\)</span> is the number of males fertilizing the spawn.</p></li>
+<li><p><span class="math inline">\(N_{f}\)</span> is the number of spawning-ready females in suitable patches.</p></li>
+</ul>
+</div>
+<div id="if-spawning-strategy-pairwise" class="section level5 hasAnchor" number="14.7.2.0.2">
+<h5><span class="header-section-number">14.7.2.0.2</span> If <code>spawning-strategy = pairwise</code>:<a href="spawning-behavior.html#if-spawning-strategy-pairwise" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<ol style="list-style-type: decimal">
+<li>Once a female is spawning-ready, she locates a patch where <span class="math inline">\(homing? = true\)</span>, and waits for a mate.</li>
+</ol>
+<!-- -->
+<ol start="2" style="list-style-type: decimal">
+<li>Spawning-ready males actively search for the closest spawning-ready female in a patch where <span class="math inline">\(homing? = true\)</span>. This search is based on both visual cues (proximity) and pheromone-based cues (chemical signals from the female).</li>
+</ol>
+<p>Spawning only occurs if all of the following conditions are met:</p>
+<ul>
+<li><p>One male and one female are in the same patch</p></li>
+<li><p>Both are <code>spawning-ready</code></p></li>
+<li><p><span class="math inline">\(homing? = true\)</span></p></li>
+</ul>
+<p>Then, the total number of spawning events in the patch is:</p>
+<p><span class="math display">\[ Spawn_{encounters} = \min(N_{\text{males}}, N_{\text{females}}) \]</span></p>
+<p><span class="math display">\[ spawn_{n} = spawn_{encounters} \]</span></p>
+<ul>
+<li><p><span class="math inline">\(spawn_{encounters}\)</span> is the number of spawning encounters.</p></li>
+<li><p><span class="math inline">\(spawn_{n}\)</span> is the number of times an agent has spawned.</p></li>
+<li><p><span class="math inline">\(N_{\text{males}}\)</span> be the number of spawning-ready males in the patch.</p></li>
+<li><p><span class="math inline">\(N_{\text{females}}\)</span> be the number of spawning-ready females in the patch.</p></li>
+</ul>
+</div>
+</div>
+<div id="spawning-energy" class="section level3 hasAnchor" number="14.7.3">
+<h3><span class="header-section-number">14.7.3</span> Spawning energy<a href="spawning-behavior.html#spawning-energy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[ E_{agent} = E_{agent}-E_{spawn} \]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{agent}\)</span> is the energy levels of the agent.</p></li>
+<li><p><span class="math inline">\(E_{spawn}\)</span> is the energy cost to spawn.</p></li>
+</ul>
+</div>
+<div id="post-spawning-behavior" class="section level3 hasAnchor" number="14.7.4">
+<h3><span class="header-section-number">14.7.4</span> Post-Spawning Behavior<a href="spawning-behavior.html#post-spawning-behavior" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><span class="math display">\[ \text{if } E_{\text{agent}} \geq E_{\text{recover}}, \quad \text{then } \texttt{landward_migration?} = \texttt{false}, \quad \texttt{seaward_migration?} = \texttt{true}, \quad \texttt{spawned-this-tick?} = \texttt{true} \]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{agent}\)</span> is the energy levels of the agent.</p></li>
+<li><p><span class="math inline">\(E_{recover}\)</span> energy threshold to resume migration.</p></li>
+</ul>
+<div id="mortality-risk" class="section level4 hasAnchor" number="14.7.4.1">
+<h4><span class="header-section-number">14.7.4.1</span> <strong>Mortality Risk</strong><a href="spawning-behavior.html#mortality-risk" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[ \text{if } \text{random}(0,1) &lt; P_{\text{mortality}}, \quad \text{then die} \]</span></p>
+<p><span class="math display">\[ P_{\text{mortality}} = \begin{cases}0.9 + 0.1 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, &amp; \text{if semelparous} \\0.01 + 0.05 \cdot \frac{A_{\text{agent}}}{A_{\text{max}}}, &amp; \text{if iteroparous}\end{cases} \]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(A_{\text{agent}}\)</span> is the agent’s current age.</p></li>
+<li><p><span class="math inline">\(A_{\text{max}}\)</span> is the maximum lifespan for the species.</p></li>
+</ul>
+<p><code>semelparous</code> are species that spawn once and die.</p>
+<p><code>iteroparous</code> are species that can spawn multiple times.</p>
+</div>
+<div id="resting-period" class="section level4 hasAnchor" number="14.7.4.2">
+<h4><span class="header-section-number">14.7.4.2</span> <strong>Resting Period</strong><a href="spawning-behavior.html#resting-period" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Agents with low energy enter a temporary staging state until recover:</p>
+<p><span class="math display">\[ \text{if } E_{\text{agent}} &lt; E_{\text{recover}}, \quad \texttt{staging?} = \texttt{true} \]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(E_{recover}\)</span> energy threshold to resume migration (e.g., 75).</p></li>
+<li><p><span class="math inline">\(E_{agent}\)</span> is the current energy level of the agents.</p></li>
+</ul>
+</div>
+<div id="overwintering-probability" class="section level4 hasAnchor" number="14.7.4.3">
+<h4><span class="header-section-number">14.7.4.3</span> Overwintering Probability<a href="spawning-behavior.html#overwintering-probability" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[ P_{\text{overwinter}} = S_{\text{overwinter}} \cdot \left[  \alpha \cdot \left(1 - \frac{E_{\text{agent}}}{100} \right) +  \beta \cdot \left( \frac{A_{\text{agent}}}{A_{\text{max}}} \right) +  \gamma \cdot \left( \frac{M_{\text{agent}}}{M_{\text{max}}} \right) +  \delta \cdot \left( \frac{t_{\text{spawn}}}{t_{\text{max}}} \right)\right] \]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(P_{\text{overwinter}}\)</span> is the agent’s probability of overwintering.</li>
+<li><span class="math inline">\(S_{\text{overwinter}}\)</span> is the species-level binary (1 = overwinter-capable, 0 = not).</li>
+<li><span class="math inline">\(E_{\text{agent}}\)</span> is the agent’s energy level (0–100%)..</li>
+<li><span class="math inline">\(A_{\text{agent}}\)</span> is the agent age.</li>
+<li><span class="math inline">\(A_{\text{max}}\)</span> is the species-specific maximum age.</li>
+<li><span class="math inline">\(M_{\text{agent}}\)</span> is the agent body size.</li>
+<li><span class="math inline">\(M_{\text{max}}\)</span> is the maximum body size in population.</li>
+<li><span class="math inline">\(t_{\text{spawn}}\)</span> are the days since last spawn.</li>
+<li><span class="math inline">\(t_{\text{max}}\)</span> is the max time allowed for overwinter decision (e.g., 60 days).</li>
+<li><span class="math inline">\(\alpha, \beta, \gamma, \delta\)</span> is the tune-able weights (e.g., 0.25 each).</li>
+</ul>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p>Lower energy → more likely to overwinter</p></li>
+<li><p>Older or larger fish → more likely to overwinter</p></li>
+<li><p>Fish that spawned recently → higher likelihood (if within seasonal window)</p></li>
+<li><p>Species must be capable of overwintering for this to activate</p></li>
+</ul>
 
+</div>
+</div>
 </div>
 </div>
             </section>
@@ -511,7 +516,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-Spawning.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/13-Spawning.Rmd",
 "text": "Edit"
 },
 "history": {

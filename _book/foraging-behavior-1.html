@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Foraging Behavior | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Environmental Risk in Estuaries</title>
+  <meta name="description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Foraging Behavior | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Environmental Risk in Estuaries" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Foraging Behavior | GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Environmental Risk in Estuaries" />
+  
+  <meta name="twitter:description" content="This document contains a libvrary of model functions for agent-basewd modeling simulations of diadromous fish" />
+  
+
+<meta name="author" content="Vanessa Quintana" />
+
+
+<meta name="date" content="2025-11-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="foraging-behavior.html"/>
+<link rel="next" href="landward-migration-behavior.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">GoFish</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="overview.html"><a href="overview.html"><i class="fa fa-check"></i><b>1</b> Overview</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="overview.html"><a href="overview.html#background"><i class="fa fa-check"></i><b>1.1</b> Background</a></li>
+<li class="chapter" data-level="1.2" data-path="overview.html"><a href="overview.html#introduction-to-agent-based-models"><i class="fa fa-check"></i><b>1.2</b> Introduction to Agent-Based Models</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="overview.html"><a href="overview.html#what-abms-can-help-us-understand"><i class="fa fa-check"></i><b>1.2.1</b> What ABMs Can Help Us Understand</a></li>
+<li class="chapter" data-level="1.2.2" data-path="overview.html"><a href="overview.html#what-abms-are-not-designed-to-do"><i class="fa fa-check"></i><b>1.2.2</b> What ABMs Are Not Designed to Do</a></li>
+<li class="chapter" data-level="1.2.3" data-path="overview.html"><a href="overview.html#emergent-behaviors"><i class="fa fa-check"></i><b>1.2.3</b> Emergent Behaviors</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Environmental Risk in Estuaries</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="foraging-behavior-1" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Foraging Behavior<a href="foraging-behavior-1.html#foraging-behavior-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-5" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Overview<a href="foraging-behavior-1.html#overview-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Foraging is a facultative behavior triggered under specific physiological and environmental conditions. In this model, fish evaluate nearby patches and opportunistically forage only when their energy is low, stress is minimal, and conditions are suitable. This behavior is designed to simulate optimal foraging theory for migratory fish within a spatially explicit, agent-based framework.</p>
+</div>
+<div id="purpose-and-patterns-2" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Purpose and Patterns<a href="foraging-behavior-1.html#purpose-and-patterns-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The purpose of this submodel is to simulate facultative foraging behavior in migratory fish, where agents opportunistically forage during natural pauses in migration when energy is low but physiological stress is minimal. The behavior is shaped by individual condition, environmental suitability, and competition from other fish. This framework allows the model to assess foraging quality, competition, and the ecological trade-offs fish face during migration.</p>
+<p>The following ecological patterns are represented as explicit rules in the model:</p>
+<ul>
+<li><strong>Conditional foraging triggers</strong>:<br />
+Fish forage only when <strong>all</strong> of the following are true:<br />
+<code>Staging? = true</code>, <code>Energy &lt; 75%</code>, <code>Ionregulatory stress &lt; 3</code>, <code>Thermal stress &lt; 3</code>, and <code>SPM &lt; mean SPM</code>.<br />
+<em>(Reflects behavioral ecology studies showing fish avoid feeding during stress and turbidity but will opportunistically forage when paused.)</em></li>
+<li><strong>Habitat-based foraging selection</strong>:<br />
+Fish score nearby patches based on salinity, temperature, depth, velocity, and turbidity (SPM), and choose the one with the highest score.<br />
+<em>(Represents optimal foraging theory and empirical habitat preference studies in estuarine fish.)</em></li>
+<li><strong>Intraspecific competition</strong>:<br />
+Fish can forage alongside others of the same species, but energy gain is reduced when the patch is crowded.<br />
+<em>(Captures resource sharing and diminishing returns observed in schooling behavior.)</em></li>
+<li><strong>Interspecific competition</strong>:<br />
+Fish will not forage in patches where larger individuals of a different species are already present. They will search again for the next best patch.<br />
+<em>(Reflects asymmetric, size-structured competition documented in estuarine communities.)</em></li>
+<li><strong>Size-based exclusion</strong>:<br />
+Fish avoid patches where the <strong>combined size</strong> of all different-species foragers is greater than their own.<br />
+<em>(Simulates energetic trade-offs in contested foraging zones.)</em></li>
+</ul>
+</div>
+<div id="entities-state-variables-and-scales-4" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Entities, State Variables, and Scales<a href="foraging-behavior-1.html#entities-state-variables-and-scales-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="patch-variables-4" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Patch Variables<a href="foraging-behavior-1.html#patch-variables-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Salinity</strong> <span class="math inline">\(S_{patch}\)</span></td>
+<td>The current salinity at the patch location</td>
+</tr>
+<tr>
+<td><strong>Temperature</strong> <span class="math inline">\(T_{patch}\)</span></td>
+<td>The current temperature at the patch location</td>
+</tr>
+<tr>
+<td><strong>Velocity</strong> <span class="math inline">\(V_{patch}\)</span></td>
+<td>The along-channel velocity at the patch</td>
+</tr>
+<tr>
+<td><strong>Depth</strong> <span class="math inline">\(d_{patch}\)</span></td>
+<td>The water depth at the patch</td>
+</tr>
+<tr>
+<td><strong>SPM</strong> <span class="math inline">\(SPM\)</span></td>
+<td>Suspended particulate matter concentration</td>
+</tr>
+<tr>
+<td><strong>Forage Visits</strong> <span class="math inline">\(forage-visits\)</span></td>
+<td>The number of times a patch has been visited for foraging</td>
+</tr>
+<tr>
+<td><strong>Forage Species</strong> <span class="math inline">\(forage-species\)</span></td>
+<td>List of species that have foraged on this patch</td>
+</tr>
+<tr>
+<td><strong>Forager Count</strong> <span class="math inline">\(forager-counts\)</span></td>
+<td>Number of agents currently foraging on patch</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="agent-variables-4" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Agent Variables<a href="foraging-behavior-1.html#agent-variables-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Variable Name</strong></td>
+<td><strong>Definition</strong></td>
+</tr>
+<tr>
+<td><strong>energy</strong></td>
+<td>Current energy level of the agent</td>
+</tr>
+<tr>
+<td><strong>foraging?</strong></td>
+<td>Boolean indicating if the agent is currently foraging</td>
+</tr>
+<tr>
+<td><strong>acclimated-salinity</strong></td>
+<td>Current internal salt balance acclimated to</td>
+</tr>
+<tr>
+<td><strong>optimal-temperature</strong></td>
+<td>Preferred temperature</td>
+</tr>
+<tr>
+<td><strong>optimal-depth</strong></td>
+<td>Preferred depth</td>
+</tr>
+<tr>
+<td><strong>optimal-velocity</strong></td>
+<td>Preferred current velocity</td>
+</tr>
+<tr>
+<td><strong>ionregulatory-stress</strong></td>
+<td>Stress level based on osmoregulatory load</td>
+</tr>
+<tr>
+<td><strong>thermal-stress</strong></td>
+<td>Stress level based on thermal tolerance</td>
+</tr>
+<tr>
+<td><strong>staging?</strong></td>
+<td>Boolean for staging behavior</td>
+</tr>
+<tr>
+<td><strong>breed</strong></td>
+<td>Species classification (used to exclude non-foragers)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-4" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Process Overview and Scheduling<a href="foraging-behavior-1.html#process-overview-and-scheduling-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Fish evaluate local conditions only when <code>Staging? = true</code>, <code>Energy &lt; 75%</code>, <code>Ionregulatory stress &lt; 3</code>, <code>Thermal stress &lt; 3</code>, and <code>SPM &lt; mean SPM.</code></p></li>
+<li><p>The agent assesses neighboring patches for suitability.</p></li>
+<li><p>The best patch is selected only if no larger individual of a different species is already present. If out-competed, the agent will move to the second best patch and try again.</p></li>
+<li><p>Energy gain is scaled down by the number of agents present on that patch.</p></li>
+<li><p>Patch visitation and species are tracked for foraging density and competition analysis.</p></li>
+</ol>
+</div>
+<div id="design-concepts-4" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Design Concepts<a href="foraging-behavior-1.html#design-concepts-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles</strong>:<br />
+Fish only forage during rest periods along their migration route. They do not interrupt active migration solely to seek food. Foraging occurs facultatively when conditions are favorable and the fish have temporary reprieve from other energetically costly behaviors. This reflects optimal foraging theory, where agents balance energy needs with the opportunity to feed without compromising migration.</p>
+<p><strong>Emergence</strong>:<br />
+Spatial foraging hotspots emerge from a combination of individual preferences, environmental suitability, and dynamic competition from other foragers.</p>
+<p><strong>Adaptation</strong>:<br />
+Agents decide whether to forage based on their internal energy level, physiological stress, and the presence of competitors in surrounding patches.</p>
+<p><strong>Sensing</strong>:<br />
+Agents sense local environmental conditions like salinity, temperature, depth, velocity, and SPM, along with, social cues like the size and species of other foragers. They avoid moving into patches occupied by larger fish or where the total biomass exceeds their own size.</p>
+<p><strong>Stochasticity</strong>:<br />
+Foraging success is not deterministic; energy gain includes a random multiplier to account for variability in foraging efficiency and prey availability.</p>
+<p><strong>Interaction</strong>:<br />
+Competition is modeled through species- and size-based exclusion. Agents will not forage in a patch if a larger individual of a different species is already present. However, they may forage alongside larger individuals of their own species. If out-competed, the agent moves to a random neighboring patch. Energy gain is shared among all foragers on the patch, simulating diminishing returns under crowding.</p>
+<p><strong>Observation</strong>:<br />
+The model records foraging events, patch visitation frequency, species identity, and total forager biomass per patch to support analyses of habitat quality and interspecific competition.</p>
+</div>
+<div id="initialization-4" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Initialization<a href="foraging-behavior-1.html#initialization-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<tbody>
+<tr>
+<td><strong>Variable</strong></td>
+<td><strong>Initialized Value</strong></td>
+<td><strong>Justification</strong></td>
+</tr>
+<tr>
+<td><strong>energy</strong></td>
+<td>100</td>
+<td>Represents full energy at migration onset</td>
+</tr>
+<tr>
+<td><strong>foraging?</strong></td>
+<td>false</td>
+<td>Starts false; updated based on conditions</td>
+</tr>
+<tr>
+<td><strong>ionregulatory-stress</strong></td>
+<td>1</td>
+<td>Minimal stress at initialization</td>
+</tr>
+<tr>
+<td><strong>thermal-stress</strong></td>
+<td>N/A</td>
+<td>Calculated from environmental conditions</td>
+</tr>
+<tr>
+<td><strong>forage-visits</strong></td>
+<td>0</td>
+<td>No patch has been visited at setup</td>
+</tr>
+<tr>
+<td><strong>forage-species</strong></td>
+<td>empty list</td>
+<td>No species recorded at setup</td>
+</tr>
+<tr>
+<td><strong>forager-count</strong></td>
+<td>0</td>
+<td>No agents foraging initially</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-4" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Submodels<a href="foraging-behavior-1.html#submodels-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="trigger-conditions-for-foraging-1" class="section level3 hasAnchor" number="8.7.1">
+<h3><span class="header-section-number">8.7.1</span> Trigger Conditions for Foraging<a href="foraging-behavior-1.html#trigger-conditions-for-foraging-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Fish initiate foraging if:</p>
+<p><span class="math display">\[
+staging? = \text{true} \quad \text{and} \quad E_{agent} &lt; 75 \quad \text{and} \quad S_{ion} &lt; 3 \quad \text{and} \quad S_{thermal} &lt; 3 \quad \text{and} \quad SPM &lt; \overline{SPM}\]</span></p>
+<ul>
+<li><code>staging? = true</code> (i.e., the fish is not actively migrating)</li>
+</ul>
+<!-- -->
+<ul>
+<li><code>energy &lt; 75%</code> (low energy state)</li>
+</ul>
+<!-- -->
+<ul>
+<li><code>ionregulatory-stress &lt; 3</code> (low osmoregulatory stress)</li>
+</ul>
+<!-- -->
+<ul>
+<li><code>thermal-stress &lt; 3</code> (within thermal tolerance)</li>
+</ul>
+<!-- -->
+<ul>
+<li><code>SPM &lt; mean SPM</code> (low turbidity)</li>
+</ul>
+</div>
+<div id="patch-evaluation-1" class="section level3 hasAnchor" number="8.7.2">
+<h3><span class="header-section-number">8.7.2</span> Patch Evaluation<a href="foraging-behavior-1.html#patch-evaluation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Each agent evaluates neighboring patches for optimal foraging conditions:</p>
+<p><span class="math display">\[
+Score = \left(0.2 \cdot Sal_{opt} + 0.3 \cdot temp_{opt} + 0.2 \cdot vel_{opt} + 0.2 \cdot depth_{opt} + 0.1 \cdot spm_{penalty} \right) \cdot (\text{random}(0,3.0))
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(sal_{opt} = 1 - \frac{|salinity - acclimated\ salinity|}{10}\)</span></p></li>
+<li><p><span class="math inline">\(temp_{opt} = 1 - \frac{|temperature - optimal\ temperature|}{10}\)</span></p></li>
+<li><p><span class="math inline">\(vel_{opt} = 1 - |velocity - optimal\ velocity|\)</span></p></li>
+<li><p><span class="math inline">\(depth_{opt} = 1 - \frac{|depth - optimal\ depth|}{2.5}\)</span></p></li>
+<li><p><span class="math inline">\(spm_{penalty} = 1 - \frac{SPM - mean\ SPM}{mean\ SPM}\)</span> (bounded to [0,1])</p></li>
+</ul>
+</div>
+<div id="species-and-size-based-competition-constraints-1" class="section level3 hasAnchor" number="8.7.3">
+<h3><span class="header-section-number">8.7.3</span> Species and Size-Based Competition Constraints<a href="foraging-behavior-1.html#species-and-size-based-competition-constraints-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Agents will only forage in a patch if either (1) the patch is unoccupied, (2) the patch contains only members of the same species, or (3) all other individuals on the patch are smaller if they are of a different species. This behavior simulates asymmetric, size-based competition, where larger individuals of different species out-compete smaller fish for access to high-quality foraging habitat.</p>
+<p>Then foraging is allowed only if:</p>
+<p><span class="math display">\[
+b_{\text{agent}} \in \mathcal{B}_{\text{others}} \quad \text{or} \quad \left( S_{\text{sum}} &lt; S_{\text{agent}} \text{ and } b_{\text{agent}} \notin \mathcal{B}_{\text{others}} \right)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(S_{\text{agent}}\)</span>: size of the focal fish<br />
+</li>
+<li><span class="math inline">\(S_{\text{sum}} = \sum_{i} S_{\text{agent}_{\mathcal{b}_{\text{others}}\, i}}\)</span><br />
+</li>
+<li><span class="math inline">\(\mathcal{b}_{\text{others}}\)</span>: set of breeds (species) of other foragers on the patch<br />
+</li>
+<li><span class="math inline">\(b_{\text{agent}}\)</span>: the breed of the focal fish</li>
+</ul>
+<p>If a patch is occupied by a larger fish of a different species, the agent is considered out-competed and will seek the next most suitable patch among its neighbors. This ensures that foraging attempts are adaptive to interspecific competition.</p>
+</div>
+<div id="energy-gain-1" class="section level3 hasAnchor" number="8.7.4">
+<h3><span class="header-section-number">8.7.4</span> Energy Gain<a href="foraging-behavior-1.html#energy-gain-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Energy gain is then calculated:</p>
+<p><span class="math display">\[
+E_{\text{gain}} = \left( \frac{\text{Score}_i}{\sum_{j=1}^{N} size_j} \right) \cdot size_i\]</span></p>
+<p>Where:</p>
+<ul>
+<li><p><span class="math inline">\(Score_{i}\)</span> is the individual fish’s foraging score (bounded between 0 and 3)</p></li>
+<li><p><span class="math inline">\(Size_{j}\)</span> is the sum of sizes for all <span class="math inline">\(N\)</span> foraging fish on that patch</p></li>
+<li><p><span class="math inline">\(\sum_{j=1}^{N} size_{j}\)</span> is the sum of sizes for all <span class="math inline">\(N\)</span> foraging fish on that patch</p></li>
+</ul>
+</div>
+<div id="foraging-patch-tracking-1" class="section level3 hasAnchor" number="8.7.5">
+<h3><span class="header-section-number">8.7.5</span> Foraging Patch Tracking<a href="foraging-behavior-1.html#foraging-patch-tracking-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Each time a fish forages on a patch, the following patch-level variables are updated:</p>
+<ul>
+<li><p><code>forage-visits</code>: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.</p></li>
+<li><p><code>forager-count</code>: Tracks the number of agents currently foraging on the patch, reflecting competition density.</p></li>
+<li><p><code>forage-species</code>: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.</p></li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="foraging-behavior.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="landward-migration-behavior.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/08-Lipid_Catabolism.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

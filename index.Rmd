@@ -1,5 +1,5 @@
 ---
-title: "Agent-Based Modeling Function Library for Simulating Diadromous Fish Migration"
+title: "GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Environmental Risk in Estuaries"
 author: "Vanessa Quintana"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -19,4 +19,4 @@ This library provides a comprehensive, modular framework for developing and docu
 
 ## Motivation {.unnumbered}
 
-The goal of this resource is to support students, researchers, and decision-makers by making agent-based modeling of migratory fish more accessible, reproducible, and applicable to real-world fisheries and habitat management challenges. By providing a standardized framework for key behavioral processes, this library promotes consistency, transparency, and credibility in ecological forecasting and decision support tools. It also establishes a foundation for critical conversations about the behaviors and functions represented in migratory fish models, while supporting the empirical quantification of ecological relationships that influence movement, survival, and habitat use.
+The goal of this resource is to support students, researchers, and decision-makers by making agent-based modeling of migratory fish more accessible, reproducible, and applicable to real-world fisheries and habitat management challenges. By providing a standardized modular framework for key behavioral processes, this library promotes consistency, transparency, and credibility in ecological forecasting and decision support tools. It also establishes a foundation for critical conversations about the behaviors and functions represented in modelling, while supporting the empirical quantification of ecological relationships that influence movement, survival, and habitat use of migratory fish.

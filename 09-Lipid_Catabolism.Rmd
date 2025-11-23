@@ -1,0 +1,198 @@
+# Lipid Catabolism
+
+## Overview
+
+Foraging is a facultative behavior triggered under specific physiological and environmental conditions. In this model, fish evaluate nearby patches and opportunistically forage only when their energy is low, stress is minimal, and conditions are suitable. This behavior is designed to simulate optimal foraging theory for migratory fish within a spatially explicit, agent-based framework.
+
+## Purpose and Patterns
+
+The purpose of this submodel is to simulate facultative foraging behavior in migratory fish, where agents opportunistically forage during natural pauses in migration when energy is low but physiological stress is minimal. The behavior is shaped by individual condition, environmental suitability, and competition from other fish. This framework allows the model to assess foraging quality, competition, and the ecological trade-offs fish face during migration.
+
+The following ecological patterns are represented as explicit rules in the model:
+
+-   **Conditional foraging triggers**:\
+    Fish forage only when **all** of the following are true:\
+    `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM`.\
+    *(Reflects behavioral ecology studies showing fish avoid feeding during stress and turbidity but will opportunistically forage when paused.)*
+-   **Habitat-based foraging selection**:\
+    Fish score nearby patches based on salinity, temperature, depth, velocity, and turbidity (SPM), and choose the one with the highest score.\
+    *(Represents optimal foraging theory and empirical habitat preference studies in estuarine fish.)*
+-   **Intraspecific competition**:\
+    Fish can forage alongside others of the same species, but energy gain is reduced when the patch is crowded.\
+    *(Captures resource sharing and diminishing returns observed in schooling behavior.)*
+-   **Interspecific competition**:\
+    Fish will not forage in patches where larger individuals of a different species are already present. They will search again for the next best patch.\
+    *(Reflects asymmetric, size-structured competition documented in estuarine communities.)*
+-   **Size-based exclusion**:\
+    Fish avoid patches where the **combined size** of all different-species foragers is greater than their own.\
+    *(Simulates energetic trade-offs in contested foraging zones.)*
+
+## Entities, State Variables, and Scales
+
+### Patch Variables
+
+| Variable Name | Definition |
+|----|----|
+| **Salinity** $S_{patch}$ | The current salinity at the patch location |
+| **Temperature** $T_{patch}$ | The current temperature at the patch location |
+| **Velocity** $V_{patch}$ | The along-channel velocity at the patch |
+| **Depth** $d_{patch}$ | The water depth at the patch |
+| **SPM** $SPM$ | Suspended particulate matter concentration |
+| **Forage Visits** $forage-visits$ | The number of times a patch has been visited for foraging |
+| **Forage Species** $forage-species$ | List of species that have foraged on this patch |
+| **Forager Count** $forager-counts$ | Number of agents currently foraging on patch |
+
+### Agent Variables
+
+|  |  |
+|----|----|
+| **Variable Name** | **Definition** |
+| **energy** | Current energy level of the agent |
+| **foraging?** | Boolean indicating if the agent is currently foraging |
+| **acclimated-salinity** | Current internal salt balance acclimated to |
+| **optimal-temperature** | Preferred temperature |
+| **optimal-depth** | Preferred depth |
+| **optimal-velocity** | Preferred current velocity |
+| **ionregulatory-stress** | Stress level based on osmoregulatory load |
+| **thermal-stress** | Stress level based on thermal tolerance |
+| **staging?** | Boolean for staging behavior |
+| **breed** | Species classification (used to exclude non-foragers) |
+
+## Process Overview and Scheduling
+
+1.  Fish evaluate local conditions only when `Staging? = true`, `Energy < 75%`, `Ionregulatory stress < 3`, `Thermal stress < 3`, and `SPM < mean SPM.`
+
+2.  The agent assesses neighboring patches for suitability.
+
+3.  The best patch is selected only if no larger individual of a different species is already present. If out-competed, the agent will move to the second best patch and try again.
+
+4.  Energy gain is scaled down by the number of agents present on that patch.
+
+5.  Patch visitation and species are tracked for foraging density and competition analysis.
+
+## Design Concepts
+
+**Basic Principles**:\
+Fish only forage during rest periods along their migration route. They do not interrupt active migration solely to seek food. Foraging occurs facultatively when conditions are favorable and the fish have temporary reprieve from other energetically costly behaviors. This reflects optimal foraging theory, where agents balance energy needs with the opportunity to feed without compromising migration.
+
+**Emergence**:\
+Spatial foraging hotspots emerge from a combination of individual preferences, environmental suitability, and dynamic competition from other foragers.
+
+**Adaptation**:\
+Agents decide whether to forage based on their internal energy level, physiological stress, and the presence of competitors in surrounding patches.
+
+**Sensing**:\
+Agents sense local environmental conditions like salinity, temperature, depth, velocity, and SPM, along with, social cues like the size and species of other foragers. They avoid moving into patches occupied by larger fish or where the total biomass exceeds their own size.
+
+**Stochasticity**:\
+Foraging success is not deterministic; energy gain includes a random multiplier to account for variability in foraging efficiency and prey availability.
+
+**Interaction**:\
+Competition is modeled through species- and size-based exclusion. Agents will not forage in a patch if a larger individual of a different species is already present. However, they may forage alongside larger individuals of their own species. If out-competed, the agent moves to a random neighboring patch. Energy gain is shared among all foragers on the patch, simulating diminishing returns under crowding.
+
+**Observation**:\
+The model records foraging events, patch visitation frequency, species identity, and total forager biomass per patch to support analyses of habitat quality and interspecific competition.
+
+## Initialization
+
+|  |  |  |
+|----|----|----|
+| **Variable** | **Initialized Value** | **Justification** |
+| **energy** | 100 | Represents full energy at migration onset |
+| **foraging?** | false | Starts false; updated based on conditions |
+| **ionregulatory-stress** | 1 | Minimal stress at initialization |
+| **thermal-stress** | N/A | Calculated from environmental conditions |
+| **forage-visits** | 0 | No patch has been visited at setup |
+| **forage-species** | empty list | No species recorded at setup |
+| **forager-count** | 0 | No agents foraging initially |
+
+## Submodels
+
+### Trigger Conditions for Foraging
+
+Fish initiate foraging if:
+
+$$
+staging? = \text{true} \quad \text{and} \quad E_{agent} < 75 \quad \text{and} \quad S_{ion} < 3 \quad \text{and} \quad S_{thermal} < 3 \quad \text{and} \quad SPM < \overline{SPM}$$
+
+-   `staging? = true` (i.e., the fish is not actively migrating)
+
+<!-- -->
+
+-   `energy < 75%` (low energy state)
+
+<!-- -->
+
+-   `ionregulatory-stress < 3` (low osmoregulatory stress)
+
+<!-- -->
+
+-   `thermal-stress < 3` (within thermal tolerance)
+
+<!-- -->
+
+-   `SPM < mean SPM` (low turbidity)
+
+### Patch Evaluation
+
+Each agent evaluates neighboring patches for optimal foraging conditions:
+
+$$
+Score = \left(0.2 \cdot Sal_{opt} + 0.3 \cdot temp_{opt} + 0.2 \cdot vel_{opt} + 0.2 \cdot depth_{opt} + 0.1 \cdot spm_{penalty} \right) \cdot (\text{random}(0,3.0))
+$$
+
+Where:
+
+-   $sal_{opt} = 1 - \frac{|salinity - acclimated\ salinity|}{10}$
+
+-   $temp_{opt} = 1 - \frac{|temperature - optimal\ temperature|}{10}$
+
+-   $vel_{opt} = 1 - |velocity - optimal\ velocity|$
+
+-   $depth_{opt} = 1 - \frac{|depth - optimal\ depth|}{2.5}$
+
+-   $spm_{penalty} = 1 - \frac{SPM - mean\ SPM}{mean\ SPM}$ (bounded to [0,1])
+
+### Species and Size-Based Competition Constraints
+
+Agents will only forage in a patch if either (1) the patch is unoccupied, (2) the patch contains only members of the same species, or (3) all other individuals on the patch are smaller if they are of a different species. This behavior simulates asymmetric, size-based competition, where larger individuals of different species out-compete smaller fish for access to high-quality foraging habitat.
+
+Then foraging is allowed only if:
+
+$$
+b_{\text{agent}} \in \mathcal{B}_{\text{others}} \quad \text{or} \quad \left( S_{\text{sum}} < S_{\text{agent}} \text{ and } b_{\text{agent}} \notin \mathcal{B}_{\text{others}} \right)
+$$
+
+Where:
+
+-   $S_{\text{agent}}$: size of the focal fish\
+-   $S_{\text{sum}} = \sum_{i} S_{\text{agent}_{\mathcal{b}_{\text{others}}\, i}}$\
+-   $\mathcal{b}_{\text{others}}$: set of breeds (species) of other foragers on the patch\
+-   $b_{\text{agent}}$: the breed of the focal fish
+
+If a patch is occupied by a larger fish of a different species, the agent is considered out-competed and will seek the next most suitable patch among its neighbors. This ensures that foraging attempts are adaptive to interspecific competition.
+
+### Energy Gain
+
+Energy gain is then calculated:
+
+$$
+E_{\text{gain}} = \left( \frac{\text{Score}_i}{\sum_{j=1}^{N} size_j} \right) \cdot size_i$$
+
+Where:
+
+-   $Score_{i}$ is the individual fish’s foraging score (bounded between 0 and 3)
+
+-   $Size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
+
+-   $\sum_{j=1}^{N} size_{j}$ is the sum of sizes for all $N$ foraging fish on that patch
+
+### Foraging Patch Tracking
+
+Each time a fish forages on a patch, the following patch-level variables are updated:
+
+-   `forage-visits`: Increments by 1 with each foraging event, enabling spatial analysis of foraging intensity.
+
+-   `forager-count`: Tracks the number of agents currently foraging on the patch, reflecting competition density.
+
+-   `forage-species`: Stores a list of species that have foraged on the patch, supporting interspecific competition analysis.
