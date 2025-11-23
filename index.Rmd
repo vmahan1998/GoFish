@@ -1,5 +1,5 @@
 ---
-title: "GoFish: A Next-Generation Toolkit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries"
+title: "GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries"
 author: "Vanessa Quintana"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
