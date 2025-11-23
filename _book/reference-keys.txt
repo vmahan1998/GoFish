@@ -33,9 +33,6 @@ process-overview-and-scheduling
 design-concepts
 initialization
 submodels
-osmotic-stress
-chloride-cell-density
-energy-balance
 metabolism-function-1
 overview-2
 purpose-1
@@ -46,9 +43,9 @@ process-overview-and-scheduling-1
 design-concepts-1
 initialization-1
 submodels-1
-osmotic-stress-1
-chloride-cell-density-1
-energy-balance-1
+osmotic-stress
+chloride-cell-density
+energy-balance
 osmoregulation-function
 overview-3
 purpose-2
@@ -59,9 +56,9 @@ process-overview-and-scheduling-2
 design-concepts-2
 initialization-2
 submodels-2
-osmotic-stress-2
-chloride-cell-density-2
-energy-balance-2
+osmotic-stress-1
+chloride-cell-density-1
+energy-balance-1
 thermoregulation-function
 overview-4
 purpose-and-patterns
@@ -138,7 +135,7 @@ swimming-speed
 swimming-difficulty
 swimming-movement
 swimming-energy
-energy-balance-3
+energy-balance-2
 seaward-migration-behavior
 overview-9
 purpose-5
@@ -154,7 +151,7 @@ swimming-speed-1
 swimming-difficulty-1
 swimming-movement-1
 swimming-energy-1
-energy-balance-4
+energy-balance-3
 schooling-behavior
 overview-10
 purpose-6
@@ -219,3 +216,7 @@ modeling-toolkit
 learning-resources
 best-practices
 code-repositories-examples
+initialize-metabolism
+metabolic-rate-calculation
+efficiency-multipliers
+salinity-exposure-function

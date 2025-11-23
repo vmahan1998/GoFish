@@ -1,8 +1,8 @@
-# Osmoregulation Function
+# Salinity Exposure Function
 
 ## Overview
 
-Osmoregulation allows migratory fish to maintain homeostasis by regulating internal ion concentrations in response to varying environmental salinities. This function simulates osmotic or ion-regulatory stress, chloride cell expression, and the metabolic energy cost of osmoregulation in a spatially explicit context.
+Osmoregulation allows migratory fish to maintain homeostasis by regulating internal ion concentrations in response to varying environmental salinities. This function simulates salinity exposure through ion-regulatory stress, chloride cell expression, and the metabolic energy cost of to acclimate to this exposure internally in a spatiotemporally explicit context.
 
 ## Purpose
 
@@ -12,11 +12,11 @@ To simulate stress response to salinity changes for migratory fish in coastal sy
 
 ### Patch Variables
 
-+----------------------------------+----------------------------------------------------------------------------------+
-| Variable Name                    | Definition                                                                       |
-+==================================+==================================================================================+
-| **Salinity** $S_{patch}$         | The salt concentration of a given patch, derived from hydrodynamic model inputs. |
-+----------------------------------+----------------------------------------------------------------------------------+
++--------------------------+----------------------------------------------------------------------------------+
+| Variable Name            | Definition                                                                       |
++==========================+==================================================================================+
+| **Salinity** $S_{patch}$ | The salt concentration of a given patch, derived from hydrodynamic model inputs. |
++--------------------------+----------------------------------------------------------------------------------+
 
 ### Agent Variables
 
