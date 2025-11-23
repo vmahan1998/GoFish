@@ -1,7 +1,11 @@
 delete_merged_file: true
+
+output_dir: "docs"   # This is what sends the rendered book to /docs
+
 language:
   ui:
     chapter_name: "Chapter "
+
 rmd_files:
   - index.Rmd
   - 01-intro.Rmd
