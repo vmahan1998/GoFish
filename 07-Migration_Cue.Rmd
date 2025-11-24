@@ -1,0 +1,269 @@
+# Migration Cues
+
+## Overview
+
+This submodel simulates how migratory fish detect environmental cues that signal the onset of migration. The mechanism is grounded in empirical evidence that **simultaneous declines in daylength and temperature** reliably precede the initiation of seaward migration in several anadromous species. In this model, migration begins only when a fish experiences environmental conditions consistent with an autumnal cue window defined by:
+
+-   A **decline in daylength**\
+    $$
+    \Delta L < 0
+    $$
+
+-   A **decline in temperature**\
+    $$
+    \Delta T < 0
+    $$
+
+-   And these declines occurring **on the same day**, indicating a **coincident decline**
+
+When this occurs, the day is labeled a *cue day*. Upon reaching cue days, individuals begin stochastically accumulating the probability of initiating migration. For predators (striped bass), migration probability additionally depends on alewife presence, linking species interactions to migration onset.
+
+## Purpose
+
+The purpose of this submodel is to mechanistically trigger migration using **real, observed environmental phenology** rather than arbitrary or date-based rules. This framework captures how:
+
+-   **Changes in ΔTemperature and ΔDaylength structure seasonality**
+-   **Migration timing emerges pragmatically rather than being fixed**
+-   **Fish respond to external conditions and species interactions**
+-   **Environmental preprocessing in R feeds into NetLogo behavioral rules**
+
+This allows migration in the model to originate from measurable ecological drivers instead of hard-coded thresholds.
+
+## Entities, State Variables, and Scales
+
+### Global Variables
+
+| Global Variable | Definition |
+|------------------------------------------|------------------------------|
+| **cue-table** | Lookup table containing ΔTemperature, ΔDaylength, their smoothed values, and Boolean coincident-decline flags (from R preprocessing) |
+| **cue-days** | List of day-of-year values where ΔT \< 0 and ΔL \< 0 simultaneously (identified in R) |
+| **ΔT** | Daily rate of change in temperature imported from R (`dT_per_day_f` or smoothed `dT_smooth`) |
+| **ΔL** | Daily rate of change in photoperiod imported from R (`dL_per_day_min` or smoothed `dL_smooth`) |
+| **cue-active?** | Whether the current day-of-year corresponds to a coincident decline day |
+| **migration-trigger?** | Whether environmental signals are strong enough to begin building migration probability |
+
+### Patch Variables
+
+Migration cues do not depend on patch-level conditions. No patch-scale variables are required.
+
+### Agent Variables
+
+| Variable | Definition |
+|---------------------------------|---------------------------------------|
+| **migration-trigger?** | Whether the agent has entered a window where migration probability begins to accumulate |
+| **migration-probability** | The cumulative probability of initiating migration, updated each tick once the trigger is active |
+| **start-migration?** | Whether the individual has begun active migration |
+
+## Process Overview and Scheduling
+
+### 1. **Environmental Inputs (from R)**
+
+External R preprocessing computes:
+
+-   ΔTemperature per day\
+-   ΔDaylength per day\
+-   Smoothed 3-day rolling means\
+-   Boolean `both_negative` indicating coincident decline\
+-   Exports full dataset as `"cue_dataset_full.csv"`
+
+This dataset defines the environmental basis for triggering migration.
+
+### 2. **Identify Cue Days**
+
+Cue days are those where:
+
+$$
+\Delta T < 0 \quad \land \quad \Delta L < 0
+$$
+
+The model loads the CSV at setup and extracts all days meeting this criterion into `cue-days`.
+
+### 3. **Activate Cue**
+
+Each simulation day checks whether:
+
+$$
+\text{day-of-year} \in cue\text{-}days
+$$
+
+If true, then:
+
+-   **cue-active? = true**
+-   **migration-trigger? = true**
+
+This marks the environmental onset of migration preparedness.
+
+### 4. **Alewife Migration Probability Accumulation**
+
+Once the migration trigger is active, each tick adds:
+
+$$
+migration\_probability_{t+1} =
+migration\_probability_t +
+\left(0.00001 + U(0, 0.00004)\right)
+$$
+
+Capped at:
+
+$$
+migration\_probability \le 1
+$$
+
+This produces:
+
+-   Individual variation in migration timing\
+-   Realistic ramping into migration\
+-   Stochastic onset probabilities
+
+### 5. **Initiation of Migration**
+
+An agent begins migration when:
+
+$$
+\text{random-float}(1) < migration\_probability
+$$
+
+At this moment:
+
+-   **start-migration? = true**
+-   Movement functions shift from staging to directed migration
+
+## Design Concepts
+
+**Basic Principles**\
+The mechanism reflects literature on photoperiod- and temperature-driven migration cues.
+
+**Emergence**\
+Migration timing varies among individuals because probability increments differ slightly with stochasticity.
+
+**Observation**\
+Key outputs: cue day activation, probability trajectories, proportion of migrants through time.
+
+## Initialization
+
+| Variable | Initial Value | Justification |
+|-------------------|----------------------------|--------------------------|
+| **cue-days** | Extracted from CSV | Based on empirical environmental data |
+| **migration-probability** | 0 | Ensures probability is accumulated only within cue window |
+| **migration-trigger?** | false | No cue until ΔT and ΔL decline |
+| **cue-active?** | false | Depends on DOY |
+| **start-migration?** | false | Fish begin in staging mode |
+
+# Submodels
+
+## 1. Identifying Cue Days (Preprocessed in R)
+
+$$
+\Delta T < 0, \;\; \Delta L < 0
+$$
+
+The preprocessing script:
+
+1.  Computes ΔT and ΔL
+2.  Applies smoothing
+3.  Flags coincident declines
+
+## 2. Alewife Migration Probability
+
+$$
+migration\_probability_{t+1}
+= migration\_probability_t +
+\left(0.00001 + U(0, 0.00004)\right)
+$$
+
+$$
+migration\_probability \le 1
+$$
+
+## Netlogo Implementation
+
+```{netlogo}
+;; -------------------------------------------------------------------
+;;  GLOBALS
+;; -------------------------------------------------------------------
+globals [
+  cue-table
+  cue-days
+
+  migration-trigger?
+  cue-active?
+]
+
+;; -------------------------------------------------------------------
+;;  TURTLE VARIABLES
+;; -------------------------------------------------------------------
+turtles-own [
+  migration-probability
+  start-migration?
+]
+
+;; -------------------------------------------------------------------
+;;  LOAD CUE DATA (CSV FROM R)
+;; -------------------------------------------------------------------
+to load-cue-csv
+  set cue-table table:make
+  let raw csv:from-file "inputs/cue_dataset_full.csv"
+
+  let header first raw
+  let rows but-first raw
+
+  foreach rows [
+    r ->
+      let doy     item 7  r
+      let dTsm    item 21 r
+      let dLsm    item 22 r
+      let negflag item 24 r
+
+      table:put cue-table doy (list dTsm dLsm negflag)
+  ]
+end
+
+;; -------------------------------------------------------------------
+;;  IDENTIFY CUE DAYS (ΔT < 0 AND ΔL < 0)
+;; -------------------------------------------------------------------
+to find-migration-days
+  set cue-days []
+
+  foreach sort table:keys cue-table [
+    d ->
+      let vals table:get cue-table d
+      let negflag item 2 vals
+
+      if (negflag = "TRUE" or negflag = true) [
+        set cue-days lput d cue-days
+      ]
+  ]
+end
+
+;; -------------------------------------------------------------------
+;;  UPDATE MIGRATION CUE (DAILY)
+;; -------------------------------------------------------------------
+to update-migration-cue
+  ifelse member? day cue-days [
+    set cue-active? true
+    set migration-trigger? true
+  ] [
+    set cue-active? false
+  ]
+end
+
+;; -------------------------------------------------------------------
+;;  ALEWIFE MIGRATION PROBABILITY ACCUMULATION
+;; -------------------------------------------------------------------
+to calc-migration-probability
+  if migration-trigger? [
+    set migration-probability
+      migration-probability
+      + (0.00001 + random-float 0.00004)
+
+    if migration-probability > 1 [
+      set migration-probability 1
+    ]
+  ]
+end
+
+to migrate
+if random-float 1 <= migration-probability 
+set start-migration? true
+end
+```

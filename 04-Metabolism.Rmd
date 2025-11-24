@@ -30,6 +30,14 @@ across physiological processes.
 -   **Spatial Unit**: Patch (3 m x 3 m resolution)
 -   **Temporal Unit**: 5-minute time steps (`tick`)
 
+### Global Variables
+
+| Global Variable | Definition |
+|-----------------|------------|
+| **Q10** | Temperature coefficient used for metabolic scaling. |
+| **base-constant** | Global constant for baseline metabolic scaling (0.1). |
+| **age-sensitivity** | Scalar controlling how metabolism changes with age (0.5). |
+
 ### Patch Variables
 
 | Variable Name | Definition |
@@ -212,3 +220,142 @@ This value is applied to:
 - **lipid-catabolism-efficiency**
 
 Efficiency dynamically scales the cost of movement, ion regulation, and lipid catabolism.
+
+## Netlogo Implementation
+
+```{netlogo}
+
+;; ============================
+;;   METABOLISM SUBMODEL
+;; ============================
+
+globals [
+  ;; global physiological constants
+  Q10
+]
+
+patches-own [
+  temperature
+]
+
+fish-own [
+  ;; core state variables
+  weight
+  age-num
+  optimal-temperature
+  max-survival-temp
+
+  ;; metabolic scalars
+  Met-base
+  metabolism-rate
+  total-metabolism
+
+  ;; efficiency multipliers
+  swim-efficiency
+  osmoregulation-efficiency
+  lipid-catabolism-efficiency
+
+  ;; energy partitioning
+  swim-base
+  E-base
+  E-creation
+  E-osmo
+  motion-ratio
+  osmo-ratio
+
+  ;; population normalization
+  M-max
+  max-age
+]
+
+;; ======================================
+;;       INITIALIZE METABOLISM
+;; ======================================
+
+to initialize-metabolism
+  let beta 0.75
+  let age-sensitivity 0.5
+  let base-constant 0.1
+  
+  ;; normalize population scaling
+  set M-max max [weight] of fish
+  set max-age max [age-num] of fish
+  if M-max <= 0 [ set M-max 1 ]
+  if max-age <= 0 [ set max-age 1 ]
+
+  ;; scaling factors
+  let size-factor (weight / M-max) ^ beta
+  let age-factor 1 + age-sensitivity * (1 - (age-num / max-age))
+  let temp-factor (optimal-temperature / max-survival-temp)
+
+  ;; baseline metabolic constant
+  set Met-base base-constant * size-factor * age-factor * temp-factor
+
+  ;; energy partitions
+  let motion-ratio-local 0.7
+  let osmo-ratio-local   0.3
+  let total-ratio (motion-ratio-local + osmo-ratio-local)
+
+  set motion-ratio (motion-ratio-local / total-ratio)
+  set osmo-ratio   (osmo-ratio-local / total-ratio)
+
+  set swim-base (Met-base * motion-ratio)
+  set E-osmo 0
+
+  ;; fixed fractions
+  set E-base     (Met-base * 0.02)
+  set E-creation (Met-base * 0.05)
+
+  ;; initial metabolic state
+  set metabolism-rate Met-base
+  set total-metabolism 0
+end
+
+
+;; ======================================
+;;        CALCULATE METABOLISM EACH TICK
+;; ======================================
+
+to calculate-metabolism
+  let beta 0.75
+
+  ;; repopulate scaling values
+  set M-max max [weight] of fish
+  set max-age max [age-num] of fish
+  if M-max <= 0 [ set M-max 1 ]
+  if max-age <= 0 [ set max-age 1 ]
+
+  ;; get patch temperature safely
+  let T-env [temperature] of patch-here
+  if not is-number? T-env [ set T-env optimal-temperature ]
+
+  ;; scaling factors
+  let size-factor (weight / M-max) ^ beta
+  let temp-factor Q10 ^ ((T-env - optimal-temperature) / 10)
+  let age-factor 1 + (1 - (age-num / max-age)) * 0.5
+
+  ;; metabolic rate (per tick)
+  let M-total Met-base * size-factor * temp-factor * age-factor
+  set metabolism-rate M-total
+  set total-metabolism total-metabolism + M-total
+
+  ;; baseline reference metabolism
+  let baseline-size-factor 1
+  let baseline-age-factor 1.5
+  let baseline-temp-factor 1
+
+  let baseline-metabolism Met-base *
+      baseline-size-factor *
+      baseline-temp-factor *
+      baseline-age-factor
+
+  ;; efficiency multipliers
+  let efficiency M-total / baseline-metabolism
+
+  set swim-efficiency              efficiency
+  set osmoregulation-efficiency    efficiency
+  set lipid-catabolism-efficiency  efficiency
+end
+
+```
+

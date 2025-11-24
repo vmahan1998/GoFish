@@ -160,3 +160,216 @@ Patch level storage based on species for cumulative duration risk experience in 
 
 -   **MeHg-exp-risk**\
 -   **MeHg-exp-risk**
+
+```{netlogo}
+
+globals [
+  ;; Thresholds
+  MeHg-threshold
+  Hg-threshold
+  
+  ;; Domain-wide normalization bounds
+  min-Hg
+  max-Hg
+  min-MeHg
+  max-MeHg
+]
+
+patches-own [
+  ;; Contaminant inputs
+  mercury
+  methylmercury
+  SPM
+
+  ;; Species-specific instantaneous risk
+  Hg-exp-risk-alewife
+  Hg-exp-risk-stripedbass
+  MeHg-exp-risk-alewife
+  MeHg-exp-risk-stripedbass
+
+  ;; Species-specific cumulative patch totals
+  Hg-exp-risk-total-alewife
+  Hg-exp-risk-total-stripedbass
+  MeHg-exp-risk-total-alewife
+  MeHg-exp-risk-total-stripedbass
+]
+
+turtles-own [
+  ;; Physiology
+  metabolism-rate
+  ionregulatory-stress
+
+  ;; Exposure durations
+  hg-exposure-duration
+  mehg-exposure-duration
+
+  ;; Instantaneous uptake
+  hg-uptake-risk
+  mehg-uptake-risk
+
+  ;; Cumulative uptake
+  hg-total
+  mehg-total
+
+  ;; Cumulative exposure raw
+  hg-exposure-total
+  mehg-exposure-total
+
+  ;; Cumulative normalized exposure
+  hg-exposure-total-normalized
+  mehg-exposure-total-normalized
+]
+
+;; ================================================================
+;; MERCURY EXPOSURE
+;; ================================================================
+
+to mercury-contamination
+  
+  ;; ---------------------------------------------
+  ;; Retrieve patch contaminant and SPM values
+  ;; ---------------------------------------------
+  let Hg-current [mercury] of patch-here
+  let SPM-current [SPM] of patch-here
+  
+  if not is-number? Hg-current [ set Hg-current 0 ]
+  if not is-number? SPM-current [ set SPM-current 0 ]
+
+  ;; ---------------------------------------------
+  ;; Normalize Hg concentration (0–1)
+  ;; ---------------------------------------------
+  let Hg-normalized 0
+  if (max-Hg - min-Hg) > 0 [
+    set Hg-normalized (Hg-current - min-Hg) / (max-Hg - min-Hg)
+  ]
+  
+  ;; clamp
+  set Hg-normalized max list 0 (min list 1 Hg-normalized)
+  
+  ;; ---------------------------------------------
+  ;; Exposure duration: threshold exceedance
+  ;; ---------------------------------------------
+  if Hg-current > Hg-threshold [
+    set hg-exposure-duration hg-exposure-duration + 1
+  ]
+  
+  ;; ---------------------------------------------
+  ;; Uptake risk (toxicokinetic rule)
+  ;; ---------------------------------------------
+  let stress-factor (1 + ionregulatory-stress)
+  let spm-factor    (1 + SPM-current)
+
+  set hg-uptake-risk (metabolism-rate * Hg-normalized * stress-factor * spm-factor)
+
+  ;; no negative risk ever
+  if hg-uptake-risk < 0 [ set hg-uptake-risk 0 ]
+
+  ;; ---------------------------------------------
+  ;; Add to cumulative body burden
+  ;; ---------------------------------------------
+  set hg-total hg-total + hg-uptake-risk
+  
+  ;; ---------------------------------------------
+  ;; Track cumulative raw & normalized exposure
+  ;; ---------------------------------------------
+  set hg-exposure-total            hg-exposure-total + Hg-current
+  set hg-exposure-total-normalized hg-exposure-total-normalized + Hg-normalized
+  
+  ;; ---------------------------------------------
+  ;; Patch-level risk recording (species specific)
+  ;; ---------------------------------------------
+  let patch-risk hg-uptake-risk
+  
+  if breed = alewives [
+    ask patch-here [
+      set Hg-exp-risk-alewife       patch-risk
+      set Hg-exp-risk-total-alewife (Hg-exp-risk-total-alewife + patch-risk)
+    ]
+  ]
+  
+  if breed = stripedbass [
+    ask patch-here [
+      set Hg-exp-risk-stripedbass       patch-risk
+      set Hg-exp-risk-total-stripedbass (Hg-exp-risk-total-stripedbass + patch-risk)
+    ]
+  ]
+
+end
+
+
+;; ================================================================
+;; METHYLMERCURY EXPOSURE
+;; ================================================================
+
+to methylmercury-contamination
+  
+  ;; ---------------------------------------------
+  ;; Retrieve patch contaminant and SPM values
+  ;; ---------------------------------------------
+  let MeHg-current [methylmercury] of patch-here
+  let SPM-current  [SPM] of patch-here
+
+  if not is-number? MeHg-current [ set MeHg-current 0 ]
+  if not is-number? SPM-current  [ set SPM-current 0 ]
+
+  ;; ---------------------------------------------
+  ;; Normalize MeHg concentration (0–1)
+  ;; ---------------------------------------------
+  let MeHg-normalized 0
+  if (max-MeHg - min-MeHg) > 0 [
+    set MeHg-normalized (MeHg-current - min-MeHg) / (max-MeHg - min-MeHg)
+  ]
+  
+  ;; clamp
+  set MeHg-normalized max list 0 (min list 1 MeHg-normalized)
+  
+  ;; ---------------------------------------------
+  ;; Exposure duration: threshold exceedance
+  ;; ---------------------------------------------
+  if MeHg-current > MeHg-threshold [
+    set mehg-exposure-duration mehg-exposure-duration + 1
+  ]
+  
+  ;; ---------------------------------------------
+  ;; Uptake risk
+  ;; ---------------------------------------------
+  let stress-factor (1 + ionregulatory-stress)
+  let spm-factor    (1 + SPM-current)
+
+  set mehg-uptake-risk (metabolism-rate * MeHg-normalized * stress-factor * spm-factor)
+
+  if mehg-uptake-risk < 0 [ set mehg-uptake-risk 0 ]
+  
+  ;; ---------------------------------------------
+  ;; Add to cumulative body burden
+  ;; ---------------------------------------------
+  set mehg-total mehg-total + mehg-uptake-risk
+  
+  ;; ---------------------------------------------
+  ;; Track cumulative raw & normalized exposure
+  ;; ---------------------------------------------
+  set mehg-exposure-total            mehg-exposure-total + MeHg-current
+  set mehg-exposure-total-normalized mehg-exposure-total-normalized + MeHg-normalized
+  
+  ;; ---------------------------------------------
+  ;; Patch-level risk recording (species specific)
+  ;; ---------------------------------------------
+  let patch-risk mehg-uptake-risk
+  
+  if breed = alewives [
+    ask patch-here [
+      set MeHg-exp-risk-alewife       patch-risk
+      set MeHg-exp-risk-total-alewife (MeHg-exp-risk-total-alewife + patch-risk)
+    ]
+  ]
+  
+  if breed = stripedbass [
+    ask patch-here [
+      set MeHg-exp-risk-stripedbass       patch-risk
+      set MeHg-exp-risk-total-stripedbass (MeHg-exp-risk-total-stripedbass + patch-risk)
+    ]
+  ]
+
+end
+```
+

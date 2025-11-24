@@ -14,7 +14,7 @@ rmd_files:
   - 04-Metabolism.Rmd
   - 05-Digestion.Rmd
   - 06-Salinity_Exposure.Rmd
-  - 07-Temperature_Exposure.Rmd
+  - 07-Migration_Cue.Rmd
   - 08-Contaminant_Exposure.Rmd
   - 09-Filter_Feeding.Rmd
   - 10-Lipid_Catabolism.Rmd

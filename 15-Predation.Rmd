@@ -1,5 +1,11 @@
 # Predation and Fleeing Behavior
 
+```{=html}
+<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
+This document is under active development.
+</div
+```
+
 ## Overview
 
 This module simulates predator–prey interactions between migratory fish species, specifically predators (i.e., striped bass) and prey (i.e., alewife), during key migratory and staging periods. Predators detect, pursue, and consume prey based on visibility conditions and prey size constraints. Prey detect approaching predators through visual and social cues and respond with directional fleeing behaviors, which vary based on their size, age, energy level, and water clarity. These behaviors reflect biologically observed trade-offs between escape speed, reaction time, and group-based vigilance. The model also tracks predator energy gain and prey energy depletion and recovery, allowing for analysis of individual fitness and risk exposure under different environmental and behavioral conditions.

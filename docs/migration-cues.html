@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 12 Seaward Migration Behavior | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 7 Migration Cues | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 12 Seaward Migration Behavior | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 7 Migration Cues | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://vmahan1998.github.io/GoFish/images/vmq.png" />
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="vmahan1998/GoFish" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 12 Seaward Migration Behavior | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 7 Migration Cues | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="twitter:image" content="https://vmahan1998.github.io/GoFish/images/vmq.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="landward-migration-behavior.html"/>
-<link rel="next" href="schooling.html"/>
+<link rel="prev" href="salinity-exposure.html"/>
+<link rel="next" href="submodels-3.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -571,591 +571,237 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="seaward-migration-behavior" class="section level1 hasAnchor" number="12">
-<h1><span class="header-section-number">Chapter 12</span> Seaward Migration Behavior<a href="seaward-migration-behavior.html#seaward-migration-behavior" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="overview-8" class="section level2 hasAnchor" number="12.1">
-<h2><span class="header-section-number">12.1</span> Overview<a href="seaward-migration-behavior.html#overview-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This function simulates seaward migration for fish moving downstream through riverine and estuarine systems. Agents respond to hydrodynamic conditions by adjusting swimming difficulty, swimming speed, and movement along a least cost pathway toward a downstream migration patch.</p>
+<div id="migration-cues" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Migration Cues<a href="migration-cues.html#migration-cues" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-3" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Overview<a href="migration-cues.html#overview-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This submodel simulates how migratory fish detect environmental cues that signal the onset of migration. The mechanism is grounded in empirical evidence that <strong>simultaneous declines in daylength and temperature</strong> reliably precede the initiation of seaward migration in several anadromous species. In this model, migration begins only when a fish experiences environmental conditions consistent with an autumnal cue window defined by:</p>
+<ul>
+<li><p>A <strong>decline in daylength</strong><br />
+<span class="math display">\[
+\Delta L &lt; 0
+\]</span></p></li>
+<li><p>A <strong>decline in temperature</strong><br />
+<span class="math display">\[
+\Delta T &lt; 0
+\]</span></p></li>
+<li><p>And these declines occurring <strong>on the same day</strong>, indicating a <strong>coincident decline</strong></p></li>
+</ul>
+<p>When this occurs, the day is labeled a <em>cue day</em>. Upon reaching cue days, individuals begin stochastically accumulating the probability of initiating migration. For predators (striped bass), migration probability additionally depends on alewife presence, linking species interactions to migration onset.</p>
 </div>
-<div id="purpose-7" class="section level2 hasAnchor" number="12.2">
-<h2><span class="header-section-number">12.2</span> Purpose<a href="seaward-migration-behavior.html#purpose-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The purpose of this submodel is to represent downstream migration under realistic hydrodynamic resistance. Agents evaluate flow velocity, movement difficulty, energetic condition, and travel costs before advancing along a least cost route toward a migration destination.</p>
+<div id="purpose-3" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Purpose<a href="migration-cues.html#purpose-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The purpose of this submodel is to mechanistically trigger migration using <strong>real, observed environmental phenology</strong> rather than arbitrary or date-based rules. This framework captures how:</p>
+<ul>
+<li><strong>Changes in ΔTemperature and ΔDaylength structure seasonality</strong></li>
+<li><strong>Migration timing emerges pragmatically rather than being fixed</strong></li>
+<li><strong>Fish respond to external conditions and species interactions</strong></li>
+<li><strong>Environmental preprocessing in R feeds into NetLogo behavioral rules</strong></li>
+</ul>
+<p>This allows migration in the model to originate from measurable ecological drivers instead of hard-coded thresholds.</p>
 </div>
-<div id="entities-state-variables-and-scales-8" class="section level2 hasAnchor" number="12.3">
-<h2><span class="header-section-number">12.3</span> Entities, State Variables, and Scales<a href="seaward-migration-behavior.html#entities-state-variables-and-scales-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="spatial-and-temporal-scales-7" class="section level3 hasAnchor" number="12.3.1">
-<h3><span class="header-section-number">12.3.1</span> Spatial and Temporal Scales<a href="seaward-migration-behavior.html#spatial-and-temporal-scales-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>Spatial Unit:</strong> Patch (3 m x 3 m resolution)<br />
-<strong>Temporal Unit:</strong> 5 minute time steps (tick)</p>
-</div>
-<div id="global-variables-8" class="section level3 hasAnchor" number="12.3.2">
-<h3><span class="header-section-number">12.3.2</span> Global Variables<a href="seaward-migration-behavior.html#global-variables-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="entities-state-variables-and-scales-3" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Entities, State Variables, and Scales<a href="migration-cues.html#entities-state-variables-and-scales-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="global-variables-3" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Global Variables<a href="migration-cues.html#global-variables-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <table>
 <colgroup>
-<col width="50%" />
-<col width="50%" />
+<col width="58%" />
+<col width="41%" />
 </colgroup>
 <thead>
 <tr>
-<th align="center">Variable</th>
-<th align="center">Definition</th>
+<th>Global Variable</th>
+<th>Definition</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong>max-seaward-velocity</strong></td>
-<td align="center">Maximum observed seaward velocity in the domain.</td>
+<td><strong>cue-table</strong></td>
+<td>Lookup table containing ΔTemperature, ΔDaylength, their smoothed values, and Boolean coincident-decline flags (from R preprocessing)</td>
 </tr>
 <tr>
-<td align="center"><strong>max-landward-velocity</strong></td>
-<td align="center">Maximum observed landward velocity in the domain.</td>
+<td><strong>cue-days</strong></td>
+<td>List of day-of-year values where ΔT &lt; 0 and ΔL &lt; 0 simultaneously (identified in R)</td>
+</tr>
+<tr>
+<td><strong>ΔT</strong></td>
+<td>Daily rate of change in temperature imported from R (<code>dT_per_day_f</code> or smoothed <code>dT_smooth</code>)</td>
+</tr>
+<tr>
+<td><strong>ΔL</strong></td>
+<td>Daily rate of change in photoperiod imported from R (<code>dL_per_day_min</code> or smoothed <code>dL_smooth</code>)</td>
+</tr>
+<tr>
+<td><strong>cue-active?</strong></td>
+<td>Whether the current day-of-year corresponds to a coincident decline day</td>
+</tr>
+<tr>
+<td><strong>migration-trigger?</strong></td>
+<td>Whether environmental signals are strong enough to begin building migration probability</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="patch-variables-8" class="section level3 hasAnchor" number="12.3.3">
-<h3><span class="header-section-number">12.3.3</span> Patch Variables<a href="seaward-migration-behavior.html#patch-variables-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="patch-variables-3" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Patch Variables<a href="migration-cues.html#patch-variables-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Migration cues do not depend on patch-level conditions. No patch-scale variables are required.</p>
+</div>
+<div id="agent-variables-3" class="section level3 hasAnchor" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> Agent Variables<a href="migration-cues.html#agent-variables-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <table>
+<colgroup>
+<col width="45%" />
+<col width="54%" />
+</colgroup>
 <thead>
 <tr>
-<th align="center">Variable</th>
-<th align="center">Definition</th>
+<th>Variable</th>
+<th>Definition</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong>velocity</strong></td>
-<td align="center">Depth averaged hydrodynamic velocity.</td>
+<td><strong>migration-trigger?</strong></td>
+<td>Whether the agent has entered a window where migration probability begins to accumulate</td>
 </tr>
 <tr>
-<td align="center"><strong>depth</strong></td>
-<td align="center">Water depth at the patch.</td>
+<td><strong>migration-probability</strong></td>
+<td>The cumulative probability of initiating migration, updated each tick once the trigger is active</td>
 </tr>
 <tr>
-<td align="center"><strong>patch-terrain</strong></td>
-<td align="center">Indicates whether the patch is land or water.</td>
-</tr>
-<tr>
-<td align="center"><strong>cost-to-sea</strong></td>
-<td align="center">Patch-level travel cost for seaward movement.</td>
-</tr>
-<tr>
-<td align="center"><strong>visits-by-alewife</strong></td>
-<td align="center">Number of times the agent visits the patch.</td>
-</tr>
-<tr>
-<td align="center"><strong>ticks-spent-alewife</strong></td>
-<td align="center">Time spent on the patch.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="agent-variables-8" class="section level3 hasAnchor" number="12.3.4">
-<h3><span class="header-section-number">12.3.4</span> Agent Variables<a href="seaward-migration-behavior.html#agent-variables-8" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<table>
-<thead>
-<tr>
-<th align="center">Variable</th>
-<th align="center">Definition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><strong>weight</strong></td>
-<td align="center">Body mass of the fish.</td>
-</tr>
-<tr>
-<td align="center"><strong>speed</strong></td>
-<td align="center">Current swimming speed.</td>
-</tr>
-<tr>
-<td align="center"><strong>prev-speed</strong></td>
-<td align="center">Previous time step swimming speed.</td>
-</tr>
-<tr>
-<td align="center"><strong>max-speed</strong></td>
-<td align="center">Maximum sustained speed.</td>
-</tr>
-<tr>
-<td align="center"><strong>min-speed</strong></td>
-<td align="center">Minimum allowable speed.</td>
-</tr>
-<tr>
-<td align="center"><strong>swim-efficiency</strong></td>
-<td align="center">Swimming acceleration and energy scaling.</td>
-</tr>
-<tr>
-<td align="center"><strong>difficulty-factor</strong></td>
-<td align="center">Hydrodynamic difficulty.</td>
-</tr>
-<tr>
-<td align="center"><strong>planned-path</strong></td>
-<td align="center">Sequence of patches in least cost route.</td>
-</tr>
-<tr>
-<td align="center"><strong>migration-patch</strong></td>
-<td align="center">Destination patch.</td>
-</tr>
-<tr>
-<td align="center"><strong>trail</strong></td>
-<td align="center">Record of visited patches.</td>
+<td><strong>start-migration?</strong></td>
+<td>Whether the individual has begun active migration</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="process-overview-and-scheduling-8" class="section level2 hasAnchor" number="12.4">
-<h2><span class="header-section-number">12.4</span> Process Overview and Scheduling<a href="seaward-migration-behavior.html#process-overview-and-scheduling-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li>Calculate swimming difficulty using normalized velocity and body size.<br />
+<div id="process-overview-and-scheduling-3" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Process Overview and Scheduling<a href="migration-cues.html#process-overview-and-scheduling-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="environmental-inputs-from-r" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> 1. <strong>Environmental Inputs (from R)</strong><a href="migration-cues.html#environmental-inputs-from-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>External R preprocessing computes:</p>
+<ul>
+<li>ΔTemperature per day<br />
 </li>
-<li>Update swimming speed using energy reserves, difficulty, and flow velocity.<br />
+<li>ΔDaylength per day<br />
 </li>
-<li>Calculate cost-to-sea and construct least cost path.<br />
+<li>Smoothed 3-day rolling means<br />
 </li>
-<li>Move along the first part of the path based on swimming speed.<br />
+<li>Boolean <code>both_negative</code> indicating coincident decline<br />
 </li>
-<li>Record patch visits and time spent.</li>
-</ol>
+<li>Exports full dataset as <code>"cue_dataset_full.csv"</code></li>
+</ul>
+<p>This dataset defines the environmental basis for triggering migration.</p>
 </div>
-<div id="design-concepts-8" class="section level2 hasAnchor" number="12.5">
-<h2><span class="header-section-number">12.5</span> Design Concepts<a href="seaward-migration-behavior.html#design-concepts-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="identify-cue-days" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> 2. <strong>Identify Cue Days</strong><a href="migration-cues.html#identify-cue-days" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Cue days are those where:</p>
+<p><span class="math display">\[
+\Delta T &lt; 0 \quad \land \quad \Delta L &lt; 0
+\]</span></p>
+<p>The model loads the CSV at setup and extracts all days meeting this criterion into <code>cue-days</code>.</p>
+</div>
+<div id="activate-cue" class="section level3 hasAnchor" number="7.4.3">
+<h3><span class="header-section-number">7.4.3</span> 3. <strong>Activate Cue</strong><a href="migration-cues.html#activate-cue" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Each simulation day checks whether:</p>
+<p><span class="math display">\[
+\text{day-of-year} \in cue\text{-}days
+\]</span></p>
+<p>If true, then:</p>
+<ul>
+<li><strong>cue-active? = true</strong></li>
+<li><strong>migration-trigger? = true</strong></li>
+</ul>
+<p>This marks the environmental onset of migration preparedness.</p>
+</div>
+<div id="alewife-migration-probability-accumulation" class="section level3 hasAnchor" number="7.4.4">
+<h3><span class="header-section-number">7.4.4</span> 4. <strong>Alewife Migration Probability Accumulation</strong><a href="migration-cues.html#alewife-migration-probability-accumulation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Once the migration trigger is active, each tick adds:</p>
+<p><span class="math display">\[
+migration\_probability_{t+1} =
+migration\_probability_t +
+\left(0.00001 + U(0, 0.00004)\right)
+\]</span></p>
+<p>Capped at:</p>
+<p><span class="math display">\[
+migration\_probability \le 1
+\]</span></p>
+<p>This produces:</p>
+<ul>
+<li>Individual variation in migration timing<br />
+</li>
+<li>Realistic ramping into migration<br />
+</li>
+<li>Stochastic onset probabilities</li>
+</ul>
+</div>
+<div id="initiation-of-migration" class="section level3 hasAnchor" number="7.4.5">
+<h3><span class="header-section-number">7.4.5</span> 5. <strong>Initiation of Migration</strong><a href="migration-cues.html#initiation-of-migration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An agent begins migration when:</p>
+<p><span class="math display">\[
+\text{random-float}(1) &lt; migration\_probability
+\]</span></p>
+<p>At this moment:</p>
+<ul>
+<li><strong>start-migration? = true</strong></li>
+<li>Movement functions shift from staging to directed migration</li>
+</ul>
+</div>
+</div>
+<div id="design-concepts-3" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Design Concepts<a href="migration-cues.html#design-concepts-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>Basic Principles</strong><br />
-Hydrodynamic forcing, body size, and energy availability determine downstream movement.</p>
+The mechanism reflects literature on photoperiod- and temperature-driven migration cues.</p>
 <p><strong>Emergence</strong><br />
-Route choice, travel duration, and energetic depletion emerge from repeated state updates.</p>
-<p><strong>Objectives</strong><br />
-Agents attempt to reach the seaward migration patch following a hydrodynamically efficient route.</p>
-<p><strong>Sensing</strong><br />
-Agents sense local velocity, slope, difficulty, and patch cost gradients.</p>
+Migration timing varies among individuals because probability increments differ slightly with stochasticity.</p>
 <p><strong>Observation</strong><br />
-Movement trajectories, energy decline, and convergence routes can be monitored.</p>
+Key outputs: cue day activation, probability trajectories, proportion of migrants through time.</p>
 </div>
-<div id="initialization-8" class="section level2 hasAnchor" number="12.6">
-<h2><span class="header-section-number">12.6</span> Initialization<a href="seaward-migration-behavior.html#initialization-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<table>
+<div id="initialization-3" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Initialization<a href="migration-cues.html#initialization-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table style="width:100%;">
 <colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
+<col width="26%" />
+<col width="38%" />
+<col width="35%" />
 </colgroup>
 <thead>
 <tr>
-<th align="center">Variable</th>
-<th align="center">Initial Value</th>
-<th align="center">Justification</th>
+<th>Variable</th>
+<th>Initial Value</th>
+<th>Justification</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong>velocity</strong></td>
-<td align="center">Hydrodynamic input</td>
-<td align="center">Required environmental forcing.</td>
+<td><strong>cue-days</strong></td>
+<td>Extracted from CSV</td>
+<td>Based on empirical environmental data</td>
 </tr>
 <tr>
-<td align="center"><strong>weight</strong></td>
-<td align="center">Species-specific</td>
-<td align="center">Required for difficulty scaling.</td>
+<td><strong>migration-probability</strong></td>
+<td>0</td>
+<td>Ensures probability is accumulated only within cue window</td>
 </tr>
 <tr>
-<td align="center"><strong>max-speed</strong></td>
-<td align="center">Species-specific</td>
-<td align="center">Physiological constraint.</td>
+<td><strong>migration-trigger?</strong></td>
+<td>false</td>
+<td>No cue until ΔT and ΔL decline</td>
 </tr>
 <tr>
-<td align="center"><strong>min-speed</strong></td>
-<td align="center">Species-specific</td>
-<td align="center">Prevents collapse to zero speed.</td>
+<td><strong>cue-active?</strong></td>
+<td>false</td>
+<td>Depends on DOY</td>
 </tr>
 <tr>
-<td align="center"><strong>swim-efficiency</strong></td>
-<td align="center">Species or constant</td>
-<td align="center">Controls acceleration and deceleration.</td>
-</tr>
-<tr>
-<td align="center"><strong>difficulty-factor</strong></td>
-<td align="center">1</td>
-<td align="center">Neutral start value.</td>
-</tr>
-<tr>
-<td align="center"><strong>prev-speed</strong></td>
-<td align="center">Starting speed</td>
-<td align="center">Smooth initial movement.</td>
+<td><strong>start-migration?</strong></td>
+<td>false</td>
+<td>Fish begin in staging mode</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="submodels-7" class="section level2 hasAnchor" number="12.7">
-<h2><span class="header-section-number">12.7</span> Submodels<a href="seaward-migration-behavior.html#submodels-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="swimming-difficulty-1" class="section level3 hasAnchor" number="12.7.1">
-<h3><span class="header-section-number">12.7.1</span> Swimming Difficulty<a href="seaward-migration-behavior.html#swimming-difficulty-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Velocity is normalized between minimum and maximum observed values:</p>
-<p><span class="math display">\[
-V_{\text{norm}}
-=
-\frac{V_{\text{patch}} - V_{\min}}
-{V_{\max} - V_{\min}}
-\]</span></p>
-<p>Difficulty scales with body size:</p>
-<p><span class="math display">\[
-Df_{\text{raw}}
-=
-\left(
-\frac{V_{\text{norm}}}
-{M_{\text{agent}} / M_{\max}}
-\right)^k
-\]</span></p>
-<p>Difficulty is mapped onto the one-to-ten range:</p>
-<p><span class="math display">\[
-D_f = 1 + 9 \cdot Df_{\text{raw}}
-\]</span></p>
-<p>and constrained:</p>
-<p><span class="math display">\[
-D_f \in [1, 10]
-\]</span></p>
-</div>
-<div id="swimming-speed-1" class="section level3 hasAnchor" number="12.7.2">
-<h3><span class="header-section-number">12.7.2</span> Swimming Speed<a href="seaward-migration-behavior.html#swimming-speed-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Energy factor:</p>
-<p><span class="math display">\[
-E_{\text{factor}} = \frac{E_{\text{agent}}}{100}
-\]</span></p>
-<p>Flow velocity effect:</p>
-<p><span class="math display">\[
-V_{\text{impact}} = k \cdot V_{\text{patch}} \cdot 300
-\]</span></p>
-<p>Desired swimming speed:</p>
-<p><span class="math display">\[
-V_{\text{desired}}
-=
-\frac{V_{\max} \cdot E_{\text{factor}}}{D_f}
-+
-V_{\text{impact}}
-\]</span></p>
-<p>Speed constraints:</p>
-<p><span class="math display">\[
-V_{\text{desired}}
-=
-\min(V_{\max}, \max(V_{\min}, V_{\text{desired}}))
-\]</span></p>
-<p>Acceleration smoothing:</p>
-<p><span class="math display">\[
-\Delta V_{\max} = 0.5 \cdot \text{swim\_efficiency}
-\]</span></p>
-</div>
-<div id="path-based-movement-1" class="section level3 hasAnchor" number="12.7.3">
-<h3><span class="header-section-number">12.7.3</span> Path-Based Movement<a href="seaward-migration-behavior.html#path-based-movement-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Travel distance:</p>
-<p><span class="math display">\[
-\text{travel\_distance}
-=
-\frac{V_{\text{current}}}{3}
-\]</span></p>
-<p>Movement follows:</p>
-<ol style="list-style-type: decimal">
-<li>compute cost-to-sea<br />
-</li>
-<li>build path using decreasing cost<br />
-</li>
-<li>traverse first <span class="math inline">\(\lceil \text{travel\_distance} \rceil\)</span> patches<br />
-</li>
-<li>record visitation and time spent<br />
-</li>
-<li>append to the movement trail</li>
-</ol>
-</div>
-<div id="travel-cost-1" class="section level3 hasAnchor" number="12.7.4">
-<h3><span class="header-section-number">12.7.4</span> Travel Cost<a href="seaward-migration-behavior.html#travel-cost-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Raw cost:</p>
-<p><span class="math display">\[
-\text{cost}_{\text{raw}}
-=
-|V_{\text{patch}}|
-+
-0.5 \cdot \max(0, \Delta \text{depth})
-\]</span></p>
-<p>Difficulty scaling:</p>
-<p><span class="math display">\[
-\text{cost}
-=
-\text{cost}_{\text{raw}} \cdot D_f
-\]</span></p>
-</div>
-<div id="swimming-energy-1" class="section level3 hasAnchor" number="12.7.5">
-<h3><span class="header-section-number">12.7.5</span> Swimming Energy<a href="seaward-migration-behavior.html#swimming-energy-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let <span class="math inline">\(\beta = 0.75\)</span>.</p>
-<p>Energy multiplier:</p>
-<p><span class="math display">\[
-M = \frac{D_f}{\text{swim\_efficiency}}
-\]</span></p>
-<p>Energy cost:</p>
-<p><span class="math display">\[
-E_{\text{swim}}
-=
-\text{swim\_base} \cdot M^{\beta}
-\]</span></p>
-<p>Energy update:</p>
-<p><span class="math display">\[
-E_{\text{agent}}
-=
-\max \left(0,\, E_{\text{agent}} - E_{\text{swim}} \right)
-\]</span></p>
-</div>
-</div>
-<div id="netlogo-implementation-4" class="section level2 hasAnchor" number="12.8">
-<h2><span class="header-section-number">12.8</span> NetLogo Implementation<a href="seaward-migration-behavior.html#netlogo-implementation-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<pre class="netlogo"><code>
-;; ===================================================================
-;;  LANDWARD MIGRATION + HYDRODYNAMIC SWIMMING SUBMODEL DECLARATIONS
-;; ===================================================================
-
-globals [
-
-  ;; Velocity normalization bounds
-  max-seaward-velocity
-  max-landward-velocity
-]
-
-patches-own [
-
-  ;; Environmental attributes
-  velocity
-  depth
-  patch-terrain   ;; &quot;water&quot; or &quot;land&quot;
-
-  ;; Least-cost routing fields
-  cost-to-home
-  cost-to-sea
-  cost-to-prey
-
-  ;; Tracking fish patch-level behavior
-  visits-by-fish
-  ticks-spent-fish
-]
-
-turtles-own [
-
-  ;; Body condition
-  weight
-
-  ;; Swimming behavior
-  speed
-  prev-speed
-  max-speed
-  min-speed
-  swim-efficiency
-
-  ;; Hydrodynamic resistance
-  difficulty-factor
-
-  ;; Energetics
-  E-swim
-  swim-base
-
-  ;; Migration targets
-  home-patch
-  migration-patch
-
-  ;; Movement memory
-  planned-path
-  trail
-  previous-patch
-  previous-x
-  previous-y
-]
-
-;; ===================================================================
-;;  SEAWARD MIGRATION + HYDRODYNAMIC SWIMMING SUBMODEL
-;; ===================================================================
-
-;; -------------------------------------------------------------------
-;;  Swimming Difficulty (Seaward)
-;; -------------------------------------------------------------------
-to calculate-difficulty-seaward
-  
-  let M-max max [weight] of breed
-  let M-agent weight
-  let V-max max-landward-velocity
-  let V-min max-seaward-velocity
-  let k 0.75
-
-  let normalized-velocity (velocity - V-min) / (V-max - V-min)
-
-  let Df-raw (normalized-velocity / (M-agent / M-max)) ^ k
-
-  set difficulty-factor (1 + 9 * Df-raw)
-  set difficulty-factor max list 1 (min list 10 difficulty-factor)
-end
-
-
-;; -------------------------------------------------------------------
-;;  Swimming Speed (Seaward)
-;; -------------------------------------------------------------------
-to calculate-swimming-speed-seaward
-  
-  let k 0.75
-  let energy-factor (energy / 100)
-
-  let velocity-impact (k * velocity * 300)
-
-  let desired-speed 
-    (max-speed * energy-factor / difficulty-factor)
-      + velocity-impact
-
-  set desired-speed 
-      min list max-speed (max list min-speed desired-speed)
-
-  let max-speed-change 0.5
-  set max-speed-change (max-speed-change * swim-efficiency)
-
-  if abs(desired-speed - prev-speed) &gt; max-speed-change [
-    if desired-speed &gt; prev-speed [
-      set speed prev-speed + max-speed-change
-    ]
-    if desired-speed &lt; prev-speed [
-      set speed prev-speed - max-speed-change
-    ]
-  ]
-
-  if abs(desired-speed - prev-speed) &lt;= max-speed-change [
-    set speed desired-speed
-  ]
-
-  set prev-speed speed
-end
-
-
-;; -------------------------------------------------------------------
-;;  Cost-to-Sea (Least Cost Routing)
-;; -------------------------------------------------------------------
-to calculate-cost-to-sea [sea-patch]
-
-  ask migration-patch [ set cost-to-sea 0 ]
-  ask patch-here     [ set cost-to-sea 1e9 ]
-
-  let frontier (list migration-patch)
-  let df difficulty-factor
-
-  while [not empty? frontier] [
-
-    let current first frontier
-    set frontier but-first frontier
-
-    ask current [
-
-      let current-cost cost-to-sea
-
-      ask neighbors4 with [patch-terrain = &quot;water&quot;] [
-
-        let travel-cost compute-travel-cost current self df
-        let new-cost current-cost + travel-cost
-
-        if new-cost &lt; cost-to-sea [
-          set cost-to-sea new-cost
-          set frontier lput self frontier
-        ]
-      ]
-    ]
-  ]
-end
-
-
-;; -------------------------------------------------------------------
-;;  Build Path to Sea
-;; -------------------------------------------------------------------
-to-report build-path-sea [current-patch sea-patch]
-
-  let path (list current-patch)
-  let cur current-patch
-  let max-steps 2000
-
-  while [cur != migration-patch and max-steps &gt; 0] [
-
-    set max-steps max-steps - 1
-
-    let candidates [neighbors] of cur
-    set candidates candidates with [
-      patch-terrain = &quot;water&quot; and 
-      cost-to-sea &lt; [cost-to-sea] of cur
-    ]
-
-    if not any? candidates [
-      report path
-    ]
-
-    let next-patch min-one-of candidates [cost-to-sea]
-    set path lput next-patch path
-    set cur next-patch
-  ]
-
-  report path
-end
-
-
-;; -------------------------------------------------------------------
-;;  Seaward Migration – Movement Execution
-;; -------------------------------------------------------------------
-to migrate-seaward
-  
-  ;; Schooling logic (excluded in documentation)
-  find-schoolmates
-  if any? schoolmates [
-    find-nearest-neighbor
-    ifelse distance nearest-neighbor &lt; minimum-separation [
-      separate
-    ][
-      cohere
-      align
-    ]
-    adjust-speed
-  ]
-
-  ;; Path-based movement
-  let travel-distance (speed / 3)
-  let path build-path-sea patch-here migration-patch
-  set planned-path path
-
-  if not empty? path [
-
-    let steps-to-move ceiling travel-distance
-    let move-patches sublist path 0 (min list steps-to-move length path)
-
-    let old-patch patch-here
-
-    foreach move-patches [ p -&gt;
-
-      if p != old-patch [
-        ask p [ set visits-by-alewife visits-by-alewife + 1 ]
-        set old-patch p
-      ]
-
-      face p
-      move-to p
-
-      ask p [
-        set ticks-spent-alewife ticks-spent-alewife + 1
-      ]
-    ]
-  ]
-
-  if not member? patch-here trail [
-    set trail lput patch-here trail
-  ]
-end
-
-
-;; -------------------------------------------------------------------
-;;  Universal Swimming Energy Cost
-;; -------------------------------------------------------------------
-to calculate-swim-energy
-  
-  let beta 0.75
-  let energy-multiplier (difficulty-factor * (1 / swim-efficiency))
-
-  set E-swim (swim-base * (energy-multiplier ^ beta))
-  set energy max list 0 (energy - E-swim)
-end</code></pre>
-
 </div>
 </div>
             </section>
@@ -1163,8 +809,8 @@ end</code></pre>
           </div>
         </div>
       </div>
-<a href="landward-migration-behavior.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="schooling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="salinity-exposure.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="submodels-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -1195,7 +841,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/12-Seaward_Migration.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-Migration_Cue.Rmd",
 "text": "Edit"
 },
 "history": {

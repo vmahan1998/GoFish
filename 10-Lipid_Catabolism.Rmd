@@ -10,6 +10,21 @@ This submodel is best used in tandpm with an energy recovery stratedge like filt
 
 ## Entities, State Variables, and Scales
 
+### Spatial and Temporal Scales
+
+**Spatial Unit:** Patch (3 m x 3 m resolution)\
+**Temporal Unit:** 5 minute time steps (tick)
+
+### **Global Variables**
+
+| Global Variable | Definition |
+|------------------------------------|------------------------------------|
+| **full-energy-level** | Target energy level used to compute energetic deficit during lipid use (default = 100). |
+| **energy-per-lipid** | Energy returned per unit lipid mass mobilized (default = 40), used to convert lipid into energy. |
+| **lipid-refill-fraction** | Fraction of body mass available to mobilize as lipid during fasting (default = 0.5). |
+| **lipid-max-fraction** *(optional)* | Upper bound on lipid fraction that can be lost before mortality or physiological collapse (not currently enforced but biologically relevant). |
+| **debug-lipid?** *(optional)* | Toggles printing of intermediate lipid catabolism calculations for debugging. |
+
 ### Patch Variables
 
 Lipid catabolism does not directly depend on patch level variables, since no external resources are consumed.
@@ -17,7 +32,7 @@ Lipid catabolism does not directly depend on patch level variables, since no ext
 ### Agent Variables
 
 | Variable Name | Definition |
-|----------------------------------------|--------------------------------|
+|------------------------------------|------------------------------------|
 | **energy** | Current energy level of the agent |
 | **weight** | Current body mass of the fish |
 | **original-weight** | Initial body mass used to scale maximum lipid availability |
@@ -71,7 +86,7 @@ Outputs include energy restored through lipid catabolism, lipid used, and body m
 ## Initialization
 
 | Variable | Initialized Value | Justification |
-|------------------|-------------------------------|-----------------------|
+|------------------------|------------------------|------------------------|
 | weight | species specific | Establishes initial body condition |
 | original-weight | equal to initial weight | Defines total lipid availability |
 | energy | 100 | Full energy at initialization |
@@ -141,3 +156,87 @@ Hg_{digested} = 0
 $$
 
 These values are added to cumulative totals to maintain bookkeeping consistency, but do not increase contaminant burden.
+
+## Netlogo Implementation
+
+```{netlogo}
+
+;; ===================================================================
+;;  LIPID CATABOLISM SUBMODEL DECLARATIONS
+;; ===================================================================
+
+turtles-own [
+
+  ;; Energetics & body condition
+  energy
+  weight
+  original-weight
+
+  ;; Lipid metabolism
+  lipid-catabolism-efficiency
+  lipid-used
+
+  ;; Metabolic rate inputs
+  metabolism-rate
+  baseline-metabolism-rate
+
+  ;; Contaminant bookkeeping during fasting
+  mehg-foraging
+  hg-foraging
+  
+  mehg-foraging-total
+  hg-foraging-total
+  
+  mehg-total
+  hg-total
+]
+
+;; ===================================================================
+;;  LIPID CATABOLISM SUBMODEL 
+;; ===================================================================
+
+ to lipid-loss
+   ;; Maximum lipid metabolized this step, adjusted by efficiency
+  let lipid-refill 0.5 * (weight / original-weight)
+  ;print (word "lipid-refill: " lipid-refill)
+  ;print (word "current energy: " energy)
+  ;; Calculate deficit and lipid need
+  let energy-deficit (100 - energy)
+  ;print (word "energy-deficit: " energy-deficit)
+  let lipid-needed (energy-deficit / 40)
+  ;print (word "lipid-needed: " lipid-needed)
+  
+  ;; Actual lipid use depends on efficiency and availability
+  let lipid-used (min list lipid-needed lipid-refill)
+  set lipid-used (lipid-used * lipid-catabolism-efficiency)
+  ;print (word "lipid-used: " lipid-used)
+  
+  ;; Convert lipid to energy (scaled by efficiency)
+  let energy-change (lipid-used * 40)
+  ;print (word "energy added: " energy-change)
+  set energy (energy + energy-change)
+  ;print (word "energy after lipid conversion: " energy)
+  if energy > 100 [ 
+    set energy 100 
+    print "energy capped at 100"
+  ]
+  
+  ;; Weight loss proportional to lipid burned
+  set weight weight - (lipid-used)
+  ;print (word "weight after lipid loss: " weight)
+  
+  ;; When relying on lipids, Hg mercury foraging risk stops
+    
+  ;; contaminant bookkeeping
+  let digested-MeHg 0
+  let digested-Hg 0
+  set mehg-foraging digested-MeHg
+  set hg-foraging digested-Hg
+
+  set mehg-foraging-total mehg-foraging-total + digested-MeHg
+  set hg-foraging-total hg-foraging-total + digested-Hg
+  set mehg-total mehg-total + digested-MeHg
+  set hg-total hg-total + digested-Hg
+ end
+ 
+```

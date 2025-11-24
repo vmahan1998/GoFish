@@ -5,8 +5,7 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: "Penobscot.bib"
-# url: your book url like https://bookdown.org/yihui/bookdown
-cover-image: "/images/vmq.png"
+cover-image: "images/vmq.png"
 description: |
   This document contains a library of agent-based model functions for migratory fish.
 link-citations: yes

@@ -10,17 +10,29 @@ To simulate a passive energy-conserving behavior in migratory fish that allows t
 
 ## Entities, State Variables, and Scales
 
+### Spatial and Temporal Scales
+
+**Spatial Unit:** Patch (3 m x 3 m resolution)\
+**Temporal Unit:** 5 minute time steps (tick)
+
+### **Global Variables**
+
+| Variable Name | Definition |
+|----|----|
+| **max-seaward-velocity** | Highest magnitude seaward-directed hydrodynamic velocity across the spatial domain. |
+| **max-landward-velocity** | Highest magnitude landward-directed hydrodynamic velocity across the spatial domain. |
+
 ### Patch Variables
 
 | Variable Name | Definition |
-|:--:|:--:|
+|:----------------------------------:|:----------------------------------:|
 | **Velocity** $V_{patch}$ | The along-channel velocity of a given patch, derived from hydrodynamic model inputs, where positive values are in the landward direction and negative values are in the seaward direction. |
 | **tidal-transport-in-patch** | Count of agents exhibiting tidal stream transport within a patch (for habitat quality analysis). |
 
 ### Agent Variables
 
 |  |  |
-|:--:|:--:|
+|:----------------------------------:|:----------------------------------:|
 | **Variable Name** | **Definition** |
 | **energy** $E_{agent}$ | Total energy available to the agent. |
 | **swimming energy** $E_{swim}$ | Energy expenditure from movement per time step. |
@@ -57,7 +69,7 @@ To simulate a passive energy-conserving behavior in migratory fish that allows t
 ## Initialization
 
 | Variable | Initialized Value | Justification |
-|:--:|:--:|:--:|
+|:----------------------:|:----------------------:|:----------------------:|
 | $V_{agent}$ | Based on size, energy, and difficulty factor | Reflects agent's swimming capability based on metabolic limits. |
 | $swim_{min}$ | Species-specific parameter | Represents the minimum sustained swimming velocity of the agent. |
 | $swim_{max}$ | Species-specific parameter | Represents the maximum sustained swimming velocity of the agent. |
@@ -149,3 +161,135 @@ Where:
 -   $Speed_{min}$ is the minimum sustainable swimming speed of the agent.
 
 This triggers a return to active migratory movement and deactivates $STST_{?}$.
+
+## Netlogo Implementation
+
+```{netlogo}
+;; -------------------------------------------------------------------
+;;  GLOBALS
+;; -------------------------------------------------------------------
+globals [
+  max-seaward-velocity
+  max-landward-velocity
+  
+  landward-migration?
+  seaward-migration?
+
+  selective-tidal-transport?
+  STST-start-tick
+]
+
+;; -------------------------------------------------------------------
+;;  PATCH VARIABLES
+;; -------------------------------------------------------------------
+patches-own [
+  velocity
+  depth
+  patch-terrain
+  
+  tidal-transport-in-patch
+]
+
+;; -------------------------------------------------------------------
+;;  TURTLE VARIABLES
+;; -------------------------------------------------------------------
+turtles-own [
+  speed
+  min-speed
+  swim-efficiency
+  swim-base
+  difficulty-factor
+  energy
+  E-swim
+  
+  selective-tidal-transport?
+  STST-start-tick
+]
+
+;; -------------------------------------------------------------------
+;;  STST — LANDWARD
+;; -------------------------------------------------------------------
+to selective-tidal-stream-transport-landward
+  let V-patch [velocity] of patch-here
+  let S-swim (speed / 300) ;; 5 minute speed
+
+  ;; Continue drifting (1 tick cooldown)
+  if selective-tidal-transport? and (ticks - STST-start-tick < 1) [
+    let drift-distance abs V-patch * (1 - swim-efficiency)
+    let drift-target one-of neighbors with [patch-terrain = "water"]
+    if drift-target != nobody [ safe-move drift-target drift-distance ]
+    set tidal-transport-in-patch tidal-transport-in-patch + 1
+    stop
+  ]
+
+  ;; Enter STST
+  if abs V-patch > S-swim and S-swim <= min-speed [
+    set selective-tidal-transport? true
+    set STST-start-tick ticks
+    let drift-distance abs V-patch * (1 - swim-efficiency)
+    let drift-target one-of neighbors with [patch-terrain = "water"]
+    if drift-target != nobody [ safe-move drift-target drift-distance ]
+    set tidal-transport-in-patch tidal-transport-in-patch + 1
+    stop
+  ]
+
+  ;; Exit STST → resume active migration
+  if S-swim > min-speed or (ticks - STST-start-tick >= 1) [
+    set selective-tidal-transport? false
+    calculate-swim-energy
+    set energy max list 0 (energy - E-swim)
+    migrate-landward
+  ]
+end
+
+;; -------------------------------------------------------------------
+;;  STST — SEAWARD
+;; -------------------------------------------------------------------
+to selective-tidal-stream-transport-seaward
+  let V-patch [velocity] of patch-here
+  let S-swim (speed / 300)
+
+  ;; Continue STST drift
+  if selective-tidal-transport? and (ticks - STST-start-tick < 1) [
+    let drift-distance abs V-patch * (1 - swim-efficiency)
+    let drift-target one-of neighbors with [patch-terrain = "water"]
+    if drift-target != nobody [ safe-move drift-target drift-distance ]
+    set tidal-transport-in-patch tidal-transport-in-patch + 1
+    stop
+  ]
+
+  ;; Enter STST
+  if abs V-patch > S-swim and S-swim <= min-speed [
+    set selective-tidal-transport? true
+    set STST-start-tick ticks
+    let drift-distance abs V-patch * (1 - swim-efficiency)
+    let drift-target one-of neighbors with [patch-terrain = "water"]
+    if drift-target != nobody [ safe-move drift-target drift-distance ]
+    set tidal-transport-in-patch tidal-transport-in-patch + 1
+    stop
+  ]
+
+  ;; Exit STST → resume seaward migration
+  if S-swim > min-speed or (ticks - STST-start-tick >= 1) [
+    set selective-tidal-transport? false
+    calculate-swim-energy
+    set energy max list 0 (energy - E-swim)
+    migrate-seaward
+  ]
+end
+
+;; -------------------------------------------------------------------
+;;  SAFE MOVEMENT HANDLER
+;; -------------------------------------------------------------------
+to safe-move [target-patch move-speed]
+  face target-patch
+  let next-patch patch-ahead move-speed
+
+  ifelse [patch-terrain] of next-patch = "water" [
+    fd move-speed
+  ] [
+    let nearby-water one-of patches in-radius 1 with [patch-terrain = "water"]
+    if nearby-water != nobody [ move-to nearby-water ]
+  ]
+end
+```

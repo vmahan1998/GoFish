@@ -15,6 +15,12 @@ To simulate how migratory fish process ingested prey into energy and contaminant
 **Spatial Unit:** Patch (3 m x 3 m resolution)\
 **Temporal Unit:** 5 minute time steps (tick)
 
+### Global Variables
+
+| Global Variable | Definition |
+|-----------------|------------|
+| **none required** | Digestion uses internal agent state + metabolism-rate from metabolism submodel. |
+
 ### Patch Variables
 
 | Variable Name | Definition |
@@ -161,4 +167,120 @@ When stomach contents reach zero:
 
 -   lipid-loss is activated
 
-This switches the prey to burn fat energy reserves instead of relying on stomach contents
+This switches the prey to burn fat energy reserves instead of relying on stomach contents.
+
+## Netlogo Implementation
+
+```{netlogo}
+;; ============================================
+;; DIGESTION SUBMODEL
+;; ============================================
+
+fish-own [
+  ;; digestion state
+  stomach-contents
+  stomach-contents-Hg
+  stomach-contents-MeHg
+  digestion-rate
+  digestion-efficiency
+
+  ;; contaminant tracking
+  mehg-foraging
+  hg-foraging
+  mehg-foraging-total
+  hg-foraging-total
+  mehg-total
+  hg-total
+
+  ;; energy + biomass
+  energy
+  weight
+  lipid-loss
+  lipid-catabolism-efficiency
+]
+
+to digest
+  ;; digestion tied to metabolic rate
+  set digestion-rate metabolism-rate
+
+  ;; nothing to digest
+  if stomach-contents <= 0 [
+    set foraging true
+    set lipid-loss true
+    stop
+  ]
+
+  ;; ============================================
+  ;; DIGESTIVE BREAKDOWN
+  ;; ============================================
+
+  ;; amount of prey broken down this tick
+  let digested (stomach-contents * digestion-rate)
+
+  ;; numerical guard to avoid divide-by-zero
+  if stomach-contents <= 0.000001 [ set digested 0 ]
+
+  let digested-Hg   0
+  let digested-MeHg 0
+
+  if digested > 0 and stomach-contents > 0 [
+    set digested-Hg   ((digested / stomach-contents) * stomach-contents-Hg)
+    set digested-MeHg ((digested / stomach-contents) * stomach-contents-MeHg)
+  ]
+
+  ;; ============================================
+  ;; UPDATE STOMACH CONTENTS
+  ;; ============================================
+
+  set stomach-contents     (max list 0 (stomach-contents - digested))
+  set stomach-contents-Hg  (max list 0 (stomach-contents-Hg - digested-Hg))
+  set stomach-contents-MeHg (max list 0 (stomach-contents-MeHg - digested-MeHg))
+
+  ;; ============================================
+  ;; ENERGY CONVERSION
+  ;; ============================================
+
+  let usable-energy (digested * digestion-efficiency * 40)
+  set energy energy + usable-energy
+
+  ;; ============================================
+  ;; STORE LIPID IF ENERGY SURPLUS
+  ;; ============================================
+
+  if energy > 100 [
+    let surplus (energy - 100)
+
+    ;; convert surplus to lipid
+    let lipid-added (surplus / 40)
+
+    ;; apply storage efficiency
+    set lipid-added (lipid-added * lipid-catabolism-efficiency)
+
+    ;; update biomass
+    set weight weight + lipid-added
+
+    ;; subtract energy equivalent
+    set energy energy - (lipid-added * 40)
+  ]
+
+  ;; ============================================
+  ;; CONTAMINANT ASSIMILATION
+  ;; ============================================
+
+  set mehg-foraging          digested-MeHg
+  set hg-foraging            digested-Hg
+  set mehg-foraging-total    mehg-foraging-total + digested-MeHg
+  set hg-foraging-total      hg-foraging-total + digested-Hg
+  set mehg-total             mehg-total + digested-MeHg
+  set hg-total               hg-total + digested-Hg
+
+  ;; ============================================
+  ;; SWITCH TO Lipid Loss IF EMPTY
+  ;; ============================================
+
+  if stomach-contents <= 0 [
+    set lipid-loss true
+  ]
+end
+```
+

@@ -12,6 +12,11 @@ The purpose of this submodel is to simulate collective movement patterns observe
 
 ## Entities, State Variables, and Scales
 
+### Spatial and Temporal Scales
+
+**Spatial Unit:** Patch (3 m x 3 m resolution)\
+**Temporal Unit:** 5 minute time steps (tick)
+
 ### Patch Variables
 
 | Variable Name   | Definition                          |
@@ -115,3 +120,143 @@ Speed is regulated to preserve cohesion within the school:
 - Otherwise, it gradually slows toward the minimum speed.
 
 This produces emergent schooling speeds and prevents fragmentation.
+
+## Netlogo Implementation
+
+```{netlogo}
+;; -------------------------------------------------------------------
+;;  SCHOOLING SUBMODEL — VARIABLE DECLARATIONS
+;; -------------------------------------------------------------------
+
+patches-own [
+  ;; Terrain classification
+  patch-terrain          ;; "water" or "land"
+]
+
+turtles-own [
+  ;; -----------------------------------------------------------------
+  ;; Schooling state variables
+  ;; -----------------------------------------------------------------
+  schoolmates            ;; agentset of nearby con-specifics
+  nearest-neighbor       ;; closest fish in schoolmates
+  minimum-separation     ;; desired distance to avoid collisions
+
+  ;; -----------------------------------------------------------------
+  ;; Migration gating used for schooling eligibility
+  ;; (schoolmates only form among agents sharing these states)
+  ;; -----------------------------------------------------------------
+  start-migration?       ;; has the agent initiated migration?
+  landward-migration?    ;; migrating upstream?
+  seaward-migration?     ;; migrating downstream?
+
+  ;; -----------------------------------------------------------------
+  ;; Swimming parameters affected by schooling
+  ;; -----------------------------------------------------------------
+  speed                  ;; current swimming speed
+  min-speed              ;; lower speed limit to prevent stall
+]
+
+;; -------------------------------------------------------------------
+;;  SCHOOLING: MAIN CONTROLLER
+;; -------------------------------------------------------------------
+
+to school
+  find-schoolmates
+
+  if any? schoolmates [
+    find-nearest-neighbor
+
+    ;; Separation rule
+    ifelse distance nearest-neighbor < minimum-separation
+    [
+      separate
+    ]
+    [
+      ;; Cohesion + alignment rules
+      cohere
+      align
+    ]
+
+    ;; Adjust speed to maintain cohesion
+    adjust-speed
+  ]
+end
+
+
+;; -------------------------------------------------------------------
+;;  FIND SCHOOLMATES (CON-SPECIFICS + SAME MIGRATION MODE)
+;; -------------------------------------------------------------------
+
+to find-schoolmates
+  set schoolmates other turtles with [
+    breed = [breed] of myself and
+    start-migration? and
+    landward-migration? = [landward-migration?] of myself and
+    seaward-migration? = [seaward-migration?] of myself
+  ]
+end
+
+
+;; -------------------------------------------------------------------
+;;  FIND NEAREST NEIGHBOR
+;; -------------------------------------------------------------------
+
+to find-nearest-neighbor
+  set nearest-neighbor min-one-of schoolmates [ distance myself ]
+end
+
+
+;; -------------------------------------------------------------------
+;;  SEPARATION RULE (AVOID COLLISION)
+;; -------------------------------------------------------------------
+
+to separate
+  ;; Turn away from nearest neighbor
+  let dx (dx-of nearest-neighbor)
+  let dy (dy-of nearest-neighbor)
+  rt (random 20 + 160)
+  fd 0.1
+end
+
+
+;; -------------------------------------------------------------------
+;;  COHESION RULE (TURN TOWARD GROUP)
+;; -------------------------------------------------------------------
+
+to cohere
+  if any? schoolmates [
+    face mean-heading-of schoolmates
+  ]
+end
+
+
+;; -------------------------------------------------------------------
+;;  ALIGNMENT RULE (MATCH GROUP HEADING)
+;; -------------------------------------------------------------------
+
+to align
+  if any? schoolmates [
+    set heading (heading + (mean [heading] of schoolmates - heading) * 0.1)
+  ]
+end
+
+
+;; -------------------------------------------------------------------
+;;  SPEED ADJUSTMENT (MAINTAIN COHESION)
+;; -------------------------------------------------------------------
+
+to adjust-speed
+  ifelse max [speed] of schoolmates > speed + 0.1
+  [
+    ;; Accelerate to keep up with group
+    set speed speed + 0.1
+  ]
+  [
+    ;; Slow down toward minimum speed
+    if speed > min-speed [
+      set speed speed - 0.2
+    ]
+  ]
+end
+```
+

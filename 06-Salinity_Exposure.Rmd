@@ -15,6 +15,12 @@ To simulate stress response to salinity changes for migratory fish in coastal sy
 -   **Spatial Unit**: Patch (3 m x 3 m resolution)
 -   **Temporal Unit**: 5-minute time steps (`tick`)
 
+### Global Variables
+
+| Global Variable | Definition |
+|-----------------|------------|
+| **none required** | Salinity exposure uses internal agent state |
+
 ### Patch Variables
 
 +--------------------------+----------------------------------------------------------------------------------+
@@ -262,3 +268,215 @@ Where:
 -   $E_{agent}$ is the total energy of the agent.
 
 -   $E_{osmo}$ is the energy consumed during osmoregulation.
+
+```{netlogo}
+;; ================================================================
+;; SALINITY EXPOSURE AND OSMOREGULATION SUBMODEL
+;; ================================================================
+
+globals [
+  stable-time                ;; tracks duration of stable salinity
+  salinity-threshold         ;; threshold difference to count as “stable”
+]
+
+patches-own [
+  salinity                   ;; environmental salinity (psu)
+]
+
+fish-own [
+  ;; --- Salinity Physiology ---
+  acclimated-salinity
+  ionregulatory-stress       ;; 1–10 scale
+
+  ;; --- Chloride Cell Physiology ---
+  chloride-density-min
+  chloride-density-max
+  chloride-cell-density
+  chloride-max-proliferation
+  chloride-cells-this-tick
+  C-mid
+
+  ;; --- Acclimation Timing ---
+  acclimation-rate
+  time-since-last-osmoregulation
+
+  ;; --- Energetics ---
+  energy
+  E-osmo
+  E-base
+  E-creation
+  Met-max
+
+  ;; --- Size Scaling ---
+  weight
+]
+
+
+;; ================================================================
+;; MAIN OSMOREGULATION PROCEDURE
+;; ================================================================
+
+to osmoregulate
+  calculate-ionregulatory-stress
+  regulate-chloride-cell-density
+  calculate-osmoregulation-energy
+end
+
+
+;; ================================================================
+;; STEP 1 – CALCULATE ION-REGULATORY STRESS
+;; ================================================================
+
+to calculate-ionregulatory-stress
+  let prev-sal [salinity] of previous-patch
+  let patch-sal [salinity] of patch-here
+  let agent-sal acclimated-salinity
+
+  ;; --- Base salinity difference ---
+  let sal-diff abs (agent-sal - patch-sal)
+
+  ;; --- Core salinity-based stress function ---
+  let salinity-stress salinity-to-stress sal-diff chloride-cell-density ionregulatory-stress
+
+  ;; --- Salinity stability, used for acclimation ---
+  let sal-change abs (patch-sal - prev-sal)
+  
+  if sal-change < salinity-threshold [
+    set stable-time stable-time + 1
+  ]
+  if sal-change >= salinity-threshold [
+    set stable-time 0
+  ]
+
+  ;; --- Slow acclimation when salinity is stable ---
+  if stable-time > 4 and chloride-cell-density > chloride-density-min [
+    set salinity-stress salinity-stress * 0.98
+    set acclimated-salinity acclimated-salinity +
+      ((patch-sal - acclimated-salinity) * 0.02)
+  ]
+
+  ;; --- Chloride buffering ---
+  let buffer-reduct calculate-stress-reduction-chloride-function chloride-cell-density
+
+  ;; Buffering only applies above minimum chloride levels
+  if chloride-cell-density > chloride-density-min [
+    set ionregulatory-stress max (list 1 (salinity-stress - buffer-reduct * 0.8))
+  ]
+
+  if chloride-cell-density <= chloride-density-min [
+    set ionregulatory-stress salinity-stress
+  ]
+end
+
+
+;; ================================================================
+;; STEP 2 – REGULATE CHLORIDE CELL DENSITY
+;; ================================================================
+
+to regulate-chloride-cell-density
+  ;; energetic constraint
+  if energy <= 25 [ stop ]
+
+  set time-since-last-osmoregulation time-since-last-osmoregulation + 1
+
+  ;; wait until acclimation interval
+  if time-since-last-osmoregulation < acclimation-rate [ stop ]
+
+  ;; --- Target chloride cell density ---
+  let target-dens chloride-density-min +
+    ((chloride-density-max - chloride-density-min) *
+     (ionregulatory-stress / 10))
+
+  ;; down-regulate if long-term stability
+  if stable-time > 288 [
+    set target-dens (target-dens * 0.99)
+  ]
+
+  ;; constrain target to bounds
+  set target-dens max (list chloride-density-min
+                       min (list chloride-density-max target-dens))
+
+  ;; --- Adjustment rate ---
+  let change (target-dens - chloride-cell-density) *
+             (2 * chloride-max-proliferation)
+
+  let max-change ((chloride-density-max - chloride-density-min) *
+                   chloride-max-proliferation)
+
+  ;; clamp change
+  set change max (list (-1 * max-change) (min (list max-change change)))
+
+  ;; energy-dependent reduction
+  if energy <= 50 [
+    set change (change * 0.5)
+  ]
+
+  ;; apply change
+  set chloride-cell-density chloride-cell-density + change
+  set chloride-cell-density max (list chloride-density-min
+                                  min (list chloride-density-max chloride-cell-density))
+
+  set chloride-cells-this-tick abs change
+  set time-since-last-osmoregulation 0
+end
+
+
+;; ================================================================
+;; STEP 3 – OSMOREGULATION ENERGY COST
+;; ================================================================
+
+to calculate-osmoregulation-energy
+  let maintenance (E-base * chloride-cell-density)
+  let creation    (E-creation * chloride-cells-this-tick)
+
+  set E-osmo (maintenance + creation)
+  set energy max (list 0 (energy - E-osmo))
+end
+
+
+;; ================================================================
+;; CHLORIDE BUFFERING FUNCTION
+;; ================================================================
+
+to-report calculate-stress-reduction-chloride-function [C]
+  ;; logistic-like buffering curve
+  let reduction 5 * (1 - exp(C * -0.5 / C-mid))
+  report reduction
+end
+
+
+;; ================================================================
+;; SALINITY → STRESS FUNCTION
+;; ================================================================
+
+to-report salinity-to-stress [diff C prev-stress]
+  let scaled (log (1 + abs diff) 10) * 10
+  let buffer   (1 + exp(-2 * (C / C-mid)))
+  let result   (scaled / buffer)
+
+  ;; constrain to 1–10
+  set result max (list 1 (min (list 10 result)))
+
+  ;; acclimation effect
+  if stable-time > 288 [
+    set result (result * 0.99)
+  ]
+
+  report result
+end
+
+
+;; ================================================================
+;; SIZE-SCALED CREATION COST
+;; ================================================================
+
+to calculate-E-creation
+  let M-max max [weight] of fish
+  if M-max <= 0 [ set M-max weight ]
+
+  let beta -0.75
+  set E-creation Met-max * ((weight / M-max) ^ beta)
+end
+
+```
+
