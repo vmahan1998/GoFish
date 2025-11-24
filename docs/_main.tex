@@ -3573,7 +3573,7 @@ V_{\text{desired}}
 Acceleration is smoothed using the previous speed:
 
 \[
-\Delta V_{\max} = 0.5 \cdot \text{swim_efficiency}
+\Delta V_{\max} = 0.5 \cdot \text{swim\_efficiency}
 \]
 
 If \(|V_{\text{desired}} - V_{\text{prev}}| > \Delta V_{\max}\), then speed moves gradually toward the desired value. Otherwise speed is set directly.
@@ -3583,7 +3583,7 @@ If \(|V_{\text{desired}} - V_{\text{prev}}| > \Delta V_{\max}\), then speed move
 Landward migration uses a least cost routing strategy instead of direct vector movement. The number of patches traversed in a tick is based on swimming speed:
 
 \[
-\text{travel_distance} = \frac{V_{\text{current}}}{3}
+\text{travel\_distance} = \frac{V_{\text{current}}}{3}
 \]
 
 Movement follows:
@@ -3596,7 +3596,7 @@ Movement follows:
 \item
   generate a path using decreasing cost\\
 \item
-  move through the first \(\lceil \text{travel_distance} \rceil\) patches\\
+  move through the first \(\lceil \text{travel\_distance} \rceil\) patches\\
 \item
   record patch visits and time spent\\
 \item
@@ -3630,14 +3630,14 @@ Let \(\beta = 0.75\).\\
 Let the effective multiplier be:
 
 \[
-M = \frac{D_f}{\text{swim_efficiency}}
+M = \frac{D_f}{\text{swim\_efficiency}}
 \]
 Where lower efficiency results in higher energetic cost.
 
 Energy expenditure is:
 
 \[
-E_{\text{swim}} = \text{swim_base} \cdot M^\beta
+E_{\text{swim}} = \text{swim\_base} \cdot M^\beta
 \]
 
 Total energy is reduced accordingly:

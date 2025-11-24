@@ -156,7 +156,7 @@ $$
 Acceleration smoothing:
 
 $$
-\Delta V_{\max} = 0.5 \cdot \text{swim\_efficiency}
+\Delta V_{\max} = 0.5 \cdot \text{swim_efficiency}
 $$
 
 ### Path-Based Movement
@@ -164,7 +164,7 @@ $$
 Travel distance:
 
 $$
-\text{travel\_distance}
+\text{travel_distance}
 =
 \frac{V_{\text{current}}}{3}
 $$
@@ -173,7 +173,7 @@ Movement follows:
 
 1. compute cost-to-sea  
 2. build path using decreasing cost  
-3. traverse first $\lceil \text{travel\_distance} \rceil$ patches  
+3. traverse first $\lceil \text{travel_distance} \rceil$ patches  
 4. record visitation and time spent  
 5. append to the movement trail  
 
@@ -204,7 +204,7 @@ Let $\beta = 0.75$.
 Energy multiplier:
 
 $$
-M = \frac{D_f}{\text{swim\_efficiency}}
+M = \frac{D_f}{\text{swim_efficiency}}
 $$
 
 Energy cost:
@@ -212,7 +212,7 @@ Energy cost:
 $$
 E_{\text{swim}}
 =
-\text{swim\_base} \cdot M^{\beta}
+\text{swim_base} \cdot M^{\beta}
 $$
 
 Energy update:

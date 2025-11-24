@@ -166,7 +166,7 @@ If $|V_{\text{desired}} - V_{\text{prev}}| > \Delta V_{\max}$, then speed moves 
 Landward migration uses a least cost routing strategy instead of direct vector movement. The number of patches traversed in a tick is based on swimming speed:
 
 $$
-\text{travel_distance} = \frac{V_{\text{current}}}{3}
+\text{travel\_distance} = \frac{V_{\text{current}}}{3}
 $$
 
 Movement follows:

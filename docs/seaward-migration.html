@@ -839,14 +839,14 @@ V_{\text{desired}}
 \]</span></p>
 <p>Acceleration smoothing:</p>
 <p><span class="math display">\[
-\Delta V_{\max} = 0.5 \cdot \text{swim\_efficiency}
+\Delta V_{\max} = 0.5 \cdot \text{swim_efficiency}
 \]</span></p>
 </div>
 <div id="path-based-movement-1" class="section level3 hasAnchor" number="11.7.3">
 <h3><span class="header-section-number">11.7.3</span> Path-Based Movement<a href="seaward-migration.html#path-based-movement-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Travel distance:</p>
 <p><span class="math display">\[
-\text{travel\_distance}
+\text{travel_distance}
 =
 \frac{V_{\text{current}}}{3}
 \]</span></p>
@@ -856,7 +856,7 @@ V_{\text{desired}}
 </li>
 <li>build path using decreasing cost<br />
 </li>
-<li>traverse first <span class="math inline">\(\lceil \text{travel\_distance} \rceil\)</span> patches<br />
+<li>traverse first <span class="math inline">\(\lceil \text{travel_distance} \rceil\)</span> patches<br />
 </li>
 <li>record visitation and time spent<br />
 </li>
@@ -885,13 +885,13 @@ V_{\text{desired}}
 <p>Let <span class="math inline">\(\beta = 0.75\)</span>.</p>
 <p>Energy multiplier:</p>
 <p><span class="math display">\[
-M = \frac{D_f}{\text{swim\_efficiency}}
+M = \frac{D_f}{\text{swim_efficiency}}
 \]</span></p>
 <p>Energy cost:</p>
 <p><span class="math display">\[
 E_{\text{swim}}
 =
-\text{swim\_base} \cdot M^{\beta}
+\text{swim_base} \cdot M^{\beta}
 \]</span></p>
 <p>Energy update:</p>
 <p><span class="math display">\[
