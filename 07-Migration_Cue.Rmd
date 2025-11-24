@@ -31,6 +31,11 @@ This allows migration in the model to originate from measurable ecological drive
 
 ## Entities, State Variables, and Scales
 
+### Spatial and Temporal Scales
+
+-   **Spatial Unit**: Patch (3 m x 3 m resolution)
+-   **Temporal Unit**: 5-minute time steps (`tick`)
+
 ### Global Variables
 
 | Global Variable | Definition |
@@ -149,7 +154,7 @@ Key outputs: cue day activation, probability trajectories, proportion of migrant
 | **cue-active?** | false | Depends on DOY |
 | **start-migration?** | false | Fish begin in staging mode |
 
-# Submodels
+## Submodels
 
 ## 1. Identifying Cue Days (Preprocessed in R)
 

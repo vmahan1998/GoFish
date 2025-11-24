@@ -32,11 +32,8 @@ This submodel captures ecologically grounded predator–prey dynamics by simulat
 
 ### Spatial and Temporal Scales
 
--   **Spatial Unit**: Patch (3 m x 3 m resolution)
-
-<!-- -->
-
--   **Temporal Unit**: 5-minute time steps (`tick`)
+**Spatial Unit:** Patch (3 m x 3 m resolution)\
+**Temporal Unit:** 5 minute time steps (tick)
 
 ### Patch Variables
 

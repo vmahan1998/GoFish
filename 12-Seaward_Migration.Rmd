@@ -1,4 +1,4 @@
-# Seaward Migration Behavior
+# Seaward Migration
 
 ## Overview
 

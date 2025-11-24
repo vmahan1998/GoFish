@@ -14,8 +14,6 @@ To evaluate mercury and methylmercury exposure and bioaccumulation risk for migr
 
 **Spatial Unit:** Patch (3 m x 3 m resolution)\
 **Temporal Unit:** 5 minute time steps (tick)\
-**SPM:** Depth averaged suspended particulate matter per patch\
-**Contaminants:** Spatially varying Hg and MeHg concentrations
 
 ### Global Variables
 
