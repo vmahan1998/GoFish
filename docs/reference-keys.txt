@@ -73,6 +73,7 @@ migration-cues
 overview-3
 purpose-3
 entities-state-variables-and-scales-3
+spatial-and-temporal-scales-3
 global-variables-3
 patch-variables-3
 agent-variables-3
@@ -92,7 +93,7 @@ contaminant-exposure
 overview-4
 purpose-4
 entities-state-variables-and-scales-4
-spatial-and-temporal-scales-3
+spatial-and-temporal-scales-4
 global-variables-4
 patch-variables-4
 agent-variables-4
@@ -113,7 +114,7 @@ filter-feeding
 overview-5
 purpose-and-patterns
 entities-state-variables-and-scales-5
-spatial-and-temporal-scales-4
+spatial-and-temporal-scales-5
 global-variables-5
 patch-variables-5
 agent-variables-5
@@ -130,7 +131,7 @@ contaminant-assimilation-and-biomagnification
 overview-6
 purpose-5
 entities-state-variables-and-scales-6
-spatial-and-temporal-scales-5
+spatial-and-temporal-scales-6
 global-variables-6
 patch-variables-6
 agent-variables-6
@@ -143,11 +144,11 @@ energy-conversion-1
 weight-loss
 contaminant-bookkeeping
 netlogo-implementation-3
-landward-migration-behavior
+landward-migration
 overview-7
 purpose-6
 entities-state-variables-and-scales-7
-spatial-and-temporal-scales-6
+spatial-and-temporal-scales-7
 global-variables-7
 patch-variables-7
 agent-variables-7
@@ -160,11 +161,11 @@ swimming-speed
 path-based-movement
 travel-cost
 swimming-energy
-seaward-migration-behavior
+seaward-migration
 overview-8
 purpose-7
 entities-state-variables-and-scales-8
-spatial-and-temporal-scales-7
+spatial-and-temporal-scales-8
 global-variables-8
 patch-variables-8
 agent-variables-8
@@ -182,7 +183,7 @@ schooling
 overview-9
 purpose-8
 entities-state-variables-and-scales-9
-spatial-and-temporal-scales-8
+spatial-and-temporal-scales-9
 patch-variables-9
 agent-variables-9
 process-overview-and-scheduling-9
@@ -200,7 +201,7 @@ selective-tidal-stream-transport
 overview-10
 purpose-9
 entities-state-variables-and-scales-10
-spatial-and-temporal-scales-9
+spatial-and-temporal-scales-10
 global-variables-9
 patch-variables-10
 agent-variables-10
@@ -216,7 +217,7 @@ predation-and-fleeing-behavior
 overview-11
 purpose-and-patterns-1
 entities-state-variables-and-scales-11
-spatial-and-temporal-scales-10
+spatial-and-temporal-scales-11
 patch-variables-11
 prey-agent-variables
 predator-agent-variables
@@ -277,7 +278,7 @@ flood-limit
 homing
 homeostasis
 iteroparous
-landward-migration
+landward-migration-1
 lipid-catabolism
 mercury
 metabolism-1
@@ -291,7 +292,7 @@ pelagic
 salinity
 salinity-stress
 salt-wedge
-seaward-migration
+seaward-migration-1
 selective-tidal-stream-transport-stst
 semelparous
 spawning

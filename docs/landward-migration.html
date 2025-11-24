@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 15 Model Building Tutorial: Staging &amp; Schooling | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
+  <title>Chapter 10 Landward Migration | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries</title>
   <meta name="description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 15 Model Building Tutorial: Staging &amp; Schooling | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta property="og:title" content="Chapter 10 Landward Migration | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   <meta property="og:type" content="book" />
   <meta property="og:image" content="https://vmahan1998.github.io/GoFish/images/vmq.png" />
   <meta property="og:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="github-repo" content="vmahan1998/GoFish" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 15 Model Building Tutorial: Staging &amp; Schooling | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
+  <meta name="twitter:title" content="Chapter 10 Landward Migration | GoFish: A Next-Generation ToolKit for Modeling Migratory Fish and Quantifying Environmental Risk in Estuaries" />
   
   <meta name="twitter:description" content="This document contains a library of agent-based model functions for migratory fish." />
   <meta name="twitter:image" content="https://vmahan1998.github.io/GoFish/images/vmq.png" />
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="predation-and-fleeing-behavior.html"/>
-<link rel="next" href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html"/>
+<link rel="prev" href="filter-feeding.html"/>
+<link rel="next" href="seaward-migration.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -570,67 +570,620 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="model-building-tutorial-staging-schooling" class="section level1 hasAnchor" number="15">
-<h1><span class="header-section-number">Chapter 15</span> Model Building Tutorial: Staging &amp; Schooling<a href="model-building-tutorial-staging-schooling.html#model-building-tutorial-staging-schooling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div style="color: red; font-style: italic; font-size: 1.1em; margin-bottom: 1.5em;">
-This document is under active development.
-</div
-<div id="module-integration" class="section level3 hasAnchor" number="15.0.1">
-<h3><span class="header-section-number">15.0.1</span> Module Integration<a href="model-building-tutorial-staging-schooling.html#module-integration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li>Brief explanation of how functions (e.g., staging, schooling) interact.</li>
-<li>Clarify temporal structure (e.g., tick-based sequence) and spatial scale.</li>
-<li>Describe coupling logic</li>
-</ul>
+<div id="landward-migration" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Landward Migration<a href="landward-migration.html#landward-migration" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="overview-7" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Overview<a href="landward-migration.html#overview-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This function simulates landward migration for fish moving upstream through riverine and estuarine systems. Agents adjust their movement based on local water velocity, energetic condition, and the relative difficulty of swimming in a given flow. Movement occurs along a least cost path that is recalculated according to hydrodynamic conditions.</p>
 </div>
-<div id="function-dependencies" class="section level3 hasAnchor" number="15.0.2">
-<h3><span class="header-section-number">15.0.2</span> Function Dependencies<a href="model-building-tutorial-staging-schooling.html#function-dependencies" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li><p>What variables are required as inputs for each function?</p></li>
-<li><p>What functions must be called before/after? (e.g., must calculate stress before checking staging triggers)</p></li>
-<li><p>Dependency table showing variable flow between submodels.</p></li>
-</ul>
-<table style="width:100%;">
+<div id="purpose-6" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Purpose<a href="landward-migration.html#purpose-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The purpose of this submodel is to represent upstream migration under realistic spatial hydrodynamic resistance. Agents evaluate flow velocity, movement difficulty, body condition, and patch level travel costs before advancing along a least cost path toward a home location.</p>
+</div>
+<div id="entities-state-variables-and-scales-7" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Entities, State Variables, and Scales<a href="landward-migration.html#entities-state-variables-and-scales-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="spatial-and-temporal-scales-7" class="section level3 hasAnchor" number="10.3.1">
+<h3><span class="header-section-number">10.3.1</span> Spatial and Temporal Scales<a href="landward-migration.html#spatial-and-temporal-scales-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Spatial Unit:</strong> Patch (3 m x 3 m resolution)<br />
+<strong>Temporal Unit:</strong> 5 minute time steps (tick)</p>
+</div>
+<div id="global-variables-7" class="section level3 hasAnchor" number="10.3.2">
+<h3><span class="header-section-number">10.3.2</span> Global Variables<a href="landward-migration.html#global-variables-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
 <colgroup>
-<col width="13%" />
-<col width="28%" />
-<col width="35%" />
-<col width="22%" />
+<col width="50%" />
+<col width="50%" />
 </colgroup>
 <thead>
 <tr>
-<th>Function</th>
-<th>Required Inputs</th>
-<th>Output Variables</th>
-<th>Dependent On</th>
+<th align="center">Variable</th>
+<th align="center">Definition</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>staging</code></td>
-<td><code>E_agent</code>, <code>I_stress</code></td>
-<td><code>E_agent</code>, <code>patch records</code></td>
-<td><code>osmoregulation</code></td>
+<td align="center"><strong>max-seaward-velocity</strong></td>
+<td align="center">Maximum seaward directed velocity in the domain, used for normalization.</td>
 </tr>
 <tr>
-<td>schooling</td>
-<td></td>
-<td></td>
-<td></td>
+<td align="center"><strong>max-landward-velocity</strong></td>
+<td align="center">Maximum landward directed velocity in the domain.</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="implementation-in-netlogo" class="section level2 hasAnchor" number="15.1">
-<h2><span class="header-section-number">15.1</span> Implementation in NetLogo:<a href="model-building-tutorial-staging-schooling.html#implementation-in-netlogo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="patch-variables-7" class="section level3 hasAnchor" number="10.3.3">
+<h3><span class="header-section-number">10.3.3</span> Patch Variables<a href="landward-migration.html#patch-variables-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>velocity</strong></td>
+<td align="center">Depth averaged hydrodynamic velocity at the patch.</td>
+</tr>
+<tr>
+<td align="center"><strong>depth</strong></td>
+<td align="center">Water depth at the patch.</td>
+</tr>
+<tr>
+<td align="center"><strong>patch-terrain</strong></td>
+<td align="center">Indicates whether the patch is water or land.</td>
+</tr>
+<tr>
+<td align="center"><strong>cost-to-home</strong></td>
+<td align="center">Patch level cost field producing a least cost corridor.</td>
+</tr>
+<tr>
+<td align="center"><strong>visits-by-alewife</strong></td>
+<td align="center">Number of times the agent visits the patch.</td>
+</tr>
+<tr>
+<td align="center"><strong>ticks-spent-alewife</strong></td>
+<td align="center">Time spent on the patch.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="implementation-in-r" class="section level2 hasAnchor" number="15.2">
-<h2><span class="header-section-number">15.2</span> Implementation in R:<a href="model-building-tutorial-staging-schooling.html#implementation-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Programming details</p>
-<p>example code</p>
+<div id="agent-variables-7" class="section level3 hasAnchor" number="10.3.4">
+<h3><span class="header-section-number">10.3.4</span> Agent Variables<a href="landward-migration.html#agent-variables-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>weight</strong></td>
+<td align="center">Body mass of the fish.</td>
+</tr>
+<tr>
+<td align="center"><strong>speed</strong></td>
+<td align="center">Current swimming speed.</td>
+</tr>
+<tr>
+<td align="center"><strong>prev-speed</strong></td>
+<td align="center">Previous time step swimming speed.</td>
+</tr>
+<tr>
+<td align="center"><strong>max-speed</strong></td>
+<td align="center">Maximum sustained speed.</td>
+</tr>
+<tr>
+<td align="center"><strong>min-speed</strong></td>
+<td align="center">Minimum allowable speed.</td>
+</tr>
+<tr>
+<td align="center"><strong>swim-efficiency</strong></td>
+<td align="center">Scaling factor for acceleration and deceleration.</td>
+</tr>
+<tr>
+<td align="center"><strong>difficulty-factor</strong></td>
+<td align="center">Difficulty of movement under local velocity conditions.</td>
+</tr>
+<tr>
+<td align="center"><strong>planned-path</strong></td>
+<td align="center">Sequence of patches in the least cost route.</td>
+</tr>
+<tr>
+<td align="center"><strong>home-patch</strong></td>
+<td align="center">Destination patch for migration.</td>
+</tr>
+<tr>
+<td align="center"><strong>trail</strong></td>
+<td align="center">Record of patches visited by the agent.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="process-overview-and-scheduling-7" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Process Overview and Scheduling<a href="landward-migration.html#process-overview-and-scheduling-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Compute swimming difficulty from hydrodynamic velocity and body size.<br />
+</li>
+<li>Calculate swimming speed using desired-speed, velocity influence, and acceleration limits.<br />
+</li>
+<li>Evaluate the least cost field and construct a path to the home patch.<br />
+</li>
+<li>Move along the path for a distance proportional to swimming speed.<br />
+</li>
+<li>Record patch visitation and time spent.</li>
+</ol>
+</div>
+<div id="design-concepts-7" class="section level2 hasAnchor" number="10.5">
+<h2><span class="header-section-number">10.5</span> Design Concepts<a href="landward-migration.html#design-concepts-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Basic Principles</strong><br />
+Hydrodynamic constraints, difficulty scaling, and body condition influence agent movement.</p>
+<p><strong>Emergence</strong><br />
+Migration routes, temporal occupancy, and movement speed emerge from repeated interactions of flow and difficulty.</p>
+<p><strong>Objectives</strong><br />
+Agents attempt to reach the home patch but do not optimize globally. Movement follows the least cost route at each step.</p>
+<p><strong>Sensing</strong><br />
+Agents sense velocity and depth of the local and neighboring patches.</p>
+<p><strong>Observation</strong><br />
+Paths, timing, and residency can be monitored chronologically.</p>
+</div>
+<div id="initialization-7" class="section level2 hasAnchor" number="10.6">
+<h2><span class="header-section-number">10.6</span> Initialization<a href="landward-migration.html#initialization-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable</th>
+<th align="center">Initial Value</th>
+<th align="center">Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong>velocity</strong></td>
+<td align="center">user-defined</td>
+<td align="center">Hydrodynamic input data.</td>
+</tr>
+<tr>
+<td align="center"><strong>weight</strong></td>
+<td align="center">species-specific</td>
+<td align="center">Required for difficulty scaling.</td>
+</tr>
+<tr>
+<td align="center"><strong>max-speed</strong></td>
+<td align="center">species-specific</td>
+<td align="center">Physiological constraint.</td>
+</tr>
+<tr>
+<td align="center"><strong>min-speed</strong></td>
+<td align="center">species-specific</td>
+<td align="center">Prevents speed collapse.</td>
+</tr>
+<tr>
+<td align="center"><strong>swim-efficiency</strong></td>
+<td align="center">species or constant</td>
+<td align="center">Controls acceleration rate.</td>
+</tr>
+<tr>
+<td align="center"><strong>difficulty-factor</strong></td>
+<td align="center">1</td>
+<td align="center">Neutral starting difficulty.</td>
+</tr>
+<tr>
+<td align="center"><strong>prev-speed</strong></td>
+<td align="center">starting speed</td>
+<td align="center">Smooth initial movement.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="submodels-6" class="section level2 hasAnchor" number="10.7">
+<h2><span class="header-section-number">10.7</span> Submodels<a href="landward-migration.html#submodels-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="swimming-difficulty" class="section level3 hasAnchor" number="10.7.1">
+<h3><span class="header-section-number">10.7.1</span> Swimming Difficulty<a href="landward-migration.html#swimming-difficulty" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Swimming difficulty reflects the hydrodynamic effort required for the agent to move through its current patch. Velocity is normalized between the maximum observed landward and seaward velocities:</p>
+<p><span class="math display">\[
+V_{\text{norm}} = \frac{V_{\text{patch}} - V_{\min}}{V_{\max} - V_{\min}}
+\]</span></p>
+<p>This normalized velocity is scaled by relative body size <span class="math inline">\(M_{\text{agent}} / M_{\max}\)</span> and raised to a scaling exponent <span class="math inline">\(k\)</span>:</p>
+<p><span class="math display">\[
+Df_{\text{raw}} =
+\left(
+\frac{V_{\text{norm}}}{M_{\text{agent}} / M_{\max}}
+\right)^k
+\]</span></p>
+<p>Difficulty is then mapped onto the one to ten range:</p>
+<p><span class="math display">\[
+D_f = 1 + 9 \cdot Df_{\text{raw}}
+\]</span></p>
+<p>and constrained:</p>
+<p><span class="math display">\[
+D_f \in [1, 10]
+\]</span></p>
+<p>Difficulty increases when:</p>
+<ul>
+<li><span class="math inline">\(M_{\text{agent}}\)</span> is small<br />
+</li>
+<li><span class="math inline">\(|V_{\text{patch}}|\)</span> approaches its maximum value<br />
+</li>
+<li>flow opposes movement</li>
+</ul>
+<hr />
+</div>
+<div id="swimming-speed" class="section level3 hasAnchor" number="10.7.2">
+<h3><span class="header-section-number">10.7.2</span> Swimming Speed<a href="landward-migration.html#swimming-speed" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Swimming speed depends on energetic condition, hydrodynamic difficulty, and the effect of local flow. The agent first computes an energy factor:</p>
+<p><span class="math display">\[
+E_{\text{factor}} = \frac{E_{\text{agent}}}{100}
+\]</span></p>
+<p>Velocity impact from hydrodynamics is:</p>
+<p><span class="math display">\[
+V_{\text{impact}} = k \cdot V_{\text{patch}} \cdot 300
+\]</span></p>
+<p>The desired swimming speed is:</p>
+<p><span class="math display">\[
+V_{\text{desired}} =
+\frac{V_{\max} \cdot E_{\text{factor}}}{D_f}
++ V_{\text{impact}}
+\]</span></p>
+<p>Speed is constrained between a minimum and maximum:</p>
+<p><span class="math display">\[
+V_{\text{desired}}
+= \min(V_{\max}, \max(V_{\min}, V_{\text{desired}}))
+\]</span></p>
+<p>Acceleration is smoothed using the previous speed:</p>
+<p><span class="math display">\[
+\Delta V_{\max} = 0.5 \cdot \text{swim_efficiency}
+\]</span></p>
+<p>If <span class="math inline">\(|V_{\text{desired}} - V_{\text{prev}}| &gt; \Delta V_{\max}\)</span>, then speed moves gradually toward the desired value. Otherwise speed is set directly.</p>
+</div>
+<div id="path-based-movement" class="section level3 hasAnchor" number="10.7.3">
+<h3><span class="header-section-number">10.7.3</span> Path Based Movement<a href="landward-migration.html#path-based-movement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Landward migration uses a least cost routing strategy instead of direct vector movement. The number of patches traversed in a tick is based on swimming speed:</p>
+<p><span class="math display">\[
+\text{travel_distance} = \frac{V_{\text{current}}}{3}
+\]</span></p>
+<p>Movement follows:</p>
+<ol style="list-style-type: decimal">
+<li>compute cost-to-home<br />
+</li>
+<li>generate a path using decreasing cost<br />
+</li>
+<li>move through the first <span class="math inline">\(\lceil \text{travel_distance} \rceil\)</span> patches<br />
+</li>
+<li>record patch visits and time spent<br />
+</li>
+<li>append patch-here to the trail if new</li>
+</ol>
+</div>
+<div id="travel-cost" class="section level3 hasAnchor" number="10.7.4">
+<h3><span class="header-section-number">10.7.4</span> Travel Cost<a href="landward-migration.html#travel-cost" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Travel cost for a candidate patch incorporates velocity magnitude, slope, and difficulty:</p>
+<p><span class="math display">\[
+\text{cost}_{\text{raw}}
+= |V_{\text{patch}}|
++ 0.5 \cdot \max(0, \Delta \text{depth})
+\]</span></p>
+<p>Difficulty multiplies the base cost:</p>
+<p><span class="math display">\[
+\text{cost}
+= \text{cost}_{\text{raw}} \cdot D_f
+\]</span></p>
+<p>This produces a cost-to-home field representing hydrodynamic resistance.</p>
+</div>
+<div id="swimming-energy" class="section level3 hasAnchor" number="10.7.5">
+<h3><span class="header-section-number">10.7.5</span> Swimming Energy<a href="landward-migration.html#swimming-energy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Swimming incurs a metabolic cost that scales with base swimming cost, difficulty, and swim efficiency.</p>
+<p>Let <span class="math inline">\(\beta = 0.75\)</span>.<br />
+Let the effective multiplier be:</p>
+<p><span class="math display">\[
+M = \frac{D_f}{\text{swim_efficiency}}
+\]</span>
+Where lower efficiency results in higher energetic cost.</p>
+<p>Energy expenditure is:</p>
+<p><span class="math display">\[
+E_{\text{swim}} = \text{swim_base} \cdot M^\beta
+\]</span></p>
+<p>Total energy is reduced accordingly:</p>
+<p><span class="math display">\[
+E_{\text{agent}} = \max(0, E_{\text{agent}} - E_{\text{swim}})
+\]</span></p>
+<p>Higher difficulty and lower swim efficiency increase metabolic cost.</p>
+<pre class="netlogo"><code>;; ===================================================================
+;;  LANDWARD MIGRATION + HYDRODYNAMIC SWIMMING SUBMODEL DECLARATIONS
+;; ===================================================================
 
+globals [
+
+  ;; Velocity normalization bounds
+  max-seaward-velocity
+  max-landward-velocity
+]
+
+patches-own [
+
+  ;; Environmental attributes
+  velocity
+  depth
+  patch-terrain   ;; &quot;water&quot; or &quot;land&quot;
+
+  ;; Least-cost routing fields
+  cost-to-home
+  cost-to-sea
+  cost-to-prey
+
+  ;; Tracking fish patch-level behavior
+  visits-by-fish
+  ticks-spent-fish
+]
+
+turtles-own [
+
+  ;; Body condition
+  weight
+
+  ;; Swimming behavior
+  speed
+  prev-speed
+  max-speed
+  min-speed
+  swim-efficiency
+
+  ;; Hydrodynamic resistance
+  difficulty-factor
+
+  ;; Energetics
+  E-swim
+  swim-base
+
+  ;; Migration targets
+  home-patch
+  migration-patch
+
+  ;; Movement memory
+  planned-path
+  trail
+  previous-patch
+  previous-x
+  previous-y
+]
+
+
+;; ===================================================================
+;;  SWIMMING DIFFICULTY (LANDWARD)
+;; ===================================================================
+
+to calculate-difficulty-landward
+  
+  let M-max max [weight] of breed      ;; largest fish in population
+  let M-agent weight                   ;; focal individual
+  let V-max max-seaward-velocity
+  let V-min max-landward-velocity
+  let k 0.75                           ;; scaling exponent
+
+  ;; Normalize velocity
+  let normalized-velocity (velocity - V-min) / (V-max - V-min)
+
+  ;; Difficulty from normalized velocity + size ratio
+  let Df-raw (normalized-velocity / (M-agent / M-max)) ^ k
+  
+  ;; Scale to range 1–10
+  set difficulty-factor (1 + 9 * Df-raw)
+  set difficulty-factor max list 1 (min list 10 difficulty-factor)
+end
+
+
+;; ===================================================================
+;;  SWIMMING SPEED (LANDWARD)
+;; ===================================================================
+
+to calculate-swimming-speed-landward
+  
+  let k -0.75                                    ;; velocity influence
+  let energy-factor (energy / 100)               ;; 0–1 scale
+  let velocity-impact (k * velocity * 300)       ;; 5-min timestep scaling
+
+  ;; Preliminary target speed
+  let desired-speed 
+    (max-speed * energy-factor / difficulty-factor)
+      + velocity-impact
+
+  ;; Clamp desired speed to biologically realistic bounds
+  set desired-speed min list max-speed (max list min-speed desired-speed)
+
+  ;; Smooth acceleration / deceleration
+  let max-speed-change 0.5
+  set max-speed-change (max-speed-change * swim-efficiency)
+
+  if abs(desired-speed - prev-speed) &gt; max-speed-change [
+    if desired-speed &gt; prev-speed [
+      set speed prev-speed + max-speed-change
+    ]
+    if desired-speed &lt; prev-speed [
+      set speed prev-speed - max-speed-change
+    ]
+  ]
+
+  if abs(desired-speed - prev-speed) &lt;= max-speed-change [
+    set speed desired-speed
+  ]
+
+  set prev-speed speed
+end
+
+
+;; ===================================================================
+;;  LEAST-COST ROUTING TO HOME (LANDWARD)
+;; ===================================================================
+
+to calculate-cost-to-home [homing-patch]
+
+  ;; initialize routing fields
+  ask home-patch  [ set cost-to-home 0 ]
+  ask patch-here  [ set cost-to-home 1e9 ]
+
+  let frontier (list home-patch)
+  let df difficulty-factor                 ;; hydrodynamic penalty
+
+  while [not empty? frontier] [
+    let current first frontier
+    set frontier but-first frontier
+
+    ask current [
+      let current-cost cost-to-home
+      
+      ask neighbors4 with [patch-terrain = &quot;water&quot;] [
+        
+        let travel-cost compute-travel-cost current self df
+        let new-cost current-cost + travel-cost
+
+        if new-cost &lt; cost-to-home [
+          set cost-to-home new-cost
+          set frontier lput self frontier
+        ]
+      ]
+    ]
+  ]
+end
+
+
+;; ===================================================================
+;;  BUILD OPTIMAL PATH ENTIRELY FROM COST-FIELD
+;; ===================================================================
+
+to-report build-path [current-patch homing-patch]
+
+  let path (list current-patch)
+  let cur current-patch
+  let max-steps 2000
+
+  while [cur != homing-patch and max-steps &gt; 0] [
+    set max-steps max-steps - 1
+
+    let candidates [neighbors4] of cur
+    set candidates candidates with [
+      patch-terrain = &quot;water&quot; and
+      cost-to-home &lt; [cost-to-home] of cur
+    ]
+
+    if not any? candidates [
+      report path
+    ]
+
+    let next-patch min-one-of candidates [cost-to-home]
+    set path lput next-patch path
+    set cur next-patch
+  ]
+
+  report path
+end
+
+
+;; ===================================================================
+;;  TRAVEL COST UNDER HYDRODYNAMIC RESISTANCE
+;; ===================================================================
+
+to-report compute-travel-cost [from-patch to-patch df]
+
+  ;; velocity resistance
+  let raw-vel [velocity] of to-patch
+  let velocity-resistance 
+      ifelse-value is-number? raw-vel [abs raw-vel] [0]
+
+  ;; depth slope component
+  let from-level [depth] of from-patch
+  let to-level   [depth] of to-patch
+  let slope 0
+
+  if (is-number? from-level and is-number? to-level) [
+    set slope max list 0 (to-level - from-level)
+  ]
+
+  ;; hydrodynamic cost + slope penalty
+  let base-cost velocity-resistance + (0.5 * slope)
+
+  ;; difficulty multiplier
+  let df2 ifelse-value is-number? df [df] [1]
+
+  report max list 0 (base-cost * df2)
+end
+
+
+;; ===================================================================
+;;  LANDWARD MIGRATION — PATH EXECUTION
+;; ===================================================================
+
+to migrate-landward
+  
+  let travel-distance (speed / 3)
+  let path build-path patch-here home-patch
+  set planned-path path
+  
+  if not empty? path [
+
+    let steps-to-move ceiling travel-distance
+    let move-patches sublist path 0 (min list steps-to-move length path)
+    
+    let old-patch patch-here
+
+    foreach move-patches [ p -&gt;
+
+      ;; Record patch visitation
+      if p != old-patch [
+        ask p [ set visits-by-alewife visits-by-alewife + 1 ]
+        set old-patch p
+      ]
+
+      ;; Move into patch
+      face p
+      move-to p
+
+      ask p [
+        set ticks-spent-alewife ticks-spent-alewife + 1
+      ]
+    ]
+  ]
+
+  ;; Add patch to historical trail
+  if not member? patch-here trail [
+    set trail lput patch-here trail
+  ]
+end
+
+
+;; ===================================================================
+;;  UNIVERSAL SWIMMING ENERGY COST
+;; ===================================================================
+
+to calculate-swim-energy
+  
+  let beta 0.75
+
+  let energy-multiplier 
+      (difficulty-factor * (1 / swim-efficiency))
+
+  set E-swim 
+      (swim-base * (energy-multiplier ^ beta))
+
+  set energy max list 0 (energy - E-swim)
+end</code></pre>
+
+</div>
 </div>
 </div>
             </section>
@@ -638,8 +1191,8 @@ This document is under active development.
           </div>
         </div>
       </div>
-<a href="predation-and-fleeing-behavior.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="model-building-tutorial-landward-migration-selective-tidal-stream-transport.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="filter-feeding.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="seaward-migration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -670,7 +1223,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/16-integrate_functions_example_01.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/11-Landward_Migration.Rmd",
 "text": "Edit"
 },
 "history": {
